@@ -3,7 +3,7 @@ version_stamp: xfce-latest
 target: livecd-stage2
 rel_type: default
 profile: default/linux/amd64/17.1/desktop
-snapshot: gentoo-stable.tar.bz2
+snapshot: stable.tar.bz2
 source_subpath: default/livecd-stage1-amd64-xfce-latest
 portage_confdir: /home/ben/releng/releases/portage/livegui
 portage_overlay: /home/ben/releng/releases/overlays/common/root_overlay/var/db/repos/gogooverlay/
@@ -20,7 +20,6 @@ livecd/fstype: squashfs
 livecd/iso: livegui-amd64-latest.iso
 livecd/type: gentoo-release-livecd
 livecd/fsops: -comp zstd
-livecd/gk_mainargs: --plymouth --plymouth-theme=gentoo-logo-new
 livecd/motd: "Welcome to XinnixOS-Gentoo-XFCE"
 livecd/type: generic-livecd
 livecd/volid: XinnixOS-Gentoo LiveDVD latest
@@ -35,9 +34,21 @@ livecd/empty:
 	/var/db/repos
 	/usr/src
 
-boot/kernel: gentoo
+boot/kernel: gentoo-kernel-bin
 
-boot/kernel/gentoo/sources: gentoo-sources
-boot/kernel/gentoo/config: livecd-stage2.config /home/ben/releng/releases/kconfig/amd64/livegui-amd64-5.15.23.config
+boot/kernel/gentoo-kernel-bin/sources: gentoo-sources
+boot/kernel/gentoo-kernel-bin/config: livecd-stage2.config /home/ben/releng/releases/kconfig/amd64/livegui-amd64-5.15.23.config
 
-boot/kernel/gentoo/packages: --usepkg n zfs zfs-kmod
+boot/kernel/gentoo-kernel-bin/packages:
+	sys-kernel/dracut
+	net-wireless/broadcom-sta
+	sys-firmware/broadcom-bt-firmware
+	sys-kernel/linux-firmware
+	media-sound/alsa-utils
+	media-sound/pulseaudio
+	sys-fs/ntfs3g
+	x11-drivers/xf86-video-amdgpu
+	x11-drivers/nvidia-drivers
+	x11-drivers/xf86-input-libinput
+	x11-drivers/xf86-video-intel
+boot/kernel/gentoo-kernel-bin/use: atm png truetype usb plymouth
