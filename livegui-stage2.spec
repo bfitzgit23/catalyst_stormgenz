@@ -21,11 +21,11 @@ livecd/iso: livegui-amd64-latest.iso
 livecd/type: gentoo-release-livecd
 livecd/fsops: -comp zstd
 livecd/gk_mainargs: --plymouth --plymouth-theme=gentoo-logo-new
-livecd/motd: ""
+livecd/motd: "Welcome to XinnixOS-Gentoo-XFCE"
 livecd/type: generic-livecd
 livecd/volid: XinnixOS-Gentoo LiveDVD latest
 livecd/xsession: xfce
-livecd/display-manager: lightdm
+livecd/displaymanager: lightdm
 
 livecd/fsscript: /home/ben/releng/releases/specs/amd64/livegui/files/fsscript-stage2.sh
 livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default
@@ -35,9 +35,9 @@ livecd/empty:
 	/var/db/repos
 	/usr/src
 
-boot/kernel: genkernel-next
+boot/kernel: gentoo
 
 boot/kernel/gentoo/sources: gentoo-sources
-boot/kernel/gentoo/config: /home/ben/releng/releases/kconfig/amd64/livegui-amd64-5.15.23.config
+boot/kernel/gentoo/config: livecd-stage2.config /home/ben/releng/releases/kconfig/amd64/livegui-amd64-5.15.23.config
 
 boot/kernel/gentoo/packages: --usepkg n zfs zfs-kmod
