@@ -274,3 +274,4 @@ livecd/packages:
 	sys-block/gparted
 	app-misc/neofetch
 	sys-apps/flatpak
+	dev-qt/qtstyleplugins
