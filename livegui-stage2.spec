@@ -18,6 +18,7 @@ livecd/bootargs: overlayfs dokeymap dodetect dousb quiet splash zram.num_devices
 livecd/depclean: no
 livecd/fstype: squashfs
 livecd/iso: livegui-amd64-latest.iso
+livecd/gk_mainargs: --plymouth --plymouth-theme=gentoo-logo-new
 livecd/type: gentoo-release-livecd
 livecd/fsops: -comp zstd
 livecd/motd: "Welcome to XinnixOS-Gentoo-XFCE"
@@ -34,12 +35,12 @@ livecd/empty:
 	/var/db/repos
 	/usr/src
 
-boot/kernel: gentoo-kernel-bin
+boot/kernel: gentoo
 
-boot/kernel/gentoo-kernel-bin/sources: gentoo-sources
-boot/kernel/gentoo-kernel-bin/config: livecd-stage2.config /home/ben/releng/releases/kconfig/amd64/livegui-amd64-5.15.23.config
+boot/kernel/gentoo/sources: gentoo-sources
+boot/kernel/gentoo/config: livecd-stage2.config /home/ben/releng/releases/kconfig/amd64/livegui-amd64-5.15.23.config
 
-boot/kernel/gentoo-kernel-bin/packages:
+boot/kernel/gentoo/packages:
 	sys-kernel/dracut
 	net-wireless/broadcom-sta
 	sys-firmware/broadcom-bt-firmware
@@ -51,4 +52,4 @@ boot/kernel/gentoo-kernel-bin/packages:
 	x11-drivers/nvidia-drivers
 	x11-drivers/xf86-input-libinput
 	x11-drivers/xf86-video-intel
-boot/kernel/gentoo-kernel-bin/use: atm png truetype usb plymouth
+boot/kernel/gentoo/use: atm png truetype usb plymouth
