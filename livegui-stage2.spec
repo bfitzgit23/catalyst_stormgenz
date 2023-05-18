@@ -3,7 +3,7 @@ version_stamp: xfce-latest
 target: livecd-stage2
 rel_type: default
 profile: default/linux/amd64/17.1/desktop
-snapshot: latest
+snapshot: gentoo-stable.tar.bz2
 source_subpath: default/livecd-stage1-amd64-xfce-latest
 portage_confdir: /home/ben/releng/releases/portage/livegui
 portage_overlay: /home/ben/releng/releases/overlays/common/root_overlay/var/db/repos/gogooverlay/
