@@ -25,7 +25,7 @@ livecd/motd: "Welcome to XinnixOS-Gentoo-XFCE"
 livecd/type: generic-livecd
 livecd/volid: XinnixOS-Gentoo LiveDVD latest
 livecd/xsession: xfce
-livecd/displaymanager: lightdm
+livecd/xdm: lightdm
 
 livecd/fsscript: /home/ben/releng/releases/specs/amd64/livegui/files/fsscript-stage2.sh
 livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default
