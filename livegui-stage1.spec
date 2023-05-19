@@ -275,3 +275,12 @@ livecd/packages:
 	app-misc/neofetch
 	sys-apps/flatpak
 	dev-qt/qtstyleplugins
+	x11-misc/lightdm
+	x11-misc/lightdm-gtk-greeter
+	xfce-extra/xfce4-whiskermenu-plugin
+	xfce-extra/xfce4-weather-plugin
+	xfce-extra/xfce4-pulseaudio-plugin
+	xfce-extra/xfce4-mailwatch-plugin
+	xfce-extra/xfce4-docklike-plugin
+	xfce-base/xfce4-meta
+	
