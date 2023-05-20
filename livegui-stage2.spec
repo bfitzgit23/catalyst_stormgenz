@@ -13,6 +13,7 @@ portage_overlay: /home/ben/releng/releases/overlays/common/root_overlay/var/db/r
 /home/ben/releng/releases/overlays/common/root_overlay/var/db/repos/stefantalpalaru/
 /home/ben/releng/releases/overlays/common/root_overlay/var/db/repos/tezeta/
 /home/ben/releng/releases/overlays/common/root_overlay/var/db/repos/bell07/
+portage_prefix: /home/ben/releng
 
 livecd/bootargs: overlayfs dokeymap dodetect dousb quiet splash zram.num_devices=1 apparmor=1 security=apparmor
 livecd/depclean: no
@@ -25,10 +26,9 @@ livecd/motd: "Welcome to XinnixOS-Gentoo-XFCE"
 livecd/type: generic-livecd
 livecd/volid: XinnixOS-Gentoo LiveDVD latest
 livecd/xsession: xfce
-livecd/xdm: lightdm
 
 livecd/fsscript: /home/ben/releng/releases/specs/amd64/livegui/files/fsscript-stage2.sh
-livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default
+livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default lightdm|default
 livecd/unmerge: net-misc/netifrc
 
 livecd/empty:

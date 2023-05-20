@@ -14,6 +14,7 @@ portage_overlay: /home/ben/releng/releases/overlays/common/root_overlay/var/db/r
 /home/ben/releng/releases/overlays/common/root_overlay/var/db/repos/stefantalpalaru/
 /home/ben/releng/releases/overlays/common/root_overlay/var/db/repos/tezeta/
 /home/ben/releng/releases/overlays/common/root_overlay/var/db/repos/bell07/
+portage_prefix: /home/ben/releng
 
 livecd/use:
 	-aac
@@ -43,8 +44,6 @@ livecd/packages:
 	app-admin/testdisk
 	app-arch/bzip2
 	app-arch/cpio
-	app-arch/dpkg
-	app-arch/deb2targz
 	app-arch/gzip
 	app-arch/mt-st
 	app-arch/p7zip
