@@ -1,1 +1,3 @@
 */*::steam-overlay
+sys-libs/libudev-compat
+games-util/game-device-udev-rules
