@@ -89,7 +89,7 @@ livecd/fstype: squashfs
 # The fsops are a list of optional parameters that can be passed to the tool
 # which will create the filesystem specified in livecd/fstype.  It is valid for
 # the following fstypes: squashfs
-livecd/fsops: -comp zstd
+livecd/fsops: -comp xz
 
 # The cdtar is essentially the bootloader for the CD.  It also holds the main
 # configuration for the bootloader.
@@ -119,7 +119,7 @@ livecd/fsscript: /home/ben/releng/releases/specs/amd64/livegui/files/fsscript-st
 # is used on the x86/amd64 release media to enable keymap selection.
 # example:
 # livecd/bootargs: dokeymap
-livecd/bootargs: overlayfs dokeymap dodetect dousb quiet splash zram.num_devices=1 apparmor=1 security=apparmor
+livecd/bootargs: overlayfs dokeymap dodetect dousb quiet splash zram.num_devices=1
 
 # This is a set of arguments that will be passed to genkernel for all kernels
 # defined in this target.  It is useful for passing arguments to genkernel that
@@ -177,7 +177,7 @@ livecd/modblacklist: nouveau
 # This option will automatically create missing runlevels
 # example:
 # livecd/rcadd:
-livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default lightdm|default 
+livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default lightdm|default cupsd|default sshd|default ntpd|default syslog-ng|default cronie|default bluetooth|default
 
 # This is for removing init script from runlevels.  It is executed after the
 # defaults shipped with catalyst, so it is possible to remove the defaults using
