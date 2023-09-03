@@ -101,6 +101,7 @@ livecd/use: -aac
 	kde
 	-gnome
 	branding
+	gtk
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
@@ -368,3 +369,4 @@ livecd/packages:
 	kde-plasma/plasma-workspace
 	kde-plasma/plasma-desktop
 	net-wireless/broadcom-sta
+	app-emulation/spice-vdagent
