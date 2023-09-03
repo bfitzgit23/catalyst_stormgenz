@@ -31,7 +31,7 @@ rel_type: default
 # specified as a relative path from /var/db/repos/gentoo/profiles.
 # example:
 # profile: default-linux/x86/2006.1
-profile: default-linux/amd64/17.1/desktop
+profile: default/amd64/17.1/desktop
 
 # This specifies which snapshot to use for building this target.
 # example:
