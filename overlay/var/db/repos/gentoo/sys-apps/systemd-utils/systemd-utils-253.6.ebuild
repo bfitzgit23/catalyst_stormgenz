@@ -41,14 +41,12 @@ COMMON_DEPEND="
 	udev? (
 		>=sys-apps/util-linux-2.30:0=[${MULTILIB_USEDEP}]
 		sys-libs/libcap:0=[${MULTILIB_USEDEP}]
-		virtual/libcrypt:=[${MULTILIB_USEDEP}]
 		acl? ( sys-apps/acl:0= )
 		kmod? ( >=sys-apps/kmod-15:0= )
 	)
 	!udev? (
 		>=sys-apps/util-linux-2.30:0=
 		sys-libs/libcap:0=
-		virtual/libcrypt:=
 	)
 "
 DEPEND="${COMMON_DEPEND}

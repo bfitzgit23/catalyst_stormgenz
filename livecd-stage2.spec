@@ -126,7 +126,7 @@ livecd/bootargs: overlayfs dokeymap dodetect dousb quiet splash zram.num_devices
 # are not otherwise available via the livecd-stage2 spec file.
 # example:
 # livecd/gk_mainargs: --lvm --dmraid
-livecd/mainargs: --plymouth --plymouth-theme=natural-gentoo-remastered ibt=off
+livecd/gk_mainargs: --plymouth --plymouth-theme=natural-gentoo-remastered ibt=off
 
 # This option allows you to specify your own linuxrc script for genkernel to use
 # when building your CD.  This is not checked for functionality, so it is up to
@@ -223,19 +223,19 @@ livecd/volid: XinnixOS LiveDVD latest
 # labels that will be used by the CD bootloader to refer to each kernel image.
 # example:
 # boot/kernel: gentoo
-boot/kernel: gentoo-kernel-bin
+boot/kernel: gentoo
 
 # This option tells catalyst which kernel sources to merge for this kernel
 # label.  This can use normal portage atoms to specify a specific version.
 # example:
 # boot/kernel/gentoo/sources: gentoo-sources
-#boot/kernel/gentoo/sources:
+boot/kernel/gentoo/sources: gentoo-sources
 
 # This option is the full path and filename to a kernel .config file that is
 # used by genkernel to compile the kernel this label applies to.
 # example:
 # boot/kernel/gentoo/config: /tmp/2.6.11-smp.config
-boot/kernel/gentoo/config: /home/ben/catalyst/kconfig/livegui-amd64-6.14.14.config
+boot/kernel/gentoo/config: /home/ben/catalyst/kconfig/xinnixos-6.5.1.config
 
 # This option sets genkernel parameters on a per-kernel basis and applies only
 # to this kernel label.  This can be used for building options into only a
@@ -244,7 +244,7 @@ boot/kernel/gentoo/config: /home/ben/catalyst/kconfig/livegui-amd64-6.14.14.conf
 # syntax as livecd/gk_mainargs.
 # example:
 # boot/kernel/gentoo/gk_kernargs:
-boot/kernel/gentoo/kernargs: --plymouth --plymouth-theme=natural-gentoo-remastered ibt=off
+boot/kernel/gentoo/gk_kernargs: --plymouth --plymouth-theme=natural-gentoo-remastered ibt=off
 
 # This option sets the USE flags used to build the kernel and also any packages
 # which are defined under this kernel label.  These USE flags are additive from
