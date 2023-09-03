@@ -18,7 +18,7 @@ version_stamp: xinnixos-xfce-latest
 # we continue with livecd-stage2 as the target.
 # example:
 # target: livecd-stage2
-target: livegui-stage2
+target: livecd-stage2
 
 # The rel_type defines what kind of build we are doing.  This is merely another
 # identifier, but it useful for allowing multiple concurrent builds.  Usually,
