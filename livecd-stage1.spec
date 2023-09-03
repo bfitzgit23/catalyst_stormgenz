@@ -36,7 +36,8 @@ profile: default-linux/amd64/17.1/desktop
 # This specifies which snapshot to use for building this target.
 # example:
 # snapshot: 2006.1
-snapshot: gentoo-2023.09.02.sqfs
+snapshot: gentoo-6ff51302ea9f13e77fd33278988933ed09050b86.sqfs
+snapshot_treeish: 6ff51302ea9f13e77fd33278988933ed09050b86
 
 # This specifies where the seed stage comes from for this target,  The path is
 # relative to $clst_sharedir/builds.  The rel_type is also used as a path prefix
