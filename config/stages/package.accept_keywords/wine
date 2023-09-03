@@ -1,0 +1,9 @@
+app-emulation/wine-staging
+app-emulation/wine-mono
+app-emulation/winetricks
+app-emulation/faudio
+games-util/lutris
+dev-python/pypresence
+app-emulation/wine-gecko
+dev-python/moddb
+dev-python/pyrate-limiter

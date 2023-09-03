@@ -1,0 +1,5 @@
+kde-frameworks/*:5 ~amd64
+kde-plasma/*:5 ~amd64
+kde-apps/*:5 ~amd64
+kde-misc/*:5 ~amd64
+*/*::tatsh-overlay

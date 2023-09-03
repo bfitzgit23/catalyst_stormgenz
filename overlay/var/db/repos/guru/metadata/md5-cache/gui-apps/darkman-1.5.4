@@ -1,0 +1,15 @@
+BDEPEND=man? ( app-text/scdoc ) virtual/pkgconfig >=dev-lang/go-1.18 app-arch/unzip
+DEFINED_PHASES=compile install unpack
+DESCRIPTION=Framework for dark and light mode transitions
+EAPI=8
+HOMEPAGE=https://gitlab.com/WhyNotHugo/darkman
+INHERIT=systemd go-module
+IUSE=+man +examples
+KEYWORDS=~amd64
+LICENSE=ISC
+RDEPEND=app-misc/geoclue
+RESTRICT=strip
+SLOT=0
+SRC_URI=https://gitlab.com/whynothugo/darkman/-/archive/v1.5.4/darkman-v1.5.4.tar.bz2 https://files.levelnine.at/darkman-1.5.4-vendor.tar.xz
+_eclasses_=toolchain-funcs	862d337d98edb576796827be2c6b11ca	multilib	c19072c3cd7ac5cb21de013f7e9832e0	systemd	5f4bb0758df2e483babf68cd517078ca	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	go-module	8624eede24936fd7666e5298e5332f22
+_md5_=d035db4cf9968585888a9af7bed4fd26

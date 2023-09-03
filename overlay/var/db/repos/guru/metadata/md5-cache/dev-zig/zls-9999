@@ -1,0 +1,13 @@
+BDEPEND=>=dev-vcs/git-1.8.2.1[curl]
+DEFINED_PHASES=compile install postinst test unpack
+DEPEND=dev-lang/zig:9999
+DESCRIPTION=The officially unofficial Ziglang language server
+EAPI=8
+HOMEPAGE=https://github.com/zigtools/zls
+INHERIT=edo git-r3
+LICENSE=MIT
+PROPERTIES=live
+RDEPEND=dev-lang/zig:9999
+SLOT=0
+_eclasses_=edo	c0eb9cbe6b0bd01fcb4918f12598a4d3	git-r3	2358a7b20091609e24bd3a83b3ac5991
+_md5_=80dc161303ff8a0bdad08c471973afde

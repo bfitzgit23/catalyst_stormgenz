@@ -1,0 +1,6 @@
+NAME=Xenia
+VERSION="0.4 Velox"
+ID=xenia
+PRETTY_NAME="Xenia Linux 0.4 Velox"
+VERSION_ID="0.4"
+VERSION_CODENAME="Velox"

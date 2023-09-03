@@ -1,0 +1,14 @@
+BDEPEND=app-arch/unzip X? ( >=x11-apps/mkfontscale-1.2.0 media-fonts/encodings )
+DEFINED_PHASES=install postinst postrm setup
+DESCRIPTION=Unicode font for Latin, IPA Extensions, Greek, Cyrillic and many Symbol Blocks
+EAPI=7
+HOMEPAGE=https://dn-works.com/ufas/
+INHERIT=font
+IUSE=X
+KEYWORDS=~amd64
+LICENSE=UFAS
+RESTRICT=bindist mirror
+SLOT=0
+SRC_URI=https://dn-works.com/wp-content/uploads/2020/UFAS-Fonts/Symbola.zip -> symbola-13.00.zip
+_eclasses_=font	aa113a3df9cd0a9693a1c1ee7c34a6eb
+_md5_=dcc2c3bf4e9ca61970d8240694660a97

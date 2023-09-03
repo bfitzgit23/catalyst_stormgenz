@@ -1,0 +1,13 @@
+gnome-extra/gnome-software ~amd64
+gui-libs/gtk ~amd64
+gui-libs/libadwaita ~amd64
+sys-boot/plymouth-openrc-plugin ~amd64
+sys-fs/go-mtpfs ~amd64
+app-admin/calamares ~amd64
+www-client/firefox-bin ~amd64
+sys-kernel/gentoo-kernel-bin ~amd64
+virtual/dist-kernel ~amd64
+*/*::edgets
+*/*::guru
+*/*::steam-overlay
+net-im/zoom ~amd64

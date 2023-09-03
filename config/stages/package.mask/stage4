@@ -1,0 +1,4 @@
+dev-lang/rust
+
+# qemu-guest-agent fails to build on newer versions
+>=x11-misc/xkeyboard-config-2.39

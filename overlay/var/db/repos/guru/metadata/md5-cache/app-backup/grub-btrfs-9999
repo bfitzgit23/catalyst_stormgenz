@@ -1,0 +1,14 @@
+BDEPEND=>=dev-vcs/git-1.8.2.1[curl]
+DEFINED_PHASES=compile install postinst unpack
+DEPEND=sys-fs/btrfs-progs sys-boot/grub app-alternatives/awk >=app-shells/bash-4 sys-fs/inotify-tools
+DESCRIPTION=Improves Grub by adding btrfs snapshots to the Grub menu.
+EAPI=8
+HOMEPAGE=https://github.com/Antynea/grub-btrfs
+INHERIT=optfeature git-r3
+IUSE=systemd
+LICENSE=GPL-3
+PROPERTIES=live
+RDEPEND=sys-fs/btrfs-progs sys-boot/grub app-alternatives/awk >=app-shells/bash-4 sys-fs/inotify-tools
+SLOT=0
+_eclasses_=optfeature	222cb475c5a4f7ae7cfb0bf510a6fe54	git-r3	2358a7b20091609e24bd3a83b3ac5991
+_md5_=045b18cd1db56798f95a381f090437f9
