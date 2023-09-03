@@ -1,2 +1,2 @@
-sys-kernel/gentoo-kernel-bin
-virtual/dist-kernel
+sys-kernel/gentoo-sources
+sys-kernel/genkernel-next
