@@ -168,11 +168,7 @@ livecd/packages:
 	media-gfx/fbgrab
 	media-gfx/gimp
 	media-gfx/graphviz
-	media-gfx/hugin
 	media-gfx/inkscape
-	media-gfx/jhead
-	media-gfx/pngcrush
-	media-gfx/pngquant
 	media-sound/alsa-utils
 	net-analyzer/iptraf-ng
 	net-analyzer/nmap
