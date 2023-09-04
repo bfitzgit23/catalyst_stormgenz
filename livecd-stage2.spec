@@ -62,7 +62,7 @@ repos: /home/ben/catalyst/overlay/var/db/repos/edgets
       /home/ben/catalyst/overlay/var/db/repos/steam-overlay
      /home/ben/catalyst/overlay/var/db/repos/stha09
     /home/ben/catalyst/overlay/var/db/repos/tatsh-overlay
-    /home/ben/catalyst/overlay/var/db/repos/waffle-builds
+    /home/ben/catalyst/overlay/var/db/repos/waffle-builds	
 
 # This allows the optional directory containing the output packages for
 # catalyst.  Mainly used as a way for different spec files to access the same
@@ -127,7 +127,7 @@ livecd/bootargs: overlayfs dokeymap dodetect dousb quiet splash zram.num_devices
 # are not otherwise available via the livecd-stage2 spec file.
 # example:
 # livecd/gk_mainargs: --lvm --dmraid
-livecd/gk_mainargs: --plymouth --plymouth-theme=natural-gentoo-remastered
+# livecd/gk_mainargs: --plymouth --plymouth-theme=natural-gentoo-remastered
 
 # This option allows you to specify your own linuxrc script for genkernel to use
 # when building your CD.  This is not checked for functionality, so it is up to
@@ -244,14 +244,14 @@ boot/kernel/gentoo/config: /home/ben/catalyst/kconfig/xinnixos-6.4.14-XinnixOS
 # syntax as livecd/gk_mainargs.
 # example:
 # boot/kernel/gentoo/gk_kernargs:
-# boot/kernel/gentoo/gk_kernargs: 
+ boot/kernel/gentoo/dracut_args: --plymouth --plymouth-theme=natural-gentoo-remastered
 
 # This option sets the USE flags used to build the kernel and also any packages
 # which are defined under this kernel label.  These USE flags are additive from
 # the default USE for the specified profile.
 # example:
 # boot/kernel/gentoo/use: pcmcia usb -X
-boot/kernel/gentoo/use: atm png truetype usb
+boot/kernel/gentoo/use: atm png truetype usb plymouth
 
 # This option appends an extension to the name of your kernel, as viewed by a
 # uname -r/  This also affects any modules built under this kernel label.  This
@@ -274,6 +274,7 @@ boot/kernel/gentoo/packages: sys-kernel/linux-firmware
 	x11-drivers/nvidia-drivers
 	x11-drivers/xf86-input-libinput
 	x11-drivers/xf86-video-intel
+	sys-boot/plymouth
 
 # This is only supported on ppc64 currently.  This entry sets up the console=
 # boot parameters required for sending the output to the appropriate console.
