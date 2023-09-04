@@ -36,4 +36,5 @@ dev-util/sysprof-capture abi_x86_32
 x11-libs/libpciaccess abi_x86_32
 dev-db/sqlite abi_x86_32
 media-libs/libtheora abi_x86_32
-sys-fs/eudev abi_x86_32
+virtual/libudev abi_x86_32
+sys-apps/systemd-utils abi_x86_32
