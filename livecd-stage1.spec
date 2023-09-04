@@ -128,7 +128,6 @@ livecd/packages:
 	app-arch/mt-st
 	app-arch/p7zip
 	app-arch/pbzip2
-	app-arch/rpm
 	app-arch/tar
 	app-arch/zip
 	app-arch/unrar
