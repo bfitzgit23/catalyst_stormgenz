@@ -38,10 +38,6 @@ RDEPEND="${DEPEND}
 	sys-block/thin-provisioning-tools
 	sys-fs/lvm2"
 
-PATCHES=(
-	"${FILESDIR}/genkernel-next-70_old_busybox.patch"
-)
-
 src_prepare() {
 	default
 	sed -i "/^GK_V=/ s:GK_V=.*:GK_V=${PV}:g" "${S}/genkernel" || \
