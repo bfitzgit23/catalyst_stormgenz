@@ -260,7 +260,7 @@ boot/kernel/gentoo/use: atm png truetype usb plymouth
 # is left blank.
 # example:
 # boot/kernel/gentoo/extraversion:
-boot/kernel/gentoo/extraversion: -XinnixOS
+boot/kernel/gentoo/extraversion: XinnixOS
 
 # This option is for merging kernel-dependent packages and external modules that
 # are configured against this kernel label.
