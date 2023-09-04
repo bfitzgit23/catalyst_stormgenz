@@ -251,7 +251,7 @@ boot/kernel/gentoo/config: /home/ben/catalyst/kconfig/xinnixos-6.4.14-XinnixOS
 # the default USE for the specified profile.
 # example:
 # boot/kernel/gentoo/use: pcmcia usb -X
-boot/kernel/gentoo/use: atm png truetype usb plymouth
+boot/kernel/gentoo/use: atm png truetype usb plymouth -gpm
 
 # This option appends an extension to the name of your kernel, as viewed by a
 # uname -r/  This also affects any modules built under this kernel label.  This
@@ -267,8 +267,6 @@ boot/kernel/gentoo/extraversion: XinnixOS
 # example:
 # boot/kernel/gentoo/packages: pcmcia-cs speedtouch slmodem globespan-adsl hostap-driver hostap-utils ipw2100 ipw2200 fritzcapi fcdsl cryptsetup
 boot/kernel/gentoo/packages: sys-kernel/linux-firmware
-	media-sound/alsa-utils
-	media-sound/pulseaudio
 	sys-fs/ntfs3g
 	x11-drivers/xf86-video-amdgpu
 	x11-drivers/nvidia-drivers
