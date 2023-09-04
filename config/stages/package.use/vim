@@ -500,3 +500,4 @@ app-editors/vim lua luajit perl python ruby terminal vim-pager
 # required by kde-plasma/plasma-desktop-5.27.7.1::gentoo
 # required by plasma-desktop (argument)
 >=kde-frameworks/prison-5.109.0 qml
+>=dev-qt/qtwebchannel-5.15.10 qml
