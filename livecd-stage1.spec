@@ -104,6 +104,7 @@ livecd/use: -aac
 	gtk
 	plasma
 	widgets
+	fontconfig
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
