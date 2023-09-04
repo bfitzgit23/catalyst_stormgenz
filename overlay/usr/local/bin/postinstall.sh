@@ -17,8 +17,8 @@ echo "FONT=ter-p16n" >> /etc/vconsole.conf
 
 rm -rf /usr/share/calamares
 rm -rf $HOME/xinnixos-user/Desktop/calamares.desktop
-rm -rf $HOME/xinnixos-user/Desktop/Install XinnixOS-CLI.desktop
-rm -rf /usr/bin/install-xinnixos.sh
+#rm -rf $HOME/xinnixos-user/Desktop/Install XinnixOS-CLI.desktop
+#rm -rf /usr/bin/install-xinnixos.sh
 
 # Continue cleanup
 rm /usr/local/bin/postinstall.sh

@@ -228,7 +228,7 @@ boot/kernel: gentoo
 # label.  This can use normal portage atoms to specify a specific version.
 # example:
 # boot/kernel/gentoo/sources: gentoo-sources
-boot/kernel/gentoo/sources: gentoo-sources
+#boot/kernel/gentoo/sources: gentoo-sources
 
 # This option is the full path and filename to a kernel .config file that is
 # used by genkernel to compile the kernel this label applies to.
@@ -243,7 +243,7 @@ boot/kernel/gentoo/config: /home/ben/catalyst/kconfig/xinnixos-6.4.14-XinnixOS
 # syntax as livecd/gk_mainargs.
 # example:
 # boot/kernel/gentoo/gk_kernargs:
-boot/kernel/gentoo/gk_kernargs: --plymouth --plymouth-theme=natural-gentoo-remastered ibt=off
+# boot/kernel/gentoo/gk_kernargs: 
 
 # This option sets the USE flags used to build the kernel and also any packages
 # which are defined under this kernel label.  These USE flags are additive from

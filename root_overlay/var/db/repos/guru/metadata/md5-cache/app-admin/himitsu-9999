@@ -1,0 +1,13 @@
+BDEPEND=app-text/scdoc >=dev-vcs/git-1.8.2.1[curl]
+DEFINED_PHASES=configure unpack
+DEPEND=dev-lang/hare:=
+DESCRIPTION=Secret storage system for Unix, suitable for storing passwords, keys, ...
+EAPI=7
+HOMEPAGE=https://git.sr.ht/~sircmpwn/himitsu
+INHERIT=git-r3
+LICENSE=GPL-3
+PROPERTIES=live
+RDEPEND=gui-apps/hiprompt-gtk-py
+SLOT=0
+_eclasses_=git-r3	2358a7b20091609e24bd3a83b3ac5991
+_md5_=9c51dc140b2e29a13a86b2817683c0e9

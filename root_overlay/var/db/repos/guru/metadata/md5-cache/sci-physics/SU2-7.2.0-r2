@@ -1,0 +1,18 @@
+BDEPEND=virtual/pkgconfig >=dev-util/meson-0.62.2 >=dev-util/ninja-1.8.2 dev-util/meson-format-array
+DEFINED_PHASES=compile configure install prepare setup test unpack
+DEPEND=python_single_target_python3_10? ( dev-lang/python:3.10 ) cgns? ( >=sci-libs/cgnslib-4 ) mkl? ( sci-libs/mkl ) mpi? ( virtual/mpi[cxx] ) mpp? ( sci-libs/Mutationpp:= ) openblas? ( sci-libs/openblas ) dev-cpp/cli11:= tecio? ( >=dev-libs/boost-1.76.0:= ) test? ( <dev-cpp/catch-3:0 )
+DESCRIPTION=SU2: An Open-Source Suite for Multiphysics Simulation and Design
+EAPI=8
+HOMEPAGE=https://su2code.github.io/
+INHERIT=meson python-single-r1
+IUSE=cgns mkl +mpi mpp openblas parmetis tecio test tutorials +python_single_target_python3_10
+KEYWORDS=~amd64
+LICENSE=Apache-2.0 LGPL-2.1 LGPL-3 ZLIB all-rights-reserved free-noncomm
+PROPERTIES=test_network
+RDEPEND=python_single_target_python3_10? ( dev-lang/python:3.10 ) cgns? ( >=sci-libs/cgnslib-4 ) mkl? ( sci-libs/mkl ) mpi? ( virtual/mpi[cxx] ) mpp? ( sci-libs/Mutationpp:= ) openblas? ( sci-libs/openblas )
+REQUIRED_USE=^^ ( python_single_target_python3_10 ) mkl? ( !openblas ) parmetis? ( mpi ) test? ( parmetis tutorials )
+RESTRICT=!test? ( test )
+SLOT=0
+SRC_URI=https://github.com/su2code/SU2/archive/v7.2.0.tar.gz -> SU2-7.2.0.tar.gz test? ( https://github.com/su2code/TestCases/archive/v7.2.0.tar.gz -> SU2-7.2.0-TestCases.tar.gz ) tutorials? ( https://github.com/su2code/Tutorials/archive/v7.2.0.tar.gz -> SU2-7.2.0-Tutorials.tar.gz )
+_eclasses_=multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	toolchain-funcs	862d337d98edb576796827be2c6b11ca	multilib	c19072c3cd7ac5cb21de013f7e9832e0	python-utils-r1	59e60e9c5cbd3f214d7f1002e798b387	meson	08b7183c3f4811568ee93eb0f79a89fe	python-single-r1	75118e916668a74c660a13b0ecb22562
+_md5_=ae8267c39544d6f74151edc3b90c89b2

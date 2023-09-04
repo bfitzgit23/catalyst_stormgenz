@@ -1,0 +1,40 @@
+# This file is deprecated as per GLEP 56 in favor of metadata.xml.
+# Please add your descriptions to your package's metadata.xml ONLY.
+# * generated automatically using pmaint *
+
+www-client/chromium:component-build - Split build into more shared libraries to speed up linking. Mostly intended for debugging and development, NOT RECOMMENDED for general use.
+www-client/chromium:debug - Enable DCHECK feature with severity configurable at runtime. Mostly intended for debugging and development, NOT RECOMMENDED for general use.
+www-client/chromium:gtk4 - Build with GTK4 headers.
+www-client/chromium:hangouts - Enable support for Google Hangouts features such as screen sharing
+www-client/chromium:headless - Build Ozone only with headless backend, NOT RECOMMENDED for general use.
+www-client/chromium:js-type-check - Enable JavaScript type-checking for Chrome's web technology-based UI. Requires Java.
+www-client/chromium:libcxx - Use bundled libc++ instead of libstdc++ for building.
+www-client/chromium:lto - Build with Link Time Optimizations (via clang's ThinLTO)
+www-client/chromium:official - Enable Official build instead of Developer build.
+www-client/chromium:pgo - Build with Profile Guided Optimizations (2-stage compilation)
+www-client/chromium:pic - Disable optimized assembly code that is not PIC friendly
+www-client/chromium:proprietary-codecs - Enable codecs for patent-encumbered audio and video formats.
+www-client/chromium:screencast - Enable support for remote desktop and screen cast using media-video/pipewire
+www-client/chromium:suid - Build the SUID sandbox, which is only needed on CONFIG_USER_NS=n kernels
+www-client/chromium:system-av1 - Use system dav1d and libaom instead of the bundled one.
+www-client/chromium:system-ffmpeg - Use system ffmpeg instead of the bundled one
+www-client/chromium:system-harfbuzz - Use system harfbuzz instead of the bundled one.
+www-client/chromium:system-icu - Use system icu instead of the bundled one
+www-client/chromium:system-png - Use system libpng instead of the bundled one.
+www-client/chromium:widevine - Unsupported closed-source DRM capability (required by Netflix VOD)
+www-client/ungoogled-chromium:component-build - Split build into more shared libraries to speed up linking. Mostly intended for debugging and development, NOT RECOMMENDED for general use.
+www-client/ungoogled-chromium:debug - Enable DCHECK feature with severity configurable at runtime. Mostly intended for debugging and development, NOT RECOMMENDED for general use.
+www-client/ungoogled-chromium:gtk4 - Build with GTK4 headers.
+www-client/ungoogled-chromium:headless - Build Ozone only with headless backend, NOT RECOMMENDED for general use.
+www-client/ungoogled-chromium:libcxx - Use bundled libc++ instead of libstdc++ for building.
+www-client/ungoogled-chromium:lto - Build with Link Time Optimizations (via clang's ThinLTO)
+www-client/ungoogled-chromium:official - Enable Official build instead of Developer build.
+www-client/ungoogled-chromium:pgo - Build with Profile Guided Optimizations (2-stage compilation)
+www-client/ungoogled-chromium:proprietary-codecs - Enable codecs for patent-encumbered audio and video formats.
+www-client/ungoogled-chromium:suid - Build the SUID sandbox, which is only needed on CONFIG_USER_NS=n kernels
+www-client/ungoogled-chromium:system-av1 - Use system libaom and dav1d instead of the bundled one.
+www-client/ungoogled-chromium:system-ffmpeg - Use system ffmpeg instead of the bundled one
+www-client/ungoogled-chromium:system-harfbuzz - Use system harfbuzz instead of the bundled one.
+www-client/ungoogled-chromium:system-icu - Use system icu instead of the bundled one
+www-client/ungoogled-chromium:system-png - Use system libpng instead of the bundled one.
+www-client/ungoogled-chromium:widevine - Unsupported closed-source DRM capability (required by Netflix VOD)

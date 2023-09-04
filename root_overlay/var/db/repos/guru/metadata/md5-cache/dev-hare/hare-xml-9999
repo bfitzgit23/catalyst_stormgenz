@@ -1,0 +1,13 @@
+BDEPEND=>=dev-vcs/git-1.8.2.1[curl]
+DEFINED_PHASES=prepare unpack
+DEPEND=dev-lang/hare
+DESCRIPTION=XML support for Hare
+EAPI=8
+HOMEPAGE=https://git.sr.ht/~sircmpwn/hare-xml
+INHERIT=git-r3
+LICENSE=MPL-2.0
+PROPERTIES=live
+RDEPEND=dev-lang/hare
+SLOT=0
+_eclasses_=git-r3	2358a7b20091609e24bd3a83b3ac5991
+_md5_=812e0f5b12e5b59cfd2aef88fec95f1f

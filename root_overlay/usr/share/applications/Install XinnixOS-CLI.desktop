@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Install XinnixOS-CLI
+Comment=Install XinnixOS-CLI
+Exec=/usr/bin/install-xinnixos.sh
+Icon=/usr/share/pixmaps/xinnixos/Gblend.png
+Path=
+Terminal=true
+StartupNotify=false
