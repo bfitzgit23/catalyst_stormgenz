@@ -113,7 +113,7 @@ livecd/iso: /home/ben/Desktop/XinnixOS-XFCE-latest.iso
 # into the chroot by catalyst automatically.
 # example:
 # livecd/fsscript:
-livecd/fsscript: /home/ben/releng/releases/specs/amd64/livegui/files/fsscript-stage2.sh
+livecd/fsscript: /home/ben/catalyst/stage2.sh
 
 # This is a set of arguments that get passed to the bootloader for your CD.  It
 # is used on the x86/amd64 release media to enable keymap selection.
@@ -167,7 +167,7 @@ livecd/motd: "Welcome to XinnixOS-XFCE"
 # even if ti is detected by hotplug.
 # example:
 # livecd/modblacklist: 8139cp
-livecd/modblacklist: nouveau
+# livecd/modblacklist: 
 
 # This is for adding init scripts to runlevels.  The syntax for the init script
 # is the script name, followed by a pipe, followed by the runlevel in which you
@@ -194,7 +194,7 @@ livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|def
 # be available if docache is enabled, as they are outside the loop.
 # example:
 # livecd/overlay: /tmp/overlay-minimal
-#livecd/overlay: /home/ben/catalyst/overlay/
+# livecd/overlay: /home/ben/catalyst/overlay
 
 # This overlay is dropped onto the filesystem within the loop.  This can be used
 # for such things as updating configuration files or adding anything else you
@@ -202,8 +202,7 @@ livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|def
 # docache is used.  We do not use this on the official media, so we will leave
 # it blank below.
 # example:
-# livecd/root_overlay:
-livecd/root_overlay: /home/ben/cataylst/overlay/
+ livecd/root_overlay: /home/ben/catalyst/root_overlay
 
 # This option is used to create non-root users on your CD.  It takes a space
 # separated list of user names.  These users will be added to the following
@@ -235,7 +234,7 @@ boot/kernel/gentoo/sources: gentoo-sources
 # used by genkernel to compile the kernel this label applies to.
 # example:
 # boot/kernel/gentoo/config: /tmp/2.6.11-smp.config
-boot/kernel/gentoo/config: /home/ben/catalyst/kconfig/xinnixos-6.4.14.config
+boot/kernel/gentoo/config: /home/ben/catalyst/kconfig/xinnixos-6.4.14-XinnixOS
 
 # This option sets genkernel parameters on a per-kernel basis and applies only
 # to this kernel label.  This can be used for building options into only a
