@@ -94,7 +94,6 @@ livecd/use: -aac
 	vpx
 	xetex
 	-gpm
-	sysprof
 	flatpak
 	bluetooth
 	compat
