@@ -194,7 +194,7 @@ livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|def
 # be available if docache is enabled, as they are outside the loop.
 # example:
 # livecd/overlay: /tmp/overlay-minimal
-livecd/overlay: /home/ben/catalyst/overlay
+livecd/overlay: /home/ben/catalyst/overlay/
 
 # This overlay is dropped onto the filesystem within the loop.  This can be used
 # for such things as updating configuration files or adding anything else you
@@ -203,7 +203,7 @@ livecd/overlay: /home/ben/catalyst/overlay
 # it blank below.
 # example:
 # livecd/root_overlay:
-livecd/root_overlay: /home/ben/cataylst/overlay
+livecd/root_overlay: /home/ben/cataylst/overlay/
 
 # This option is used to create non-root users on your CD.  It takes a space
 # separated list of user names.  These users will be added to the following
