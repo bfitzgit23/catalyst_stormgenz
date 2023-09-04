@@ -84,15 +84,8 @@ livecd/use: -aac
 	jpeg2k
 	livecd
 	networkmanager
-	openexr
-	opus
-	postproc
-	portaudio
 	pulseaudio
 	python
-	theora
-	vpx
-	xetex
 	-gpm
 	flatpak
 	bluetooth
@@ -121,7 +114,6 @@ livecd/packages:
 	app-admin/sudo
 	app-admin/syslog-ng
 	app-admin/sysstat
-	app-admin/testdisk
 	app-arch/bzip2
 	app-arch/cpio
 	app-arch/gzip
@@ -132,21 +124,13 @@ livecd/packages:
 	app-arch/zip
 	app-arch/unrar
 	app-backup/fsarchiver
-	app-benchmarks/bonnie
-	app-benchmarks/bonnie++
-	app-benchmarks/dbench
-	app-benchmarks/iozone
-	app-benchmarks/stress
-	app-benchmarks/tiobench
 	app-cdr/dvd+rw-tools
 	app-cdr/cdrtools
-	app-crypt/chntpw
 	app-crypt/gnupg
 	app-crypt/pinentry
 	app-editors/nano
 	app-editors/vim
 	app-emacs/ebuild-mode
-	app-emulation/cloud-init
 #	Fails to build...
 #	app-emulation/xen-tools
 	app-eselect/eselect-repository
@@ -157,7 +141,6 @@ livecd/packages:
 	app-misc/screen
 	app-misc/tmux
 	app-misc/wipe
-	app-office/libreoffice-bin
 	app-portage/cpuid2cpuflags
 	app-portage/eix
 	app-portage/genlop
@@ -168,7 +151,6 @@ livecd/packages:
 	app-portage/ufed
 	app-shells/bash-completion
 	app-shells/gentoo-bashcomp
-	app-text/bibutils
 	app-text/dos2unix
 	app-text/ghostscript-gpl
 	app-text/pdftk
@@ -191,19 +173,13 @@ livecd/packages:
 	media-gfx/jhead
 	media-gfx/pngcrush
 	media-gfx/pngquant
-	media-gfx/povray
 	media-sound/alsa-utils
-	media-video/mpv
 	net-analyzer/iptraf-ng
 	net-analyzer/nmap
 	net-analyzer/openbsd-netcat
 	net-analyzer/tcpdump
 	net-analyzer/tcptraceroute
 	net-analyzer/traceroute
-	net-dialup/minicom
-	net-dialup/mingetty
-	net-dialup/pptpclient
-	net-dialup/rp-pppoe
 	net-dns/bind-tools
 	net-fs/cifs-utils
 	net-fs/nfs-utils
@@ -213,7 +189,6 @@ livecd/packages:
 	net-irc/hexchat
 	net-irc/irssi
 	net-misc/chrony
-	net-misc/chrony
 	net-misc/dhcpcd
 	net-misc/iputils
 	net-misc/ndisc6
@@ -221,23 +196,18 @@ livecd/packages:
 	net-misc/rdate
 	net-misc/rdesktop
 	net-misc/rsync
-	net-misc/telnet-bsd
 	net-misc/vconfig
 	net-misc/wget
 	net-misc/whois
-	net-proxy/dante
-	net-proxy/tsocks
 	net-vpn/networkmanager-openvpn
 	net-vpn/networkmanager-pptp
 	net-vpn/openfortivpn
 	net-vpn/openvpn
-	net-vpn/tor
 	net-wireless/b43-fwcutter
 	net-wireless/iw
 	net-wireless/wireless-tools
 	net-wireless/wpa_supplicant
 	sys-apps/arch-chroot
-	sys-apps/arrayprobe
 	sys-apps/acl
 	sys-apps/attr
 	sys-apps/busybox
@@ -270,7 +240,6 @@ livecd/packages:
 	sys-apps/netplug
 	sys-apps/nvme-cli
 	sys-apps/pciutils
-	sys-apps/pcmciautils
 	sys-apps/sdparm
 	sys-apps/sed
 	sys-apps/setserial
@@ -291,8 +260,6 @@ livecd/packages:
 	sys-block/whdd
 	sys-boot/grub
 	sys-boot/os-prober
-	sys-firmware/ipw2100-firmware
-	sys-firmware/ipw2200-firmware
 	sys-fs/bcache-tools
 	sys-fs/btrfs-progs
 	sys-fs/ddrescue
@@ -304,14 +271,10 @@ livecd/packages:
 	sys-fs/f2fs-tools
 	sys-fs/genfstab
 	sys-fs/growpart
-	sys-fs/jfsutils
 	sys-fs/lsscsi
 	sys-fs/lvm2
 	sys-fs/mac-fdisk
-	sys-fs/mdadm
-	sys-fs/multipath-tools
 	sys-fs/ntfs3g
-	sys-fs/reiserfsprogs
 	sys-fs/xfsprogs
 	sys-kernel/linux-firmware
 	sys-libs/gpm
