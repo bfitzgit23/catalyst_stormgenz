@@ -120,14 +120,14 @@ livecd/fsscript: /home/ben/catalyst/stage2.sh
 # is used on the x86/amd64 release media to enable keymap selection.
 # example:
 # livecd/bootargs: dokeymap
-livecd/bootargs: overlayfs dokeymap dodetect dousb quiet splash zram.num_devices=1 ibt=off
+livecd/bootargs: overlayfs dokeymap dodetect dousb quiet splash zram.num_devices=1
 
 # This is a set of arguments that will be passed to genkernel for all kernels
 # defined in this target.  It is useful for passing arguments to genkernel that
 # are not otherwise available via the livecd-stage2 spec file.
 # example:
 # livecd/gk_mainargs: --lvm --dmraid
-livecd/gk_mainargs: --plymouth --plymouth-theme=natural-gentoo-remastered ibt=off
+livecd/gk_mainargs: --plymouth --plymouth-theme=natural-gentoo-remastered
 
 # This option allows you to specify your own linuxrc script for genkernel to use
 # when building your CD.  This is not checked for functionality, so it is up to
