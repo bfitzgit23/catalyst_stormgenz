@@ -134,11 +134,9 @@ livecd/packages:
 #	Fails to build...
 #	app-emulation/xen-tools
 	app-eselect/eselect-repository
-	app-misc/colordiff
 	app-misc/livecd-tools
 	app-misc/mc
 	app-misc/pax-utils
-	app-misc/screen
 	app-misc/tmux
 	app-misc/wipe
 	app-portage/cpuid2cpuflags
@@ -246,7 +244,6 @@ livecd/packages:
 	sys-apps/util-linux
 	sys-auth/ssh-import-id
 	sys-block/aoetools
-	sys-block/fio
 	sys-block/gparted
 	sys-block/mtx
 	sys-block/open-iscsi
