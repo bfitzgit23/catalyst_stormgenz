@@ -105,6 +105,7 @@ livecd/use: -aac
 	plasma
 	widgets
 	fontconfig
+	pcre32
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
