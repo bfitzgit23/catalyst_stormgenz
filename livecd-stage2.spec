@@ -62,6 +62,7 @@ repos: /home/ben/catalyst/overlay/var/db/repos/edgets
       /home/ben/catalyst/overlay/var/db/repos/steam-overlay
      /home/ben/catalyst/overlay/var/db/repos/stha09
     /home/ben/catalyst/overlay/var/db/repos/tatsh-overlay
+    /home/ben/catalyst/overlay/var/db/repos/waffle-builds
 
 # This allows the optional directory containing the output packages for
 # catalyst.  Mainly used as a way for different spec files to access the same
