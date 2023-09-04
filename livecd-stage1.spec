@@ -373,3 +373,4 @@ livecd/packages:
 	net-wireless/broadcom-sta
 	app-emulation/spice-vdagent
 	dev-qt/qtwebengine
+	app-misc/neofetch
