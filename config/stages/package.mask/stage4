@@ -2,3 +2,8 @@ dev-lang/rust
 
 # qemu-guest-agent fails to build on newer versions
 >=x11-misc/xkeyboard-config-2.39
+
+#
+>sys-apps/systemd-utils-252.9
+>=virtual/libudev-251-r1
+>=dev-libs/libgudev-238-r1
