@@ -194,7 +194,7 @@ livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|def
 # be available if docache is enabled, as they are outside the loop.
 # example:
 # livecd/overlay: /tmp/overlay-minimal
-livecd/overlay: /home/ben/catalyst/overlay/
+#livecd/overlay: /home/ben/catalyst/overlay/
 
 # This overlay is dropped onto the filesystem within the loop.  This can be used
 # for such things as updating configuration files or adding anything else you
