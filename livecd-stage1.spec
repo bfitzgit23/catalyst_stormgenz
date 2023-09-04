@@ -293,9 +293,7 @@ livecd/packages:
 	sys-firmware/ipw2200-firmware
 	sys-fs/bcache-tools
 	sys-fs/btrfs-progs
-	sys-fs/cryptsetup
 	sys-fs/ddrescue
-	sys-fs/dmraid
 	sys-fs/dosfstools
 	sys-fs/e2fsprogs
 	sys-fs/exfat-utils
