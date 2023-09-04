@@ -130,6 +130,7 @@ livecd/packages:
 	app-crypt/pinentry
 	app-editors/nano
 	app-editors/vim
+	app-office/libreoffice-bin
 	app-emacs/ebuild-mode
 #	Fails to build...
 #	app-emulation/xen-tools
