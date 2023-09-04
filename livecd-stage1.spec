@@ -108,7 +108,6 @@ livecd/use: -aac
 	-systemd
 	udev
 	eudev
-	-sticky-tags
 
 # This is the set of packages that we will merge into the CD's filesystem.  They
 # will be built with the USE flags configured above.  These packages must not
@@ -117,7 +116,6 @@ livecd/use: -aac
 # example:
 # livecd/packages: livecd-tools dhcpcd acpid apmd gentoo-sources coldplug fxload irssi gpm syslog-ng parted links raidtools dosfstools nfs-utils jfsutils xfsprogs e2fsprogs reiserfsprogs ntfsprogs pwgen rp-pppoe screen mirrorselect penggy iputils hwdata-knoppix hwsetup lvm2 evms vim pptpclient mdadm ethtool wireless-tools prism54-firmware wpa_supplicant
 livecd/packages: 
-        app-accessibility/brltty
 	app-accessibility/espeakup
 	app-admin/hddtemp
 	app-admin/sudo
