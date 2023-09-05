@@ -4,16 +4,16 @@ dracut --force --no-hostonly --kver $(ls /lib/modules/)
 echo "root:xinnixos-user" | chpasswd
 chown root:root /etc/sudoers
 
-cp /etc/passwd /.xinnixos-user/etc/passwd
-cp /etc/shadow /.xinnixos-user/etc/shadow
+cp /etc/passwd /.recovery/etc/passwd
+cp /etc/shadow /.recoveryr/etc/shadow
 
-echo "xinnixos-user:x:1000:1000::/home/xinnxos-user:/bin/bash" >> /.xinnixos-user/etc/passwd
-echo "xinnixos-user:$6$ovJXS/P4rKaURNaD$IUmaP2JW5uiJgrFVr31bEMb6kEF.ARL.x23m.qvyJ3.oRRbJ1qQ/pU5R2VocEzunYqSGF/YvLFGqF5gn0BQY90:19574::::::" >> /.xinnixos-user/etc/shadow
+echo "xinnixos-user:x:1000:1000::/home/xinnxos-user:/bin/bash" >> /.recovery/etc/passwd
+echo "xinnixos-user:$6$ovJXS/P4rKaURNaD$IUmaP2JW5uiJgrFVr31bEMb6kEF.ARL.x23m.qvyJ3.oRRbJ1qQ/pU5R2VocEzunYqSGF/YvLFGqF5gn0BQY90:19574::::::" >> /.recovery/etc/shadow
 
-sed s/wheel:x:10:root/wheel:x:10:root,xinnixos-user/ /etc/group > /.xinnixos-user/etc/group
-echo "xinnixos-user:x:1000:" >> /.xinnixos-user/etc/group
+sed s/wheel:x:10:root/wheel:x:10:root,recovery/ /etc/group > /.xinnixos-user/etc/group
+echo "xinnixos-user:x:1000:" >> /.recovery/etc/group
 
-chown 1000:1000 -R /.xinnixos-user/home/xinnixos-user
+chown 1000:1000 -R /.recovery/home/xinnixos-user
 
 groupadd -r autologin
 gpasswd -a xinnixos-user autologin
@@ -26,7 +26,7 @@ locale-gen
 
 rm /boot/*.old
 
-#cp /usr/local/bin/xinnixos-installer /usr/local/bin/xinnixos-installer
+#cp /usr/bin/install-xinnixos.sh /usr/bin/install-xinnixos.sh
 cp /boot/vmlinuz* /boot/vmlinuz
 cp /boot/initramfs* /boot/initramfs.img
 cp /boot/System* /boot/System.map
@@ -34,7 +34,7 @@ cp /boot/config* /boot/config
 cp -R /boot/grub/* /boot/grub/
 cp -afR /usr/share/calamares/* /usr/share/calamares/
 cp -af /usr/share/applications/calamares.desktop /home/xinnixos-user/Desktop
-#cp -af /usr/share/applications/install_xinnixos.Desktop /home/xinnixos-user/Desktop
+#cp -af /usr/share/applications/Install XinnixOS-CLI.desktop /home/xinnixos-user/Desktop
 chown -R xinnixos-user:xinnixos-user /home/xinnixos-user/Desktop/
 
 flatpak remote-add flathub https://flathub.org/repo/flathub.flatpakrepo
