@@ -5,7 +5,7 @@ echo "root:xinnixos-user" | chpasswd
 chown root:root /etc/sudoers
 
 cp /etc/passwd /.recovery/etc/passwd
-cp /etc/shadow /.recoveryr/etc/shadow
+cp /etc/shadow /.recovery/etc/shadow
 
 echo "xinnixos-user:x:1000:1000::/home/xinnxos-user:/bin/bash" >> /.recovery/etc/passwd
 echo "xinnixos-user:$6$ovJXS/P4rKaURNaD$IUmaP2JW5uiJgrFVr31bEMb6kEF.ARL.x23m.qvyJ3.oRRbJ1qQ/pU5R2VocEzunYqSGF/YvLFGqF5gn0BQY90:19574::::::" >> /.recovery/etc/shadow
