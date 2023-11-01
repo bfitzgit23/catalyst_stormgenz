@@ -3,7 +3,7 @@ version_stamp: xinnixos-xfce-2023-11-01
 target: livecd-stage2
 rel_type: default
 profile: default/linux/amd64/17.1/desktop
-snapshot: 01-11-01
+snapshot_treeish: gentoo-c6c0590ebc8229f0b85fbfe602ac0e9087fcaddb.sqfs
 source_subpath: default/livecd-stage1-amd64-xfce-2023-11-01
 portage_confdir: /home/ben/cataylst-xinnixos/config/stages/
 repos: /home/ben/catalyst-xinnixos/overlay/var/db/repos/edgets

@@ -3,14 +3,14 @@ version_stamp: xinnixos-xfce-2023-11-01
 target: livecd-stage1
 rel_type: default
 profile: default/linux/amd64/17.1/desktop
-snapshot: 2023-11-01.tar.bz2
+snapshot_treeish: gentoo-c6c0590ebc8229f0b85fbfe602ac0e9087fcaddb.sqfs
 source_subpath: default/stage3-amd64-openrc-2023-11-01.tar.xz
 compression_mode: pixz
 portage_confdir: /home/ben/catalyst-xinnixos/config/stages/
-repos: /home/ben/catalyst-xinnixos/overlay/var/db/repos/edgets
-      /home/ben/catalyst-xinnixos/root_overlay/var/db/repos/guru
+repos:  /home/ben/catalyst-xinnixos/overlay/var/db/repos/edgets
+       /home/ben/catalyst-xinnixos/root_overlay/var/db/repos/guru
       /home/ben/catalyst-xinnixos/root_overlay/var/db/repos/steam-overlay
-    /home/ben/catalyst-xinnixos/root_overlay/var/db/repos/tatsh-overlay
+     /home/ben/catalyst-xinnixos/root_overlay/var/db/repos/tatsh-overlay
 
 livecd/use:
 	-aac
@@ -44,7 +44,6 @@ livecd/use:
 	valgrind
 
 livecd/packages:
-	app-accessibility/espeakup
 	app-admin/hddtemp
 	app-admin/sudo
 	app-admin/syslog-ng
