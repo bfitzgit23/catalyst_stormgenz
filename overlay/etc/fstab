@@ -1,1 +1,0 @@
-LABEL=EFI		/boot/efi	vfat		noauto,noatime		0 2
