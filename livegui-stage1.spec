@@ -43,7 +43,7 @@ livecd/use:
 	elogind
 	valgrind
 	plymouth
-	-kf6compat
+	kf6compat
 
 livecd/packages:
 	app-admin/hddtemp
