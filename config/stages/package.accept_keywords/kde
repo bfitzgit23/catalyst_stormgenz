@@ -6,3 +6,4 @@ kde-misc/*:5 ~amd64
 kde-frameworks/* ~amd64
 kde-plasma/*	   ~amd64
 kde-apps/*	   ~amd64
+kde-frameworks/kguiaddons
