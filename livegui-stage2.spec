@@ -1,10 +1,10 @@
 subarch: amd64
-version_stamp: xinnixos-xfce-2023-11-01
+version_stamp: xinnixos-xfce-2023-12-23
 target: livecd-stage2
 rel_type: default
 profile: default/linux/amd64/17.1/desktop
 snapshot_treeish: gentoo-3bb0eb438dd6b079945498ffcddf13f0475b9fcc.sqfs
-source_subpath: default/livecd-stage1-amd64-xfce-2023-11-01
+source_subpath: default/livecd-stage1-amd64-xfce-latest
 portage_confdir: /home/ben/cataylst-xinnixos/config/stages/
 repos: /home/ben/catalyst-xinnixos/overlay/var/db/repos/edgets
       /home/ben/catalyst-xinnixos/root_overlay/var/db/repos/guru
