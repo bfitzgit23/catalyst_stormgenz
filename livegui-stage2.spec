@@ -3,7 +3,7 @@ version_stamp: xinnixos-xfce-2023-11-01
 target: livecd-stage2
 rel_type: default
 profile: default/linux/amd64/17.1/desktop
-snapshot_treeish: gentoo-c6c0590ebc8229f0b85fbfe602ac0e9087fcaddb.sqfs
+snapshot_treeish: gentoo-3bb0eb438dd6b079945498ffcddf13f0475b9fcc.sqfs
 source_subpath: default/livecd-stage1-amd64-xfce-2023-11-01
 portage_confdir: /home/ben/cataylst-xinnixos/config/stages/
 repos: /home/ben/catalyst-xinnixos/overlay/var/db/repos/edgets
@@ -28,7 +28,7 @@ livecd/gk_mainargs: --plymouth --plymouth-theme=vortex-gentoo
 
 livecd/fsscript: /home/ben/cataylst-xinnixos/stage2.sh
 livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default lightdm|default cupsd|default sshd|default ntpd|default syslog-ng|default cronie|default bluetooth|default samba|default
-boot/kernel/gentoo/use: atm png truetype usb
+boot/kernel/gentoo/use: atm png truetype usb plymouth
 boot/kernel/gentoo/packages:
 	media-libs/alsa-oss
 	media-sound/alsa-utils
@@ -68,6 +68,6 @@ livecd/rm:
 boot/kernel: gentoo
 
 boot/kernel/gentoo/sources: gentoo-sources
-boot/kernel/gentoo/config: /home/ben/cataylst-xinnixos/kconfig/xinnixos-6.5.9-XinnixOS
+boot/kernel/gentoo/config: /home/ben/cataylst-xinnixos/kconfig/xinnixos-6.6.7-XinnixOS
 
 livecd/root_overlay: /home/ben/catalyst-xinnixos/root_overlay
