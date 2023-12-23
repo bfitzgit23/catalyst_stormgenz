@@ -20,7 +20,7 @@ livecd/volid: XinnixOS-XFCE_LiveDVD_2023-11-01
 livecd/readme: Welcome to XinnixOS, making Gentoo GNU/Linux easy for anyone, pro or newbie! Containing the famous calamares installer, a highly customized XFCE desktop, bash aliases in the users .bashrc in their home directory, oh-my-bash to simplify bash usage and more!
 livecd/motd: "Welcome to XinnixOS-XFCE"
 livecd/root_overlay: /home/gentoo/cataylst-xinnixos/root_overlay
-livecd/overlay: /home/gentoo/cataylst-xinnixos/overlay
+livecd/overlay: /home/gentoo/cataylst-xinnixos/root_overlay
 livecd/users: xinnixos-user
 livecd/xsession: xfce
 livecd/xdm: lightdm
