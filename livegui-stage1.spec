@@ -6,11 +6,11 @@ profile: default/linux/amd64/17.1/desktop
 snapshot_treeish: 3bb0eb438dd6b079945498ffcddf13f0475b9fcc
 source_subpath: default/stage3-amd64-openrc-latest.tar.xz
 compression_mode: pixz
-portage_confdir: /home/ben/catalyst-xinnixos/config/stages/
-repos:  /home/ben/catalyst-xinnixos/overlay/var/db/repos/edgets
-       /home/ben/catalyst-xinnixos/root_overlay/var/db/repos/guru
-      /home/ben/catalyst-xinnixos/root_overlay/var/db/repos/steam-overlay
-     /home/ben/catalyst-xinnixos/root_overlay/var/db/repos/tatsh-overlay
+portage_confdir: /home/gentoo/catalyst-xinnixos/config/stages/
+repos:  /home/gentoo/catalyst-xinnixos/overlay/var/db/repos/edgets
+       /home/gentoo/catalyst-xinnixos/root_overlay/var/db/repos/guru
+      /home/gentoo/catalyst-xinnixos/root_overlay/var/db/repos/steam-overlay
+     /home/gentoo/catalyst-xinnixos/root_overlay/var/db/repos/tatsh-overlay
 
 livecd/use:
 	-aac
@@ -258,5 +258,5 @@ livecd/packages:
 	media-fonts/jetbrainsmono-nerdfont
 	net-wireless/broadcom-sta
 	app-emulation/spice-vdagent
-	dev-qt/qtwebengine
+	dev-qt/qtwegentoogine
 	app-misc/neofetch
