@@ -258,5 +258,5 @@ livecd/packages:
 	media-fonts/jetbrainsmono-nerdfont
 	net-wireless/broadcom-sta
 	app-emulation/spice-vdagent
-	dev-qt/qtwegentoogine
+	dev-qt/qtwebengine
 	app-misc/neofetch
