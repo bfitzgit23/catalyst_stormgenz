@@ -29,7 +29,6 @@ wget "https://dev.gentoo.org/~bkohler/livegui/face.icon.png" -O .face.icon
 
 popd
 # Clean up perms
-chown -R gentoo:users /home/gentoo
 cp -aT /etc/skel/* /home/gentoo
 
 groupadd -r autologin
@@ -45,6 +44,8 @@ chmod +x /home/gentoo/Desktop/calamares.desktop
 chage -E -1 lightdm
 
 LC_ALL=C xdg-user-dirs-update --force
+
+chown -R gentoo:users /home/gentoo
 
 # Let some tools run as root
 mkdir -p /etc/polkit-1/rules.d/
