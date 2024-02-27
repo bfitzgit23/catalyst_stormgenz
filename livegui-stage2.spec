@@ -1,5 +1,5 @@
 subarch: amd64
-version_stamp: xinnixos-xfce-2023-12-23
+version_stamp: xinnixos-xfce-2024-02-26
 target: livecd-stage2
 rel_type: default
 profile: default/linux/amd64/17.1/desktop
@@ -16,7 +16,7 @@ livecd/depclean: no
 livecd/fstype: squashfs
 livecd/iso: /home/gentoo/Desktop/XinnixOS-XFCE-latest.iso
 livecd/type: gentoo-release-livecd
-livecd/volid: XinnixOS-XFCE_LiveDVD_2023-11-01
+livecd/volid: XinnixOS-XFCE_LiveDVD_2024-02-26
 livecd/readme: Welcome to XinnixOS, making Gentoo GNU/Linux easy for anyone, pro or newbie! Containing the famous calamares installer, a highly customized XFCE desktop, bash aliases in the users .bashrc in their home directory, oh-my-bash to simplify bash usage and more!
 livecd/motd: "Welcome to XinnixOS-XFCE"
 livecd/root_overlay: /home/gentoo/cataylst-xinnixos/root_overlay
