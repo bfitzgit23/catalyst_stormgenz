@@ -1,58 +1,62 @@
 #!/bin/bash
-merge-usr
-dracut --force --no-hostonly --kver $(ls /lib/modules/)
-echo "root:xinnixos-user" | chpasswd
-chown root:root /etc/sudoers
 
-cp /etc/passwd /.recovery/etc/passwd
-cp /etc/shadow /.recovery/etc/shadow
+echo Running XinnixOS stage2 fsscript ...
 
-echo "xinnixos-user:x:1000:1000::/home/xinnxos-user:/bin/bash" >> /.recovery/etc/passwd
-echo "xinnixos-user:$6$ovJXS/P4rKaURNaD$IUmaP2JW5uiJgrFVr31bEMb6kEF.ARL.x23m.qvyJ3.oRRbJ1qQ/pU5R2VocEzunYqSGF/YvLFGqF5gn0BQY90:19574::::::" >> /.recovery/etc/shadow
+source /etc/profile
+env-update
+source /tmp/envscript
 
-sed s/wheel:x:10:root/wheel:x:10:root,recovery/ /etc/group > /.xinnixos-user/etc/group
-echo "xinnixos-user:x:1000:" >> /.recovery/etc/group
+# No we don't want to run xdm...
+sed -e '/^DISPLAYMANAGER=/s/.*/DISPLAYMANAGER="lightdm"/' -i /etc/conf.d/display-manager
 
-chown 1000:1000 -R /.recovery/home/xinnixos-user
+# Don't let NM change hostname (this breaks xauth)
+echo "[main]
+plugins=keyfile 
+hostname-mode=none" > /etc/NetworkManager/NetworkManager.conf
+
+# Set up gentoo user
+pushd /home/gentoo
+mkdir -pv .config Desktop
+
+# User face image
+wget "https://dev.gentoo.org/~bkohler/livegui/face.icon.png" -O .face.icon
+
+# Desktop icon setups
+#DESKTOP_APPS=( org.kde.konsole firefox org.kde.dolphin )
+#for i in "${APPS[@]}"; do
+#	ln -sv /usr/share/applications/${i}.desktop Desktop/
+#done
+
+popd
+# Clean up perms
+chown -R gentoo:users /home/gentoo
+cp -aT /etc/skel/* /home/gentoo
 
 groupadd -r autologin
-gpasswd -a xinnixos-user autologin
+gpasswd -a gentoo autologin
 
 groupadd -r nopasswdlogin
-gpasswd -a xinnixos-user nopasswdlogin
+gpasswd -a gentoo nopasswdlogin
 
-cp /usr/share/i18n/SUPPORTED /etc/locale.gen
-locale-gen
+cp -af /usr/share/applications/calamares.desktop /home/gentoo/Desktop/calamares.desktop
+chown gentoo:users /home/gentoo/Desktop/calamares.desktop
+chmod +x /home/gentoo/Desktop/calamares.desktop
 
-rm /boot/*.old
+chage -E -1 lightdm
 
-#cp /usr/bin/install-xinnixos.sh /usr/bin/install-xinnixos.sh
-cp /boot/vmlinuz* /boot/vmlinuz
-cp /boot/initramfs* /boot/initramfs.img
-cp /boot/System* /boot/System.map
-cp /boot/config* /boot/config
-cp -R /boot/grub/* /boot/grub/
-cp -afR /usr/share/calamares/* /usr/share/calamares/
-cp -af /usr/share/applications/calamares.desktop /home/xinnixos-user/Desktop
-#cp -af /usr/share/applications/Install XinnixOS-CLI.desktop /home/xinnixos-user/Desktop
-chown -R xinnixos-user:xinnixos-user /home/xinnixos-user/Desktop/
+LC_ALL=C xdg-user-dirs-update --force
 
-flatpak remote-add flathub https://flathub.org/repo/flathub.flatpakrepo
+# Let some tools run as root
+mkdir -p /etc/polkit-1/rules.d/
+echo 'polkit.addRule(function(action, subject) {
+    if (action.id == "org.gnome.gparted") {
+        return polkit.Result.YES;
+    }
+});
 
-chown --from=1001:1001 root:root /etc -R
-chown --from=1001:1001 root:root /
-chown --from=1001:1001 root:root /boot -R
-chown --from=1001:1001 root:root /overlay -R
-chown --from=1001:1001 root:root /roots -R
-chown --from=1001:1001 root:root /usr -R
-chown --from=1001:1001 root:root /var -R
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.kde.kpmcore.externalcommand.init") {
+        return polkit.Result.YES;
+    }
+});
 
-plymouth-set-default-theme natural-gentoo-remastered
-
-grub-mkconfig -o /boot/grub/grub.cfg && dracut --force --no-host-only --kver $(ls /lib/modules/)
-
-eix-update
-
-xdg-user-dirs-update
-
-ksuperkey -e 'Control_L=Escape;Super_L=Alt_L|F1'
