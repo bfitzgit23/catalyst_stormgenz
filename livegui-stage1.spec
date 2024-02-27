@@ -28,22 +28,13 @@ livecd/use:
 	theora
 	vpx
 	xetex
-	-gpm
 	flatpak
 	bluetooth
 	compat
 	-kde
 	-gnome
 	branding
-	gtk
-	widgets
-	fontconfig
-	pcre32
-	-systemd
-	elogind
-	valgrind
 	plymouth
-	kf6compat
 
 livecd/packages:
 	app-admin/hddtemp
@@ -245,16 +236,14 @@ livecd/packages:
 	app-arch/engrampa
 	app-admin/syslog-ng
 	app-admin/gentoo_update
-	app-admin/conky
-	xfce-base/xfce4-meta
+ 	xfce-base/xfce4-meta
 	dev-qt/qtstyleplugins
 	media-video/vlc
 	mail-client/thunderbird-bin
 	app-admin/calamares
 	x11-themes/adwaita-icon-theme
 	x11-themes/gtk-engines-adwaita
-	games-util/steam-meta
-	media-gfx/flameshot
+ 	media-gfx/flameshot
 	media-fonts/jetbrains-mono
 	media-fonts/jetbrainsmono-nerdfont
 	net-wireless/broadcom-sta
