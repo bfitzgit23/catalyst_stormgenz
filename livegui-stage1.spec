@@ -6,11 +6,11 @@ profile: default/linux/amd64/17.1/desktop
 snapshot_treeish: 3bb0eb438dd6b079945498ffcddf13f0475b9fcc
 source_subpath: default/stage3-amd64-openrc-latest.tar.xz
 compression_mode: pixz
-portage_confdir: /home/gentoo/catalyst-xinnixos/config/stages/
-repos:  /home/gentoo/catalyst-xinnixos/root_overlay/var/db/repos/edgets
-       /home/gentoo/catalyst-xinnixos/root_overlay/var/db/repos/guru
-      /home/gentoo/catalyst-xinnixos/root_overlay/var/db/repos/steam-overlay
-     /home/gentoo/catalyst-xinnixos/root_overlay/var/db/repos/tatsh-overlay
+portage_confdir: /home/bennji/catalyst-xinnixos/config/stages/
+repos:  /home/bennji/catalyst-xinnixos/root_overlay/var/db/repos/edgets
+       /home/bennji/catalyst-xinnixos/root_overlay/var/db/repos/guru
+      /home/bennji/catalyst-xinnixos/root_overlay/var/db/repos/steam-overlay
+     /home/bennji/catalyst-xinnixos/root_overlay/var/db/repos/tatsh-overlay
 
 livecd/use:
 	-aac
@@ -70,13 +70,13 @@ livecd/packages:
 	app-portage/cpuid2cpuflags
 	app-portage/eix
 	app-portage/genlop
-	app-portage/gentoolkit
+	app-portage/bennjilkit
 	app-portage/mirrorselect
 	app-portage/portage-utils
 	app-portage/pram
 	app-portage/ufed
 	app-shells/bash-completion
-	app-shells/gentoo-bashcomp
+	app-shells/bennji-bashcomp
 	app-text/dos2unix
 	app-text/ghostscript-gpl
 	app-text/pdftk
@@ -84,7 +84,7 @@ livecd/packages:
 	app-text/tree
 	app-text/wgetpaste
 	app-text/xournalpp
-	app-vim/gentoo-syntax
+	app-vim/bennji-syntax
 	dev-lang/perl
 	dev-lang/python
 #	Gone until it supports python3_10
@@ -235,7 +235,7 @@ livecd/packages:
 	gnome-base/gvfs
 	app-arch/engrampa
 	app-admin/syslog-ng
-	app-admin/gentoo_update
+	app-admin/bennji_update
  	xfce-base/xfce4-meta
 	dev-qt/qtstyleplugins
 	media-video/vlc
