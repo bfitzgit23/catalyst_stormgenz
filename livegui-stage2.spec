@@ -5,28 +5,28 @@ rel_type: default
 profile: default/linux/amd64/23.0/desktop
 snapshot_treeish: 3bb0eb438dd6b079945498ffcddf13f0475b9fcc
 source_subpath: default/livecd-stage1-amd64-xfce-latest
-portage_confdir: /home/gentoo/cataylst-xinnixos/config/stages/
-repos: /home/gentoo/catalyyst_stormgenz/overlay/var/db/repos/edgets
-      /home/gentoo/catalyyst_stormgenz/root_overlay/var/db/repos/guru
-      /home/gentoo/catalyyst_stormgenz/root_overlay/var/db/repos/steam-overlay
-    /home/gentoo/catalyyst_stormgenz/root_overlay/var/db/repos/tatsh-overlay
+portage_confdir: /home/bennji/cataylst-xinnixos/config/stages/
+repos: /home/bennji/catalyyst_stormgenz/overlay/var/db/repos/edgets
+      /home/bennji/catalyyst_stormgenz/root_overlay/var/db/repos/guru
+      /home/bennji/catalyyst_stormgenz/root_overlay/var/db/repos/steam-overlay
+    /home/bennji/catalyyst_stormgenz/root_overlay/var/db/repos/tatsh-overlay
 
 livecd/bootargs: overlayfs nodhcp dokeymap dodetect dousb quiet splash zram.num_devices=1
 livecd/depclean: no
 livecd/fstype: squashfs
-livecd/iso: /home/gentoo/Desktop/XinnixOS-XFCE-latest.iso
+livecd/iso: /home/bennji/Desktop/XinnixOS-XFCE-latest.iso
 livecd/type: gentoo-release-livecd
 livecd/volid: XinnixOS-XFCE_LiveDVD_2024-02-26
 livecd/readme: Welcome to XinnixOS, making Gentoo GNU/Linux easy for anyone, pro or newbie! Containing the famous calamares installer, a highly customized XFCE desktop, bash aliases in the users .bashrc in their home directory, oh-my-bash to simplify bash usage and more!
 livecd/motd: "Welcome to XinnixOS-XFCE"
-livecd/root_overlay: /home/gentoo/cataylst-xinnixos/root_overlay
-livecd/overlay: /home/gentoo/cataylst-xinnixos/root_overlay
+livecd/root_overlay: /home/bennji/cataylst-xinnixos/root_overlay
+livecd/overlay: /home/bennji/cataylst-xinnixos/root_overlay
 livecd/users: xinnixos-user
 livecd/xsession: xfce
 livecd/xdm: lightdm
 livecd/gk_mainargs: --plymouth --plymouth-theme=vortex-gentoo
 
-livecd/fsscript: /home/gentoo/cataylst-xinnixos/stage2.sh
+livecd/fsscript: /home/bennji/cataylst-xinnixos/stage2.sh
 livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default lightdm|default cupsd|default sshd|default ntpd|default syslog-ng|default cronie|default bluetooth|default samba|default
 boot/kernel/gentoo/use: atm png truetype usb plymouth
 boot/kernel/gentoo/packages:
@@ -68,6 +68,6 @@ livecd/rm:
 boot/kernel: gentoo
 
 boot/kernel/gentoo/sources: gentoo-sources
-boot/kernel/gentoo/config: /home/gentoo/cataylst-xinnixos/kconfig/xinnixos-6.6.7-XinnixOS
+boot/kernel/gentoo/config: /home/bennji/cataylst-xinnixos/kconfig/xinnixos-6.6.7-XinnixOS
 
-livecd/root_overlay: /home/gentoo/catalyyst_stormgenz/root_overlay
+livecd/root_overlay: /home/bennji/catalyyst_stormgenz/root_overlay
