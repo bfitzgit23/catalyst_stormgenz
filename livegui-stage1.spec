@@ -1,5 +1,5 @@
 subarch: amd64
-version_stamp: xinnixos-xfce-2024-02-26
+version_stamp: stormgenz-2024-08-31
 target: livecd-stage1
 rel_type: default
 profile: default/linux/amd64/23.0/desktop
