@@ -2,7 +2,7 @@ subarch: amd64
 version_stamp: xinnixos-xfce-2024-02-26
 target: livecd-stage1
 rel_type: default
-profile: default/linux/amd64/17.1/desktop
+profile: default/linux/amd64/23.0/desktop
 snapshot_treeish: 3bb0eb438dd6b079945498ffcddf13f0475b9fcc
 source_subpath: default/stage3-amd64-openrc-latest.tar.xz
 compression_mode: pixz
