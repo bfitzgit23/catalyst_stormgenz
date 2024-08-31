@@ -6,11 +6,11 @@ profile: default/linux/amd64/23.0/desktop
 snapshot_treeish: 3bb0eb438dd6b079945498ffcddf13f0475b9fcc
 source_subpath: default/stage3-amd64-openrc-latest.tar.xz
 compression_mode: pixz
-portage_confdir: /home/bennji/catalyst-xinnixos/config/stages/
-repos:  /home/bennji/catalyst-xinnixos/root_overlay/var/db/repos/edgets
-       /home/bennji/catalyst-xinnixos/root_overlay/var/db/repos/guru
-      /home/bennji/catalyst-xinnixos/root_overlay/var/db/repos/steam-overlay
-     /home/bennji/catalyst-xinnixos/root_overlay/var/db/repos/tatsh-overlay
+portage_confdir: /home/bennji/catalyst_stormgenz/config/stages/
+repos:  /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/edgets
+       /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/guru
+      /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/steam-overlay
+     /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/tatsh-overlay
 
 livecd/use:
 	-aac
