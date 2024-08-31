@@ -16,17 +16,15 @@ livecd/depclean: no
 livecd/fstype: squashfs
 livecd/iso: /home/bennji/Desktop/XinnixOS-XFCE-latest.iso
 livecd/type: gentoo-release-livecd
-livecd/volid: XinnixOS-XFCE_LiveDVD_2024-02-26
-livecd/readme: Welcome to XinnixOS, making Gentoo GNU/Linux easy for anyone, pro or newbie! Containing the famous calamares installer, a highly customized XFCE desktop, bash aliases in the users .bashrc in their home directory, oh-my-bash to simplify bash usage and more!
-livecd/motd: "Welcome to XinnixOS-XFCE"
-livecd/root_overlay: /home/bennji/cataylst-xinnixos/root_overlay
-livecd/overlay: /home/bennji/cataylst-xinnixos/root_overlay
-livecd/users: xinnixos-user
+livecd/volid: StormGenZ_LiveDVD_2024-08-31
+livecd/readme: Welcome to StormGenZ, making Gentoo GNU/Linux easy for anyone, pro or newbie! Containing the famous calamares installer, a highly customized XFCE desktop, bash aliases in the users .bashrc in their home directory, oh-my-bash to simplify bash usage and more!
+livecd/motd: "Welcome to StormGenZ"
+livecd/root_overlay: /home/bennji/catalyst_stormgenz/root_overlay
+livecd/overlay: /home/bennji/catalyst_stormgenz/root_overlay
+livecd/users: stormgenz-user
 livecd/xsession: xfce
-livecd/xdm: lightdm
-livecd/gk_mainargs: --plymouth --plymouth-theme=vortex-gentoo
 
-livecd/fsscript: /home/bennji/cataylst-xinnixos/stage2.sh
+livecd/fsscript: /home/bennji/catalyst_stormgenz/stage2.sh
 livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default lightdm|default cupsd|default sshd|default ntpd|default syslog-ng|default cronie|default bluetooth|default samba|default
 boot/kernel/gentoo/use: atm png truetype usb plymouth
 boot/kernel/gentoo/packages:
@@ -50,24 +48,13 @@ boot/kernel/gentoo/packages:
 ### Masked (~amd64)
 
 livecd/empty:
-	/var/tmp
-	/var/empty
-	/var/run
-	/var/state
-	/var/cache/edb/dep
-	/tmp
-	/root/.ccache
-	/usr/share/genkernel/pkg/x86/cpio
-
-livecd/rm:
-	/etc/*.old
-	/root/.viminfo
-	/var/log/*.log
-	/usr/share/genkernel/pkg/x86/*.bz2
+	/var/db/repos
+	/usr/src
 
 boot/kernel: gentoo
 
-boot/kernel/gentoo/sources: gentoo-sources
-boot/kernel/gentoo/config: /home/bennji/cataylst-xinnixos/kconfig/xinnixos-6.6.7-XinnixOS
+boot/kernel/gentoo/distkernel: yes
+boot/kernel/gentoo/dracut_args: --xz --no-hostonly -a dmsquash-live -a mdraid -o btrfs -o crypt -o i18n -o usrmount -o lunmask -o qemu -o qemu-net -o nvdimm -o multipath -o plymouth -i /lib/keymaps /lib/keymaps -I busybox
+boot/kernel/gentoo/packages: sys-fs/zfs
 
 livecd/root_overlay: /home/bennji/catalyyst_stormgenz/root_overlay
