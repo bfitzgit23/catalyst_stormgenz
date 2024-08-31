@@ -1,15 +1,15 @@
 subarch: amd64
-version_stamp: xinnixos-xfce-2024-02-26
+version_stamp: stormgenz-2024-08-31
 target: livecd-stage2
 rel_type: default
-profile: default/linux/amd64/17.1/desktop
+profile: default/linux/amd64/23.0/desktop
 snapshot_treeish: 3bb0eb438dd6b079945498ffcddf13f0475b9fcc
 source_subpath: default/livecd-stage1-amd64-xfce-latest
 portage_confdir: /home/gentoo/cataylst-xinnixos/config/stages/
-repos: /home/gentoo/catalyst-xinnixos/overlay/var/db/repos/edgets
-      /home/gentoo/catalyst-xinnixos/root_overlay/var/db/repos/guru
-      /home/gentoo/catalyst-xinnixos/root_overlay/var/db/repos/steam-overlay
-    /home/gentoo/catalyst-xinnixos/root_overlay/var/db/repos/tatsh-overlay
+repos: /home/gentoo/catalyyst_stormgenz/overlay/var/db/repos/edgets
+      /home/gentoo/catalyyst_stormgenz/root_overlay/var/db/repos/guru
+      /home/gentoo/catalyyst_stormgenz/root_overlay/var/db/repos/steam-overlay
+    /home/gentoo/catalyyst_stormgenz/root_overlay/var/db/repos/tatsh-overlay
 
 livecd/bootargs: overlayfs nodhcp dokeymap dodetect dousb quiet splash zram.num_devices=1
 livecd/depclean: no
@@ -70,4 +70,4 @@ boot/kernel: gentoo
 boot/kernel/gentoo/sources: gentoo-sources
 boot/kernel/gentoo/config: /home/gentoo/cataylst-xinnixos/kconfig/xinnixos-6.6.7-XinnixOS
 
-livecd/root_overlay: /home/gentoo/catalyst-xinnixos/root_overlay
+livecd/root_overlay: /home/gentoo/catalyyst_stormgenz/root_overlay
