@@ -1,16 +1,12 @@
 subarch: amd64
-version_stamp: stormgenz-2024-08-31
+version_stamp: stormgenz-<DATE>
 target: livecd-stage1
 rel_type: default
 profile: default/linux/amd64/23.0/desktop
-snapshot_treeish: 3bb0eb438dd6b079945498ffcddf13f0475b9fcc
+snapshot_treeish: <TREEISH>
 source_subpath: default/stage3-amd64-openrc-latest.tar.xz
 compression_mode: pixz
-portage_confdir: /home/bennji/catalyst_stormgenz/config/stages/
-repos:  /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/edgets
-       /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/guru
-      /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/steam-overlay
-     /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/tatsh-overlay
+portage_confdir: <relengdir>/releases/portage/livegui
 
 livecd/use:
 	-aac
@@ -25,14 +21,9 @@ livecd/use:
 	portaudio
 	pulseaudio
 	python
-	theora
 	vpx
 	xetex
-	flatpak
-	bluetooth
 	compat
-	-kde
-	-gnome
 	branding
 	plymouth
 
@@ -227,7 +218,6 @@ livecd/packages:
 	net-print/hplip
 	app-admin/system-config-printer
 	net-misc/ntp
-	net-im/discord
 	net-fs/samba
 	media-sound/pavucontrol
 	media-fonts/terminus-font
@@ -235,12 +225,10 @@ livecd/packages:
 	gnome-base/gvfs
 	app-arch/engrampa
 	app-admin/syslog-ng
-	app-admin/bennji_update
  	xfce-base/xfce4-meta
 	dev-qt/qtstyleplugins
 	media-video/vlc
 	mail-client/thunderbird-bin
-	app-admin/calamares
 	x11-themes/adwaita-icon-theme
 	x11-themes/gtk-engines-adwaita
  	media-gfx/flameshot
@@ -249,4 +237,4 @@ livecd/packages:
 	net-wireless/broadcom-sta
 	app-emulation/spice-vdagent
 	dev-qt/qtwebengine
-	app-misc/neofetch
+	app-misc/fastfetch
