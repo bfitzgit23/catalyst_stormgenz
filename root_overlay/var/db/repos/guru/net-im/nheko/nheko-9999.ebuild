@@ -1,4 +1,4 @@
-# Copyright 2020-2023 Gentoo Authors
+# Copyright 2020-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -18,7 +18,6 @@ MY_DEP_URIS=(
 
 LICENSE="GPL-3 MIT"
 SLOT="0"
-KEYWORDS=""
 IUSE="X +pie video voip"
 REQUIRED_USE="video? ( voip )"
 
@@ -26,11 +25,11 @@ MY_GST_V="1.18"
 RDEPEND="
 	app-text/cmark:=
 	dev-cpp/cpp-httplib:=
-	dev-cpp/qt-jdenticon
 	dev-db/lmdb:=
 	>=dev-db/lmdb++-1.0.0
 	dev-libs/libevent:=
 	dev-libs/libfmt:=
+	>=dev-libs/kdsingleapplication-1.1.0
 	dev-libs/olm
 	>=dev-libs/openssl-1.1.0:=
 	>=dev-libs/qtkeychain-0.14.1-r1:=[qt6]
@@ -126,10 +125,10 @@ pkg_postinst() {
 		"dev-libs/qtkeychain[keyring]"
 	optfeature "additional, less common, image format support" \
 		"kde-frameworks/kimageformats:6"
+	optfeature "identicons support" dev-cpp/qt-jdenticon:6
 
 	xdg_pkg_postinst
 
-	ewarn "since Nheko migrated to Qt 6 there may be some regressions. video streams will"
-	ewarn "probably not work for now. d95d2fcaa9e3b8ab47275d2bf56e5a7ebddd37e7 was the"
-	ewarn "last commit with Qt5 support."
+	ewarn "since Nheko migrated to Qt 6 video streams will not work for now because"
+	ewarn "we are missing a dependency. see <https://bugs.gentoo.org/810814> for details"
 }

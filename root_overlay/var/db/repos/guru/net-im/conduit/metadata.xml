@@ -5,20 +5,24 @@
 		<email>julien@jroy.ca</email>
 		<name>Julien Roy</name>
 	</maintainer>
-	<longdescription>An efficient Matrix homeserver that's easy to set up and just works. You can install
-it on a mini-computer like the Raspberry Pi to host Matrix for your family,
-friends or company.</longdescription>
+	<longdescription>
+		A fast Matrix homeserver that is optimized for smaller, personal servers,
+		instead of a server that has high scalability.
+	</longdescription>
+	<use>
+		<flag name="rocksdb">
+			Add support for RocksDB; a key/value, LSM database
+		</flag>
+		<flag name="system-rocksdb">
+			Use the system-wide <pkg>dev-libs/rocksdb</pkg> installation
+		</flag>
+	</use>
 	<upstream>
 		<maintainer>
 			<name>Timo Kösters</name>
 			<email>timo@koesters.xyz</email>
 		</maintainer>
-		<changelog>https://gitlab.com/famedly/conduit/-/releases</changelog>
-		<doc>https://gitlab.com/famedly/conduit/-/blob/next/DEPLOY.md</doc>
 		<bugs-to>https://gitlab.com/famedly/conduit/-/issues</bugs-to>
 		<remote-id type="gitlab">famedly/conduit</remote-id>
-		<remote-id type="github">ruma/ruma</remote-id>
-		<remote-id type="github">timokoesters/reqwest</remote-id>
-		<remote-id type="github">timokoesters/heed</remote-id>
 	</upstream>
 </pkgmetadata>

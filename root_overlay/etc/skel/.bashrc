@@ -5,11 +5,14 @@ case $- in
 esac
 
 # Path to your oh-my-bash installation.
-export OSH='~/.oh-my-bash'
+export OSH='/home/bennji/.oh-my-bash'
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-bash is loaded.
 OSH_THEME="agnoster"
+
+# If you set OSH_THEME to "random", you can ignore themes you don't like.
+# OMB_THEME_RANDOM_IGNORED=("powerbash10k" "wanelo")
 
 # Uncomment the following line to use case-sensitive completion.
 # OMB_CASE_SENSITIVE="true"
@@ -64,16 +67,94 @@ OSH_THEME="agnoster"
 # Uncomment the following line if you do not want OMB to overwrite the existing
 # aliases by the default OMB aliases defined in lib/*.sh
 # OMB_DEFAULT_ALIASES="check"
-neofetch
-alias update='sudo gentoo-update --update-mode full --args "color=y keep-going"'
-alias sync='sudo emerge-webrsync && sudo emerge --sync'
-alias up-grub='sudo grub-mkconfig -o /boot/grub/grub.cfg'
-alias install='sudo emerge'
-alias remove='sudo emerge -C'
-alias esync='sudo eix-sync'
-alias eupdate='sudo eix-update'
-alias reload='source ~/.bashrc'
-alias edit='mousepad'
-alias sedit='sudo mousepad'
-alias rsmb='sudo /etc/init.d/samba restart'
-source ~/.oh-my-bash/oh-my-bash.sh
+
+# Would you like to use another custom folder than $OSH/custom?
+# OSH_CUSTOM=/path/to/new-custom-folder
+
+# To disable the uses of "sudo" by oh-my-bash, please set "false" to
+# this variable.  The default behavior for the empty value is "true".
+OMB_USE_SUDO=true
+
+# To enable/disable display of Python virtualenv and condaenv
+# OMB_PROMPT_SHOW_PYTHON_VENV=true  # enable
+# OMB_PROMPT_SHOW_PYTHON_VENV=false # disable
+
+# Which completions would you like to load? (completions can be found in ~/.oh-my-bash/completions/*)
+# Custom completions may be added to ~/.oh-my-bash/custom/completions/
+# Example format: completions=(ssh git bundler gem pip pip3)
+# Add wisely, as too many completions slow down shell startup.
+completions=(
+  git
+  composer
+  ssh
+)
+
+# Which aliases would you like to load? (aliases can be found in ~/.oh-my-bash/aliases/*)
+# Custom aliases may be added to ~/.oh-my-bash/custom/aliases/
+# Example format: aliases=(vagrant composer git-avh)
+# Add wisely, as too many aliases slow down shell startup.
+aliases=(
+  general
+)
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-bash/plugins/*)
+# Custom plugins may be added to ~/.oh-my-bash/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(
+  git
+  bashmarks
+)
+
+# Which plugins would you like to conditionally load? (plugins can be found in ~/.oh-my-bash/plugins/*)
+# Custom plugins may be added to ~/.oh-my-bash/custom/plugins/
+# Example format:
+#  if [ "$DISPLAY" ] || [ "$SSH" ]; then
+#      plugins+=(tmux-autoattach)
+#  fi
+
+source "$OSH"/oh-my-bash.sh
+
+# User configuration
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-bash libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-bash
+# users are encouraged to define aliases within the OSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias bashconfig="mate ~/.bashrc"
+# alias ohmybash="mate ~/.oh-my-bash"
+
+fastfetch
+alias reload="source ~/.bashrc"
+alias up-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+alias install="sudo emerge -av"
+alias uninstall="sudo emerge -C"
+alias eu="sudo emerge -avuND @world"
+alias eixu="sudo eix-update"
+alias edit="mousepad"
+alias sedit="sudo mousepad"
+alias rsmb="sudo systemctl restart smb"
+alias rnmb="sudo systemctl restart nmb"
+alias sync="sudo emerge --sync"
+alias qsync="sudo emerge --sync --quiet"
+alias erepo="sudo eselect repository enable"
+alias drepo="sudo eselct repository disable"

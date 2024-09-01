@@ -1,5 +1,3 @@
 dev-lang/rust
 
 #
->sys-apps/systemd-utils-252.9
->=virtual/libudev-251-r1

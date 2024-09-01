@@ -1,9 +1,9 @@
-# Copyright 2020-2022 Gentoo Authors
+# Copyright 2020-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 DISTUTILS_USE_PEP517=setuptools
 inherit databases distutils-r1
 
@@ -22,8 +22,8 @@ KEYWORDS="~amd64 ~x86"
 RDEPEND="dev-python/pymysql[${PYTHON_USEDEP}]"
 BDEPEND="
 	dev-python/setuptools-scm[${PYTHON_USEDEP}]
-	dev-python/setuptools_scm_git_archive[${PYTHON_USEDEP}]
 	test? (
+		${DATABASES_DEPEND[mysql]}
 		$(python_gen_impl_dep "ssl")
 		dev-python/sqlalchemy[${PYTHON_USEDEP}]
 		dev-python/uvloop[${PYTHON_USEDEP}]
@@ -31,6 +31,7 @@ BDEPEND="
 "
 
 DOCS=( CHANGES.txt {CONTRIBUTING,README}.rst )
+PATCHES=( "${FILESDIR}/${P}-git_archive.patch" )
 
 EPYTEST_IGNORE=(
 	# No Table.count() method in recent PyMySQL
@@ -41,8 +42,8 @@ EPYTEST_IGNORE=(
 
 distutils_enable_tests pytest
 
-distutils_enable_sphinx docs \
-	dev-python/sphinxcontrib-asyncio
+#distutils_enable_sphinx docs \
+	#dev-python/sphinxcontrib-asyncio
 
 python_test() {
 	epytest "${S}"/tests --mysql-unix-socket "$(emysql --get-sockfile)"

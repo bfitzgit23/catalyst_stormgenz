@@ -2,8 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
     <maintainer type="person">
-        <name>Matthias Coppens</name>
-        <email>coppens.matthias.abc@gmail.com</email>
+        <email>joe@wt.gd</email>
+        <name>Joe Kappus</name>
     </maintainer>
     <upstream>
         <bugs-to>https://github.com/artizirk/wdisplays/issues</bugs-to>

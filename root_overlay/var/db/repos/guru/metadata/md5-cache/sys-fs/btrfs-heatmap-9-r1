@@ -1,15 +1,15 @@
 DEFINED_PHASES=install setup
-DEPEND=python_single_target_python3_10? ( dev-lang/python:3.10 ) python_single_target_python3_11? ( dev-lang/python:3.11 ) python_single_target_python3_10? ( >=dev-python/btrfs-12[python_targets_python3_10(-)] ) python_single_target_python3_11? ( >=dev-python/btrfs-12[python_targets_python3_11(-)] )
+DEPEND=python_single_target_python3_10? ( dev-lang/python:3.10 ) python_single_target_python3_11? ( dev-lang/python:3.11 ) python_single_target_python3_12? ( dev-lang/python:3.12 ) python_single_target_python3_10? ( >=dev-python/btrfs-13[python_targets_python3_10(-)] ) python_single_target_python3_11? ( >=dev-python/btrfs-13[python_targets_python3_11(-)] ) python_single_target_python3_12? ( >=dev-python/btrfs-13[python_targets_python3_12(-)] )
 DESCRIPTION=Python 3 script to draw a heatmap of a btrfs filesystem
 EAPI=8
 HOMEPAGE=https://github.com/knorrie/btrfs-heatmap
 INHERIT=python-single-r1
-IUSE=python_single_target_python3_10 python_single_target_python3_11
+IUSE=python_single_target_python3_10 python_single_target_python3_11 python_single_target_python3_12
 KEYWORDS=~amd64
 LICENSE=MIT
-RDEPEND=python_single_target_python3_10? ( dev-lang/python:3.10 ) python_single_target_python3_11? ( dev-lang/python:3.11 ) python_single_target_python3_10? ( >=dev-python/btrfs-12[python_targets_python3_10(-)] ) python_single_target_python3_11? ( >=dev-python/btrfs-12[python_targets_python3_11(-)] )
-REQUIRED_USE=^^ ( python_single_target_python3_10 python_single_target_python3_11 )
+RDEPEND=python_single_target_python3_10? ( dev-lang/python:3.10 ) python_single_target_python3_11? ( dev-lang/python:3.11 ) python_single_target_python3_12? ( dev-lang/python:3.12 ) python_single_target_python3_10? ( >=dev-python/btrfs-13[python_targets_python3_10(-)] ) python_single_target_python3_11? ( >=dev-python/btrfs-13[python_targets_python3_11(-)] ) python_single_target_python3_12? ( >=dev-python/btrfs-13[python_targets_python3_12(-)] )
+REQUIRED_USE=^^ ( python_single_target_python3_10 python_single_target_python3_11 python_single_target_python3_12 )
 SLOT=0
 SRC_URI=https://github.com/knorrie/btrfs-heatmap/archive/v9.tar.gz -> btrfs-heatmap-9.tar.gz
-_eclasses_=multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	toolchain-funcs	862d337d98edb576796827be2c6b11ca	multilib	c19072c3cd7ac5cb21de013f7e9832e0	python-utils-r1	59e60e9c5cbd3f214d7f1002e798b387	python-single-r1	75118e916668a74c660a13b0ecb22562
-_md5_=bdf588a0683457911c2111209c04e079
+_eclasses_=multiprocessing	30ead54fa2e2b5f9cd4e612ffc34d0fe	toolchain-funcs	333970c740aa7b1a92e4fcdc52f612bd	multilib	c19072c3cd7ac5cb21de013f7e9832e0	python-utils-r1	6881b056477c23167d9a6b33e146374e	python-single-r1	f7abe75c203a988aa9b5c460b6c7d0f1
+_md5_=23b7fed1ab97c7c97a7865a5049aed90

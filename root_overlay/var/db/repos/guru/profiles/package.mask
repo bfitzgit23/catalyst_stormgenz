@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Andrew Ammerlaan <andrewammerlaan@gentoo.org> (2021-03-29)
@@ -12,29 +12,94 @@
 # TODO: Either fix per profile masking in overlays, or move
 # relevant entries to the relevant package.mask files in ::gentoo
 
+# Note: Use the extended `Closes: https://bugs.gentoo.org/NNNN (pkgremoved)`
+# tag when treecleaning a package. The bug will automatically get closed with
+# the PKGREMOVED resolution.
+
 # New entries go on top.
 
-# Remigiusz Micielski <rmicielski@purelymail.com> (2023-08-13)
-# rust-analyzer is in ::gentoo as a use flag for rust
-dev-util/rust-analyzer
-dev-util/rust-analyzer-bin
+# Takuya Wakazono <pastalian46@gmail.com> (2024-08-31)
+# Significantly outdated and unmaintained in guru since 2022.
+# Removal on 2024-09-30.
+app-emulation/proton-ge-custom-bin
 
-# Anna Vyalkova <cyber+gentoo@sysrq.in> (2023-07-18)
-# Depends on removed <sci-mathematics/why3-1.5.0
-sci-mathematics/frama-c-wp
+# Takuya Wakazono <pastalian46@gmail.com> (2024-08-27)
+# Does not build anymore. Unmaintained in guru since 2021.
+# Removal on 2024-09-27. Bugs #807112, #839606
+app-misc/apidb
+dev-libs/octetos-db
+dev-libs/octetos-db-abstract
+dev-libs/octetos-db-maria
+dev-libs/octetos-db-postgresql
+
+# Takuya Wakazono <pastalian46@gmail.com> (2024-08-19)
+# Maintainer has no intention of keeping those anymore. No revdeps left.
+# Removal on 2024-09-19. Bugs #848459, #900000, #930786, #932330, #932331, #932334.
+dev-cpp/fbthrift
+dev-cpp/fizz
+dev-cpp/wangle
+
+# David Roman <davidroman96@gmail.com> (2024-08-05)
+# No maintainer. Abandoned (last commit 5 years ago). No revdeps
+# Removal on 2024-09-05
+dev-python/sphinx-version-warning
+
+# David Roman <davidroman96@gmail.com> (2024-08-05)
+# No maintainer, we already have yt-dlp on ::gentoo.
+# Removal on 2024-09-05
+net-misc/youtube-dl
+
+# David Roman <davidroman96@gmail.com> (2024-08-05)
+# Archived upstream. No maintainer
+# Removal on 2024-09-05
+media-gfx/libpsautohint
+
+# David Roman <davidroman96@gmail.com> (2024-08-02)
+# Seems abandoned upstream (last commit 1 year ago, no releases)
+# Seems also abandoned in ::guru (last meaningful change on 2022)
+# Removal on 2024-09-02
+gui-apps/tootle
+
+# David Roman <davidroman96@gmail.com> (2024-08-01)
+# Project archived upstream. No release since 2021
+# Removal on 2024-08-31
+app-containers/dnsname-cni-plugin
+
+# David Roman <davidroman96@gmail.com> (2024-08-01)
+# No maintainer. Seems dead, last release from 2016
+# Removal on 2024-08-31
+dev-python/funcsigs
+
+# Michael Mair-Keimberger <mmk@levelnine.at> (2024-07-20)
+# Decided to move my personal wiki to dokuwiki. If someone wants to
+# keep it, feel free to take over it.
+# Removal on 2024-08-20
+acct-group/wikijs
+acct-user/wikijs
+www-apps/wiki-js-bin
+
+# Pascal Jaeger <pascal.jaeger@leimstift.de> (2024-06-29)
+# Package is renamed to 'dissent'
+# Newer versions do not build in portage because of dependency
+# problems.
+# Removal on 2024-08-30.
+net-im/gtkcord4
+
+# Anna Vyalkova <cyber+gentoo@sysrq.in> (2024-06-24)
+# Critical security vulnerability.
+<net-im/conduit-0.8.0
+
+# Julien Roy <julien@jroy.ca> (2024-03-21)
+# sys-libs/libucontext is masked in ::gentoo
+sys-libs/gcompat
+
+# Julien Roy <julien@jroy.ca> (2024-03-09)
+# Dracut fails to boot with Clevis 20
+# https://github.com/latchset/clevis/issues/456
+~app-crypt/clevis-20
 
 # Viorel Munteanu <ceamac@gentoo.org> (2023-06-07)
 # Does not work on no-multilib profiles and cannot be masked per profile
 # (See also top comment)
 # Sorry for the inconvenience.
 app-office/lotus123r3
-
-# Julien Roy <julien@jroy.ca> (2023-01-25)
-# Requires <dev-python/coverage-7, which is no longer available in ::gentoo.
-# Upstream bug: https://github.com/TheKevJames/coveralls-python/issues/377
-dev-python/coveralls
-
-# Nicola Smaniotto <smaniotto.nicola@gmail.com> (2023-01-15)
-# Requires <dev-python/cleo-1, which is no longer available in ::gentoo.
-# Upstream bug: https://github.com/iamkroot/trakt-scrobbler/issues/240
-media-video/trakt-scrobbler

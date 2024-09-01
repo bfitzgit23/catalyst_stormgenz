@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -16,7 +16,7 @@ if [[ ${PV} == 9999 ]]; then
 	inherit git-r3
 else
 	SRC_URI="https://github.com/omar-polo/${PN}/releases/download/${PV}/${P}.tar.gz
-		verify-sig? ( https://github.com/omar-polo/${PN}/releases/download/${PV}/SHA256.sig -> ${P}.sha.sig )"
+		verify-sig? ( https://github.com/omar-polo/${PN}/releases/download/${PV}/${P}.sha256.sig )"
 	KEYWORDS="~amd64 ~x86"
 fi
 
@@ -27,9 +27,7 @@ RESTRICT="!test? ( test )"
 
 DEPEND="
 	acct-user/gemini
-	dev-libs/imsg-compat
 	dev-libs/libevent:=
-	dev-libs/libretls:=
 	dev-libs/openssl:=
 	!elibc_Darwin? ( dev-libs/libbsd )
 "
@@ -43,10 +41,12 @@ if [[ ${PV} != 9999 ]]; then
 	BDEPEND+="verify-sig? ( sec-keys/signify-keys-gmid:$(ver_cut 1-2) )"
 fi
 
-QA_CONFIG_IMPL_DECL_SKIP=1
-VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}/usr/share/signify-keys/${PN}-$(ver_cut 1-2).pub"
+VERIFY_SIG_OPENPGP_KEY_PATH="/usr/share/signify-keys/${PN}-$(ver_cut 1-2).pub"
 
 DOCS=( README.md ChangeLog contrib/README )
+
+# not an autoconf configure script
+QA_CONFIG_IMPL_DECL_SKIP=( "*" )
 
 src_unpack() {
 	if [[ ${PV} == 9999 ]]; then
@@ -54,10 +54,10 @@ src_unpack() {
 	else
 		if use verify-sig; then
 			# Too many levels of symbolic links
-			cp "${DISTDIR}"/${P}.{sha.sig,tar.gz} "${WORKDIR}" || die
+			cp "${DISTDIR}"/${P}.{sha256.sig,tar.gz} "${WORKDIR}" || die
 			cd "${WORKDIR}" || die
 			verify-sig_verify_signed_checksums \
-				${P}.sha.sig sha256 ${P}.tar.gz
+				${P}.sha256.sig sha256 ${P}.tar.gz
 		fi
 		default
 	fi
@@ -69,14 +69,15 @@ src_configure() {
 
 	# note: not an autoconf configure script
 	conf_args=(
-		PREFIX="${EPREFIX}"/usr
-		MANDIR="${EPREFIX}"/usr/share/man
+		--prefix="${EPREFIX}"/usr
+		--mandir="${EPREFIX}"/usr/share/man
+		--sysconfdir="${EPREFIX}"/etc
+		--with-libtls=bundled
 		$(use_enable seccomp sandbox)
 	)
-
 	edo ./configure "${conf_args[@]}"
 
-	if use seccomp && has usersandbox ${FEATURES} ; then
+	if use seccomp && has usersandbox ${FEATURES}; then
 		export SKIP_RUNTIME_TESTS=1
 	fi
 }
@@ -85,12 +86,12 @@ src_install() {
 	default
 
 	insinto /etc/gmid
-	doins "${FILESDIR}"/gmid.conf
+	newins "${FILESDIR}"/gmid.conf-r1 gmid.conf
 
 	insinto /usr/share/vim/vimfiles
 	doins -r contrib/vim/*
 
-	systemd_dounit "${FILESDIR}"/gmid.service
+	systemd_newunit "${FILESDIR}"/gmid.service-r1 gmid.service
 	newinitd "${FILESDIR}"/gmid.initd gmid
 	newconfd "${FILESDIR}"/gmid.confd gmid
 

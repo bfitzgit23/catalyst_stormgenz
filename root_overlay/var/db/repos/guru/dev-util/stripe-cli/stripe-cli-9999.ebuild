@@ -1,3 +1,6 @@
+# Copyright 2024 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
 EAPI=7
 
 EGO_PN=github.com/stripe/stripe-cli
@@ -10,9 +13,11 @@ MY_PN=${PN%-cli}
 DESCRIPTION="A command-line tool for Stripe"
 HOMEPAGE="https://stripe.com/docs/stripe-cli"
 EGIT_REPO_URI="https://${EGO_PN}.git"
+
+LICENSE="Apache-2.0"
 SLOT="0"
 IUSE="bash-completion"
-LICENSE="Apache-2.0"
+
 BDEPEND=">=dev-lang/go-1.18"
 DEPEND="${BDEPEND}"
 

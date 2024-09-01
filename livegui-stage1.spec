@@ -1,12 +1,17 @@
 subarch: amd64
-version_stamp: stormgenz-<DATE>
+version_stamp: stormgenz-09-01-2024
 target: livecd-stage1
 rel_type: default
 profile: default/linux/amd64/23.0/desktop
-snapshot_treeish: <TREEISH>
+snapshot_treeish: 4a2b956e472e6109d38fe805a2058fb855b419c7 
 source_subpath: default/stage3-amd64-openrc-latest.tar.xz
 compression_mode: pixz
-portage_confdir: <relengdir>/releases/portage/livegui
+portage_confdir: /home/bennji/catalyst_stormgenz/config/stages
+repos: /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/guru
+/home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/tezeta
+/home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/tatsh-overlay
+/home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/edgets
+/home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/steam-overlay
 
 livecd/use:
 	-aac
@@ -26,6 +31,8 @@ livecd/use:
 	compat
 	branding
 	plymouth
+        widgets
+	build
 
 livecd/packages:
 	app-admin/hddtemp
@@ -48,7 +55,6 @@ livecd/packages:
 	app-crypt/pinentry
 	app-editors/nano
 	app-editors/vim
-	app-office/libreoffice-bin
 	app-emacs/ebuild-mode
 #	Fails to build...
 #	app-emulation/xen-tools
@@ -61,13 +67,13 @@ livecd/packages:
 	app-portage/cpuid2cpuflags
 	app-portage/eix
 	app-portage/genlop
-	app-portage/bennjilkit
+	app-portage/gentoolkit
 	app-portage/mirrorselect
 	app-portage/portage-utils
 	app-portage/pram
 	app-portage/ufed
 	app-shells/bash-completion
-	app-shells/bennji-bashcomp
+	app-shells/gentoo-bashcomp
 	app-text/dos2unix
 	app-text/ghostscript-gpl
 	app-text/pdftk
@@ -75,7 +81,7 @@ livecd/packages:
 	app-text/tree
 	app-text/wgetpaste
 	app-text/xournalpp
-	app-vim/bennji-syntax
+	app-vim/gentoo-syntax
 	dev-lang/perl
 	dev-lang/python
 #	Gone until it supports python3_10
@@ -87,15 +93,7 @@ livecd/packages:
 	media-gfx/graphviz
 	media-gfx/inkscape
 	media-sound/alsa-utils
-	net-analyzer/iptraf-ng
-	net-analyzer/nmap
 	net-analyzer/openbsd-netcat
-	net-analyzer/tcpdump
-	net-analyzer/tcptraceroute
-	net-analyzer/traceroute
-	net-dns/bind-tools
-	net-fs/cifs-utils
-	net-fs/nfs-utils
 	net-ftp/ftp
 	net-ftp/ncftp
 	net-im/pidgin
@@ -206,9 +204,8 @@ livecd/packages:
 	xfce-extra/xfce4-pulseaudio-plugin
 	xfce-extra/xfce4-weather-plugin
 	xfce-extra/xfce4-whiskermenu-plugin
+	xfce-extra/xfce4-docklike-plugin
 	x11-misc/xdg-user-dirs
-	x11-misc/prime-run
-	x11-misc/plank
 	sys-process/htop
 	sys-process/cronie
 	net-wireless/blueman
@@ -233,8 +230,16 @@ livecd/packages:
 	x11-themes/gtk-engines-adwaita
  	media-gfx/flameshot
 	media-fonts/jetbrains-mono
-	media-fonts/jetbrainsmono-nerdfont
+	media-fonts/nerdfonts
 	net-wireless/broadcom-sta
 	app-emulation/spice-vdagent
 	dev-qt/qtwebengine
 	app-misc/fastfetch
+	app-admin/calamares
+	x11-themes/adw-gtk3
+	x11-themes/tela-icon-theme
+	x11-themes/arc-icon-theme
+	media-fonts/ubuntu-font-family
+	media-fonts/joypixels
+	media-fonts/fontawesome
+	media-fonts/corefonts

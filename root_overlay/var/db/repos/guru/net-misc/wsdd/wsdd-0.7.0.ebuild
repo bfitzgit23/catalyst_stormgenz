@@ -1,8 +1,8 @@
-# Copyright 2020-2023 Gentoo Authors
+# Copyright 2020-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-PYTHON_COMPAT=( python3_{10,11} )
+PYTHON_COMPAT=( python3_{10,11,12} )
 PYTHON_REQ_USE="xml(+)"
 
 inherit python-r1 systemd
@@ -17,10 +17,8 @@ KEYWORDS="~amd64 ~arm ~x86"
 IUSE="samba"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-DEPEND=""
 # Samba is technically not a requirement of wsdd, but depend on it if the use flags is set.
 RDEPEND="${PYTHON_DEPS} acct-group/${PN} acct-user/${PN} samba? ( net-fs/samba )"
-BDEPEND=""
 
 src_install() {
 	python_foreach_impl python_newscript src/wsdd.py wsdd

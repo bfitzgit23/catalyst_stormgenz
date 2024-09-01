@@ -12,7 +12,6 @@ SRC_URI="https://github.com/ksnip/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 LICENSE="GPL-2+"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
 
 RDEPEND="
 	dev-qt/qtdbus:5
@@ -25,11 +24,12 @@ RDEPEND="
 	dev-qt/qtxml:5
 	>=media-libs/kcolorpicker-0.2.0
 	>=media-libs/kimageannotator-0.6.1
+	<media-libs/kimageannotator-0.7.0
 	x11-libs/libX11
 	x11-libs/libxcb"
 DEPEND="${RDEPEND}
 	dev-qt/qtconcurrent:5
-	kde-frameworks/extra-cmake-modules:5
+	kde-frameworks/extra-cmake-modules
 "
 BDEPEND="
 	dev-qt/linguist-tools:5

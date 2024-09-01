@@ -1,6 +1,6 @@
-BDEPEND=>=dev-util/ninja-1.8.2 >=dev-util/cmake-3.20.5 >=dev-vcs/git-1.8.2.1[curl]
+BDEPEND=app-alternatives/ninja >=dev-build/cmake-3.20.5 >=dev-vcs/git-1.8.2.1[curl]
 DEFINED_PHASES=compile configure install postinst postrm preinst prepare test unpack
-DEPEND=x11-libs/gtk+:3 dev-libs/libappindicator:3 x11-libs/libX11 >=x11-apps/xinput-1.3
+DEPEND=dev-libs/glib dev-libs/libayatana-appindicator x11-libs/cairo x11-libs/gdk-pixbuf x11-libs/gtk+:3 x11-libs/libX11 x11-libs/libXi >=x11-apps/xinput-1.3
 DESCRIPTION=Gromit-MPX is a multi-pointer GTK3 port of the Gromit desktop annotation tool
 EAPI=8
 HOMEPAGE=https://github.com/bk138/gromit-mpx
@@ -8,7 +8,7 @@ IDEPEND=dev-util/desktop-file-utils x11-misc/shared-mime-info
 INHERIT=cmake xdg git-r3
 LICENSE=GPL-2
 PROPERTIES=live
-RDEPEND=x11-libs/gtk+:3 dev-libs/libappindicator:3 x11-libs/libX11 >=x11-apps/xinput-1.3
+RDEPEND=dev-libs/glib dev-libs/libayatana-appindicator x11-libs/cairo x11-libs/gdk-pixbuf x11-libs/gtk+:3 x11-libs/libX11 x11-libs/libXi >=x11-apps/xinput-1.3
 SLOT=0
-_eclasses_=toolchain-funcs	862d337d98edb576796827be2c6b11ca	multilib	c19072c3cd7ac5cb21de013f7e9832e0	flag-o-matic	be27a904c614cb93ae037762dc69bcc2	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	xdg-utils	baea6080dd821f5562d715887954c9d3	cmake	ea305d3be967deed8faa5c9e94f9aee4	xdg	4a14c5c24f121e7da66e5aab4a168c6e	git-r3	2358a7b20091609e24bd3a83b3ac5991
-_md5_=f3e89907000f1bdb4b3cfd0996461f45
+_eclasses_=toolchain-funcs	333970c740aa7b1a92e4fcdc52f612bd	multilib	c19072c3cd7ac5cb21de013f7e9832e0	flag-o-matic	e503ea5acc20410237ba33ec3f7c857d	multiprocessing	30ead54fa2e2b5f9cd4e612ffc34d0fe	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	xdg-utils	baea6080dd821f5562d715887954c9d3	cmake	10a50dfaf728b802fcfd37f8d0da9056	xdg	4a14c5c24f121e7da66e5aab4a168c6e	git-r3	875eb471682d3e1f18da124be97dcc81
+_md5_=310592b23c1a1a46ce39e603aeeb517b

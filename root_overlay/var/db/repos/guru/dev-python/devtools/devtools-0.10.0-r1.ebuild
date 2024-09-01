@@ -1,10 +1,10 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DISTUTILS_USE_PEP517=hatchling
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 DOCS_BUILDER=mkdocs
 DOCS_DEPEND=(
@@ -21,11 +21,12 @@ HOMEPAGE="
 	https://pypi.org/project/devtools/
 	https://github.com/samuelcolvin/python-devtools
 "
-RESTRICT="!test? ( test )"
 
 LICENSE="MIT"
-KEYWORDS="~amd64"
 SLOT="0"
+KEYWORDS="~amd64"
+
+RESTRICT="!test? ( test )"
 
 RDEPEND="
 	dev-python/asttokens[${PYTHON_USEDEP}]

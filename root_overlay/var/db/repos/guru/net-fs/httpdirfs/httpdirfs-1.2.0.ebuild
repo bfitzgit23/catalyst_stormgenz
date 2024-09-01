@@ -16,12 +16,12 @@ else
 	KEYWORDS="~amd64"
 fi
 
-RESTRICT="test"
 LICENSE="GPL-3"
 SLOT="0"
 # Doc generation fails
-# uses app-doc/doxygen[dot]
+# uses app-text/doxygen[dot]
 # IUSE="doc"
+RESTRICT="test"
 
 DEPEND="
 	dev-libs/expat

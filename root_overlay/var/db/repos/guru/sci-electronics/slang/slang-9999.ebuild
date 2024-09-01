@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
 
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 inherit cmake python-single-r1
 
 DESCRIPTION="SystemVerilog compiler and language services"
@@ -29,28 +29,24 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	${PYTHON_DEPS}
-	>=dev-cpp/catch-3.0.1
-	>=dev-libs/libfmt-9.1.0
-	>=dev-libs/unordered_dense-2.0.0 <dev-libs/unordered_dense-3.0.0
 	$(python_gen_cond_dep '
 		>=dev-python/pybind11-2.10[${PYTHON_USEDEP}]
 	')
 "
-
-DEPEND="
-	${RDEPEND}
+DEPEND="${RDEPEND}"
+BDEPEND="
+	>=dev-libs/libfmt-9.1.0
+	test? ( >=dev-cpp/catch-3.0.1 )
 "
 
 src_configure() {
 	python_setup
-	# SLANG_SHARED_LIB_NAME=svlang because of name collision
-	# https://github.com/MikePopoloski/slang/issues/646
 	local mycmakeargs=(
 		-D CMAKE_INSTALL_LIBDIR="${EPREFIX}/usr/$(get_libdir)"
 		-D BUILD_SHARED_LIBS=ON
 		-D SLANG_INCLUDE_PYLIB=$(usex python)
 		-D SLANG_INCLUDE_TESTS=$(usex test)
-		-D SLANG_SHARED_LIB_NAME="svlang"
+		-D SLANG_USE_MIMALLOC=OFF
 	)
 	cmake_src_configure
 }

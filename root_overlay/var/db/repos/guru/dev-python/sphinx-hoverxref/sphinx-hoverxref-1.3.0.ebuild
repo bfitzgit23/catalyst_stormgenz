@@ -1,9 +1,9 @@
-# Copyright 2022 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_10 )
+PYTHON_COMPAT=( python3_{10..12} )
 DISTUTILS_USE_PEP517=flit
 inherit distutils-r1
 
@@ -25,7 +25,6 @@ RDEPEND="
 BDEPEND="
 	test? (
 		dev-python/sphinxcontrib-bibtex[${PYTHON_USEDEP}]
-		dev-python/sphinx-testing[${PYTHON_USEDEP}]
 	)
 "
 

@@ -7,7 +7,7 @@ inherit gnome2-utils meson xdg
 
 DESCRIPTION="A GTK3 camera application that knows how to deal with the media request api"
 HOMEPAGE="https://git.sr.ht/~martijnbraam/megapixels"
-SRC_URI="https://gitlab.com/postmarketOS/megapixels/-/archive/${PV}/${P}.tar.gz"
+SRC_URI="https://gitlab.com/postmarketOS/megapixels/-/archive/${PV}/${P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -25,7 +25,6 @@ DEPEND="
 "
 
 RDEPEND="${DEPEND}"
-BDEPEND=""
 
 pkg_postinst() {
 	xdg_pkg_postinst

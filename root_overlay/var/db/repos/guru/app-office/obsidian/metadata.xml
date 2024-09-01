@@ -2,6 +2,10 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
+		<email>artemis@artemis.sh</email>
+		<name>Artemis Everfree</name>
+	</maintainer>
+	<maintainer type="person">
 		<email>rahul@sandhuservices.dev</email>
 		<name>Rahul Sandhu</name>
 	</maintainer>

@@ -10,8 +10,8 @@ HOMEPAGE="https://launchpad.net/gencfsm"
 SRC_URI="https://launchpad.net/gencfsm/trunk/${PV}/+download/${PN}_${PV}.tar.xz -> ${P}.tar.xz"
 
 LICENSE="GPL-2"
-KEYWORDS="~amd64 ~x86"
 SLOT="0"
+KEYWORDS="~amd64 ~x86"
 IUSE="+appindicator"
 
 DEPEND="
@@ -24,8 +24,8 @@ DEPEND="
 RDEPEND="${DEPEND}"
 BDEPEND="
 	$(vala_depend)
-	sys-devel/libtool
-	>=sys-devel/automake-1.11
+	dev-build/libtool
+	>=dev-build/automake-1.11
 	appindicator? ( dev-libs/libappindicator )
 	x11-libs/gtk+:3
 	>=dev-libs/glib-2

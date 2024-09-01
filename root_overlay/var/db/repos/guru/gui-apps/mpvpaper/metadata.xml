@@ -2,8 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<name>Matthias Coppens</name>
-		<email>coppens.matthias.abc@gmail.com</email>
+		<email>pastalian46@gmail.com</email>
+		<name>Takuya Wakazono</name>
 	</maintainer>
 	<longdescription lang="en">
 		MPVPaper is a wallpaper program for wlroots based wayland compositors,

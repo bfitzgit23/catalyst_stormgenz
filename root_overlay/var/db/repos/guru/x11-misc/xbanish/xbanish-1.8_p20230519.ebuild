@@ -12,10 +12,9 @@ COMMIT="189ce79b1df4eb4995980530ebc3d28715a67488"
 SRC_URI="https://github.com/jcs/${PN}/archive/${COMMIT}.tar.gz -> ${P}.tar.gz"
 S="${WORKDIR}/${PN}-${COMMIT}"
 
-KEYWORDS="~amd64"
 LICENSE="ISC"
 SLOT="0"
-IUSE=""
+KEYWORDS="~amd64"
 
 RDEPEND="
 	x11-libs/libX11

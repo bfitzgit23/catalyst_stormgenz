@@ -2,10 +2,20 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>1over137@anche.no</email>
+		<email>dev@notyourcomputer.net</email>
 		<name>Shaoyu Tseng</name>
 	</maintainer>
+	<maintainer type="person">
+		<email>watermanpaint@posteo.net</email>
+		<name>Lucio Sauer</name>
+	</maintainer>
 	<upstream>
+		<bugs-to>https://forums.ankiweb.net/c/anki/21</bugs-to>
+		<changelog>https://github.com/ankitects/anki/releases</changelog>
+		<doc>https://docs.ankiweb.net/</doc>
+		<maintainer status="active">
+			<name>Damien Elmes</name>
+		</maintainer>
 		<remote-id type="pypi">anki</remote-id>
 		<remote-id type="github">ankitects/anki</remote-id>
 	</upstream>

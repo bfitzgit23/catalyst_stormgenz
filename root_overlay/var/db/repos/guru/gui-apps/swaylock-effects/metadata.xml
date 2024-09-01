@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-    <maintainer type="person">
-        <name>Matthias Coppens</name>
-        <email>coppens.matthias.abc@gmail.com</email>
-    </maintainer>
+    <!-- maintainer-needed -->
     <use>
         <flag name="fish-completion">Enable fish completion support</flag>
         <flag name="gdk-pixbuf">Enable additional image format support via the <pkg>x11-libs/gdk-pixbuf</pkg> library</flag>
@@ -15,8 +12,8 @@
             <name>Martin Dørum</name>
             <email>martid0311@gmail.com</email>
         </maintainer>
-        <doc>https://github.com/mortie/swaylock-effects#effects</doc>
-        <remote-id type="github">mortie/swaylock-effects</remote-id>
-        <bugs-to>https://github.com/mortie/swaylock-effects/issues</bugs-to>
+        <doc>https://github.com/jirutka/swaylock-effects#effects</doc>
+        <remote-id type="github">jirutka/swaylock-effects</remote-id>
+        <bugs-to>https://github.com/jirutka/swaylock-effects/issues</bugs-to>
     </upstream>
 </pkgmetadata>

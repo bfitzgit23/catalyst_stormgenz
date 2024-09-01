@@ -12,12 +12,12 @@ DESCRIPTION="OpenBGPD is a free implementation of BGPv4"
 HOMEPAGE="http://www.openbgpd.org/index.html"
 SRC_URI="mirror://openbsd/OpenBGPD/${MY_P}.tar.gz"
 
+S="${WORKDIR}/${MY_P}"
+
 LICENSE="ISC"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
 
-DEPEND=""
 RDEPEND="
 	${DEPEND}
 	!!net-misc/quagga
@@ -25,10 +25,8 @@ RDEPEND="
 	acct-user/_bgpd
 "
 BDEPEND="
-	sys-devel/libtool
+	dev-build/libtool
 "
-
-S="${WORKDIR}/${MY_P}"
 
 src_install() {
 	default

@@ -1,15 +1,17 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_10 )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit gnome2-utils meson python-single-r1 xdg
 
 DESCRIPTION="A minimalist file manager for those who want to use Linux mobile devices"
 HOMEPAGE="https://github.com/tchx84/Portfolio"
 SRC_URI="https://github.com/tchx84/Portfolio/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+
+S="${WORKDIR}"/Portfolio-"${PV}"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -23,8 +25,6 @@ RDEPEND="
 	gui-libs/libhandy
 	x11-libs/gtk+
 "
-
-S="${WORKDIR}"/Portfolio-"${PV}"
 
 src_prepare() {
 	default

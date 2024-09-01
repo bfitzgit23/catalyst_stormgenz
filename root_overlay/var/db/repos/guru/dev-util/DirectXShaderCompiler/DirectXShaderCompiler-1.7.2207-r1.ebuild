@@ -18,16 +18,13 @@ https://github.com/KhronosGroup/SPIRV-Tools/archive/${SPIRV_TOOLS_COMMIT_MAGIC}.
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA BSD public-domain rc"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
 
 DEPEND="${PYTHON_DEPS}"
 RDEPEND="
 	sys-libs/zlib:0=
 	>=dev-libs/libffi-3.4.2-r1:0=
 "
-BDEPEND="dev-util/cmake
-	sys-devel/gnuconfig
-"
+BDEPEND="sys-devel/gnuconfig"
 
 CHECKREQS_MEMORY="4G"
 CHECKREQS_DISK_BUILD="4G"

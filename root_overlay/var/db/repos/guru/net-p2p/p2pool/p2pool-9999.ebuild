@@ -7,8 +7,6 @@ inherit cmake git-r3
 
 DESCRIPTION="Decentralized pool for Monero mining"
 HOMEPAGE="https://p2pool.io"
-
-SRC_URI=""
 EGIT_REPO_URI="https://github.com/SChernykh/p2pool.git"
 
 LICENSE="BSD GPL-3+ ISC LGPL-3+ MIT"
@@ -52,6 +50,6 @@ pkg_postinst() {
 	ewarn "You MUST use your primary address when using p2pool, just like solo mining."
 	ewarn "If you want privacy, create a new mainnet wallet for P2Pool mining."
 	ewarn ""
-	ewarn "Rewards will not be visibile unless you use a wallet that supports P2Pool."
+	ewarn "Rewards will not be visible unless you use a wallet that supports P2Pool."
 	ewarn "See https://p2pool.io/#help and https://github.com/SChernykh/p2pool for more information."
 }

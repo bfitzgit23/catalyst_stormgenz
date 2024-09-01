@@ -11,10 +11,7 @@ EGIT_REPO_URI="https://github.com/${PN}-portable/${PN}-portable.git"
 
 LICENSE="ISC"
 SLOT="0"
-KEYWORDS=""
-IUSE=""
 
-DEPEND=""
 RDEPEND="
 	${DEPEND}
 	!!net-misc/quagga
@@ -23,7 +20,7 @@ RDEPEND="
 "
 BDEPEND="
 	dev-util/byacc
-	sys-devel/libtool
+	dev-build/libtool
 "
 
 PATCHES=(

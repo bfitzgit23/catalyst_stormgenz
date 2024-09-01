@@ -1,9 +1,9 @@
-# Copyright 2022 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10,11} )
+PYTHON_COMPAT=( python3_{10..13} )
 inherit python-single-r1
 
 DESCRIPTION="Steam Play compatibility tool to run DOS games using native Linux DOSBox"
@@ -13,11 +13,10 @@ SRC_URI="https://github.com/dreamer/boxtron/archive/v${PV}.tar.gz -> ${P}.tar.gz
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 BDEPEND="
-	sys-devel/make
+	dev-build/make
 	app-arch/tar"
 
 RDEPEND="

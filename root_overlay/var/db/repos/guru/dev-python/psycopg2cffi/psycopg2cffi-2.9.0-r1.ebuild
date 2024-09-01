@@ -1,9 +1,9 @@
-# Copyright 2019-2023 Gentoo Authors
+# Copyright 2019-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..11} pypy3 )
+PYTHON_COMPAT=( python3_{10..12} pypy3 )
 DISTUTILS_USE_PEP517=setuptools
 inherit databases distutils-r1 edo
 
@@ -24,10 +24,8 @@ RDEPEND="
 	dev-python/six[${PYTHON_USEDEP}]
 "
 BDEPEND="
-	virtual/python-cffi[${PYTHON_USEDEP}]
-	test? (
-		$(epostgres --get-depend)
-	)
+	$(python_gen_cond_dep 'dev-python/cffi[${PYTHON_USEDEP}]' 'python*')
+	test? ( ${DATABASES_DEPEND[postgres]} )
 "
 
 PATCHES=( "${FILESDIR}"/${P}-include-tests.patch )

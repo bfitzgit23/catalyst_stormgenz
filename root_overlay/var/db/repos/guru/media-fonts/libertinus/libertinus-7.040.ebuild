@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -10,11 +10,12 @@ DESCRIPTION="Libertinus font"
 HOMEPAGE="https://github.com/alerque/libertinus"
 SRC_URI="https://github.com/alerque/libertinus/releases/download/v${PV}/${MY_PN}-${PV}.tar.xz -> ${P}.tar.xz"
 
+S="${WORKDIR}/${MY_PN}-${PV}"
+
 LICENSE="OFL-1.1"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
 DOCS="AUTHORS.txt CONTRIBUTING.md CONTRIBUTORS.txt FONTLOG.txt OFL.txt README.md"
-S="${WORKDIR}/${MY_PN}-${PV}"
 FONT_S="${S}/static/OTF"
 FONT_SUFFIX="otf"

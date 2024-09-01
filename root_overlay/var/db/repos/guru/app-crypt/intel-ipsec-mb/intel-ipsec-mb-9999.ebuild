@@ -25,31 +25,11 @@ BDEPEND="
 	>=dev-lang/nasm-2.13.03
 "
 
-PATCHES=( "${FILESDIR}/intel-ipsec-mb-1.3_remove-werror-and-O3.patch" )
-
 src_configure(){
-	tc-export CC LD AR
-}
-
-src_compile() {
-	local myconf=(
-		SAFE_DATA=$(usex safe-data y n)
-		SAFE_LOOKUP=$(usex safe-lookup y n)
-		SAFE_PARAM=$(usex safe-param y n)
+	local mycmakeargs=(
+		-DSAFE_DATA=$(usex safe-data)
+		-DSAFE_LOOKUP=$(usex safe-lookup)
+		-DSAFE_PARAM=$(usex safe-param)
 	)
-	emake "${myconf[@]}" EXTRA_CFLAGS="${CFLAGS}"
-}
-
-src_install() {
-	emake PREFIX="${ED}/usr" \
-		NOLDCONFIG=y \
-		LIB_INSTALL_DIR="${ED}/usr/$(get_libdir)" \
-		MAN_DIR="${ED}/usr/share/man/man7" \
-		install
-}
-
-src_test() {
-	cd "${S}/test"
-	LD_LIBRARY_PATH=../lib ./ipsec_MB_testapp -v
-	LD_LIBRARY_PATH=../lib ./ipsec_xvalid_test -v
+	cmake_src_configure
 }

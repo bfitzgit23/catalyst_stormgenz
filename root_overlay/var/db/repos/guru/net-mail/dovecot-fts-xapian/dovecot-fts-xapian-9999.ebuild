@@ -26,18 +26,19 @@ RDEPEND="
 	dev-libs/icu:=
 	>=dev-libs/xapian-1.4:=
 	net-mail/dovecot:=
+	dev-db/sqlite:*
 	"
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig"
 if [ "$PV" = 9999 ] ; then
 	BDPEND="${BDEPEND}
-		sys-devel/autoconf
-		sys-devel/autoconf-archive
+		dev-build/automake
+		dev-build/automake-archive
 	"
 fi
 
 PATCHES=(
-	${FILESDIR}/bug-887887_allow-O2-override.patch
+	"${FILESDIR}/bug-887887_allow-O2-override.patch"
 )
 
 src_prepare() {

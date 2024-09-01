@@ -5,16 +5,18 @@ EAPI=7
 
 inherit dotnet autotools
 
-SLOT="3"
 DESCRIPTION="gtk bindings for mono"
-LICENSE="GPL-2"
 HOMEPAGE="https://www.mono-project.com/docs/gui/gtksharp/"
-KEYWORDS="~amd64 ~ppc ~x86"
 SRC_URI="https://github.com/mono/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
-IUSE="debug"
-PATCHES=( "${FILESDIR}/${P}-fix-build.patch" )
 
+LICENSE="GPL-2"
+SLOT="3"
+KEYWORDS="~amd64 ~ppc ~x86"
+
+IUSE="debug"
 RESTRICT="test"
+
+PATCHES=( "${FILESDIR}/${P}-fix-build.patch" )
 
 RDEPEND="
 	>=dev-lang/mono-3.0
@@ -34,7 +36,7 @@ RDEPEND="
 	!dev-dotnet/atk-sharp"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
-	sys-devel/automake:1.11"
+	dev-build/automake:1.11"
 
 src_prepare() {
 	base_src_prepare

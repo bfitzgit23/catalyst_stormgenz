@@ -16,10 +16,10 @@ KEYWORDS="~amd64 ~x86"
 IUSE="nls test"
 RESTRICT="!test? ( test )"
 
-BDEPEND="sys-devel/autoconf
-		sys-devel/automake
-		sys-devel/libtool
-		sys-devel/make
+BDEPEND="dev-build/automake
+		dev-build/automake
+		dev-build/libtool
+		dev-build/make
 "
 RDEPEND="sys-libs/zlib
 		app-arch/bzip2

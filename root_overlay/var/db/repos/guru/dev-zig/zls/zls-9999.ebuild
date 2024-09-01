@@ -1,23 +1,39 @@
-# Copyright 2022-2023 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit edo git-r3
-
-EGIT_REPO_URI="https://github.com/zigtools/zls"
+inherit edo
 
 DESCRIPTION="The officially unofficial Ziglang language server"
 HOMEPAGE="https://github.com/zigtools/zls"
 
+if [[ ${PV} == 9999 ]]; then
+	EGIT_REPO_URI="https://github.com/zigtools/zls"
+	inherit git-r3
+
+	EZIG_MIN="9999"
+	EZIG_MAX_EXCLUSIVE="99991"
+	BDEPEND="dev-lang/zig:9999"
+else
+	SRC_URI="
+		https://github.com/zigtools/zls/archive/refs/tags/${PV}.tar.gz -> zls-${PV}.tar.gz
+		https://codeberg.org/BratishkaErik/distfiles/releases/download/zls-${PV}/zls-${PV}-deps.tar.xz
+		https://codeberg.org/BratishkaErik/distfiles/releases/download/zls-${PV}/zls-${PV}-version_data.tar.xz
+	"
+	KEYWORDS="~amd64"
+
+	EZIG_MIN="0.13"
+	EZIG_MAX_EXCLUSIVE="0.14"
+	BDEPEND="|| ( dev-lang/zig:${EZIG_MIN} dev-lang/zig-bin:${EZIG_MIN} )"
+fi
+
 LICENSE="MIT"
 SLOT="0"
 
-EZIG_MIN="9999"
-EZIG_MAX_EXCLUSIVE="99991"
+RDEPEND="${BDEPEND}"
 
-DEPEND="dev-lang/zig:${EZIG_MIN}"
-RDEPEND="${DEPEND}"
+DOCS=( README.md )
 
 # see https://github.com/ziglang/zig/issues/3382
 # For now, Zig Build System doesn't support CFLAGS/LDFLAGS/etc.
@@ -104,27 +120,38 @@ ezig() {
 }
 
 src_unpack() {
-	git-r3_src_unpack
-	cd "${S}" || die
-	# "zig build" doesn't have "fetch" subcommand yet
-	ezig build --help || die "Fetching Zig modules failed"
-	local ZLS_GEN_FLAGS="--generate-version-data master --generate-version-data-path version_data_offline.zig"
-	ezig build gen --verbose -- ${ZLS_GEN_FLAGS} || die "Pre-generating Zig version data failed"
+	if [[ ${PV} == 9999 ]]; then
+		git-r3_src_unpack
+
+		cd "${S}" || die
+		ezig build --fetch --global-cache-dir "${WORKDIR}/zig-eclass/" || die "Pre-fetching Zig modules failed"
+	else
+		default_src_unpack
+	fi
+}
+
+src_configure() {
+	export ZBS_ARGS=(
+		--prefix usr/
+		-Doptimize=ReleaseSafe
+		--system "${WORKDIR}/zig-eclass/p/"
+		--verbose
+	)
 }
 
 src_compile() {
-	ezig build -Doptimize=ReleaseSafe -Dversion_data_file_path=version_data_offline.zig --verbose || die
+	ezig build "${ZBS_ARGS[@]}"
 }
 
 src_test() {
-	ezig build test -Doptimize=ReleaseSafe -Dversion_data_file_path=version_data_offline.zig --verbose || die
+	ezig build test "${ZBS_ARGS[@]}"
 }
 
 src_install() {
-	DESTDIR="${ED}" ezig build install --prefix /usr -Doptimize=ReleaseSafe -Dversion_data_file_path=version_data_offline.zig --verbose || die
-	dodoc README.md
+	DESTDIR="${ED}" ezig build install "${ZBS_ARGS[@]}"
+	einstalldocs
 }
 
 pkg_postinst() {
-	elog "You can find more information about options here https://github.com/zigtools/zls#configuration-options"
+	elog "You can find more information about options here: https://github.com/zigtools/zls/wiki/Configuration"
 }

@@ -2,8 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>cyber+gentoo@sysrq.in</email>
-		<name>Anna</name>
+		<email>pastalian46@gmail.com</email>
+		<name>Takuya Wakazono</name>
 	</maintainer>
 	<upstream>
 		<remote-id type="github">scrapinghub/dateparser</remote-id>

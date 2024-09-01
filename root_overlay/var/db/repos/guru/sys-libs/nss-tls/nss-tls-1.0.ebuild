@@ -1,26 +1,28 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
+
+inherit meson systemd
 
 DESCRIPTION="A DNS over HTTPS resolver for glibc"
 HOMEPAGE="https://github.com/dimkr/nss-tls"
 SRC_URI="https://github.com/dimkr/nss-tls/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 
-inherit meson systemd
-
 LICENSE="LGPL-2.1"
+SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="systemd"
-SLOT="0"
 
 RDEPEND="dev-libs/glib
 		net-libs/libsoup"
 DEPEND="${RDEPEND}
 		sys-libs/glibc[nscd(+)]"
-BDEPEND="${DEPEND}
-		dev-util/meson
-		dev-util/ninja"
+BDEPEND="
+		${DEPEND}
+		app-alternatives/ninja
+		dev-build/meson
+"
 
 src_prepare() {
 			default

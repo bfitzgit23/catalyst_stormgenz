@@ -2,7 +2,10 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>cyber+gentoo@sysrq.in</email>
-		<name>Anna</name>
+		<email>nrk@disroot.org</email>
+		<name>NRK</name>
 	</maintainer>
+	<upstream>
+		<remote-id type="codeberg">jouni/mpv_sponsorblock_minimal</remote-id>
+	</upstream>
 </pkgmetadata>

@@ -16,11 +16,11 @@ KEYWORDS="-* ~amd64"
 
 IUSE="doc systemd"
 
-DEPEND="sys-devel/make
+DEPEND="dev-build/make
 	kernel_linux? ( virtual/linux-sources )"
 
 BDEPEND="sys-devel/gcc
-	sys-devel/make
+	dev-build/make
 	dev-vcs/git"
 
 RDEPEND="sys-libs/glibc"
@@ -33,18 +33,23 @@ MODULE_NAMES="corefreqk(misc:${S})"
 MODULESD_COREFREQK_ENABLED="yes"
 
 pkg_setup() {
-		get_version
-		require_configured_kernel
-		BUILD_PARAMS="KERNELDIR=/lib/modules/${KV_FULL}/build"
-		linux-mod_pkg_setup
+	get_version
+	require_configured_kernel
+	BUILD_PARAMS="KERNELDIR=/lib/modules/${KV_FULL}/build"
+	linux-mod_pkg_setup
 }
+
+QA_PREBUILT="
+	usr/bin/${PN}d
+	/usr/bin/${PN}-cli
+"
 
 src_install() {
 	linux-mod_src_install
 	dobin corefreqd corefreq-cli
 	newconfd "${FILESDIR}/${PN}.conf" "${PN}"
 	doinitd "${FILESDIR}/${PN}"
-	use systemd && systemd_dounit ${PN}.service
+	use systemd && systemd_dounit ${PN}d.service
 	use doc && dodoc README.md
 }
 

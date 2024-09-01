@@ -19,7 +19,7 @@ pushd /home/stormgenz
 mkdir -pv .config Desktop
 
 # User face image
-wget "https://dev.gentoo.org/~bkohler/livegui/face.icon.png" -O .face.icon
+cp /etc/skel/.face /home/stormgenz/.faace
 
 # Desktop icon setups
 #DESKTOP_APPS=( org.kde.konsole firefox org.kde.dolphin )
@@ -29,7 +29,7 @@ wget "https://dev.gentoo.org/~bkohler/livegui/face.icon.png" -O .face.icon
 
 popd
 # Clean up perms
-cp -aT /etc/skel/* /home/stormgenz
+cp -avRT /etc/skel/* /home/stormgenz
 
 groupadd -r autologin
 gpasswd -a stormgenz autologin
@@ -46,6 +46,8 @@ chage -E -1 lightdm
 LC_ALL=C xdg-user-dirs-update --force
 
 chown -R stormgenz:users /home/stormgenz
+
+plymouth-set-default-theme natural-gentoo-remastered
 
 # Let some tools run as root
 mkdir -p /etc/polkit-1/rules.d/

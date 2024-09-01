@@ -18,6 +18,8 @@ SRC_URI="
 	)
 "
 
+S="${WORKDIR}/Fairy-Stockfish-fairy_sf_${MY_PV}_xq/src"
+
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
@@ -32,9 +34,6 @@ DEPEND="
 	|| ( app-arch/unzip app-arch/zip )
 	test? ( dev-tcltk/expect )
 "
-RDEPEND=""
-
-S="${WORKDIR}/Fairy-Stockfish-fairy_sf_${MY_PV}_xq/src"
 
 src_unpack() {
 	unpack ${P}.tar.gz

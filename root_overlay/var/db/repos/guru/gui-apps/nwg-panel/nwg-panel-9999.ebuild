@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_12 )
 DISTUTILS_USE_PEP517=setuptools
 inherit desktop distutils-r1 systemd xdg-utils
 
@@ -19,9 +19,8 @@ fi
 DESCRIPTION="GTK3-based panel for sway and Hyprland Wayland compositors"
 HOMEPAGE="https://github.com/nwg-piotr/nwg-panel"
 LICENSE="MIT"
-IUSE="systemd"
-
 SLOT="0"
+IUSE="systemd"
 
 RDEPEND="
 	x11-libs/gtk+:3

@@ -2,8 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
     <maintainer type="person">
-        <email>coppens.matthias.abc@gmail.com</email>
-        <name>Matthias Coppens</name>
+        <email>dev@dyama.net</email>
+        <name>Daichi Yamamoto</name>
     </maintainer>
     <use>
         <flag name="X">Enable support for X11 applications (XWayland)</flag>

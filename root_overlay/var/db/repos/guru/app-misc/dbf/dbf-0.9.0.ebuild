@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Foundation
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -12,19 +12,19 @@ DESCRIPTION="Command line tool to read the content of dBASE III, IV, and 5.0 fil
 HOMEPAGE="https://github.com/rollinhand/dbf-core"
 SRC_URI="https://github.com/rollinhand/dbf-core/archive/${MY_COMMIT}.tar.gz -> ${P}.tgz"
 
+S="${WORKDIR}/${PN}-core-${MY_COMMIT}"
+
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="doc"
 
-RDEPEND=""
+RDEPEND="dev-libs/libdbf"
+
 DEPEND="${RDEPEND}
 	dev-perl/XML-Parser
-	dev-libs/libdbf
 	doc? ( app-text/docbook-sgml-utils )
 	virtual/pkgconfig"
-
-S="${WORKDIR}/${PN}-core-${MY_COMMIT}"
 
 src_prepare() {
 	default

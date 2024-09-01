@@ -1,9 +1,9 @@
-# Copyright 2022-2023 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 PYTHON_REQ_USE="ssl"
 DISTUTILS_USE_PEP517=poetry
 DISTUTILS_EXT=1
@@ -25,8 +25,8 @@ BDEPEND="
 	dev-python/cython[${PYTHON_USEDEP}]
 	dev-python/setuptools[${PYTHON_USEDEP}]
 	test? (
+		${DATABASES_DEPEND[mysql]}
 		dev-python/pytest-asyncio[${PYTHON_USEDEP}]
-		$(emysql --get-depend)
 	)
 "
 

@@ -9,7 +9,6 @@ DESCRIPTION="Music player with a waveform progress bar (sound visualization)"
 HOMEPAGE="https://nulloy.com"
 
 EGIT_REPO_URI="https://github.com/nulloy/nulloy"
-EGIT_CLONE_TYPE="shallow"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -31,6 +30,7 @@ DEPEND="
 	media-libs/gst-plugins-base
 	media-libs/taglib
 	media-plugins/gst-plugins-meta
+	media-gfx/imagemagick[svg]
 "
 RDEPEND="${DEPEND}"
 

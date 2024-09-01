@@ -26,10 +26,11 @@ Output:
 
 EOF
 
-			eerror "Unknown: Required library has no system version and is not bundled" && true
-			einfo  "Deleted: Library has been safely deleted in favor of a system version"
-			ewarn  "Bundled: Library has no system version but is bundled (verbose)"
-			ewarn  "Skipped: Library has a system version but remains bundled (verbose)"
+			eerror "Unknown:  Required library has no system version and is not bundled" && true
+			eerror "Mismatch: Required library has no 32-bit system version and is not bundled" && true
+			einfo  "Deleted:  Library has been safely deleted in favor of a system version"
+			ewarn  "Bundled:  Library has no system version but is bundled (verbose)"
+			ewarn  "Skipped:  Library has a system version but remains bundled (verbose)"
 
 			cat <<EOF
 
@@ -56,6 +57,9 @@ done
 should_ignore_dir() {
 	# Valve's runtimes should be self-contained and therefore ignored.
 	[[ ${1##*/} = SteamLinuxRuntime* ]] && return 0
+
+	# Proton is self-contained and containerised from around V5.13 onwards so ignore.
+	[[ ${1##*/} = Proton\ [0-9]* ]] && return 0
 
 	# Games or tools depending on a containerised runtime should be ignored.
 	grep -Exq '\s*"require_tool_appid"\s+"(1391110|1628350)"\s*' "$1"/toolmanifest.vdf 2>/dev/null && return 0
@@ -127,86 +131,6 @@ for DIR in "${!DIRS[@]}"; do
 			x86) SCAN_ARGS="-M 32" ;;
 			*) unset SCAN_ARGS ;;
 		esac
-
-		# Reverse sort so that EM_X86_64 is handled before EM_386. This
-		# ensures that if both a 32-bit and 64-bit JRE are found within
-		# the same directory then 64-bit will take precedence.
-		SCAN_RESULT=$(find "${COMMON}" -type f -name libjvm.so -exec scanelf ${SCAN_ARGS} -yBF $'%a\t%F' {} + | sort -r)
-
-		IFS=$'\n'
-		for SCAN_LINE in ${SCAN_RESULT}; do
-			IFS=$'\t' read EM SCANNED_PATH <<< "${SCAN_LINE}"
-
-			GAME=${SCANNED_PATH#${COMMON}}
-			GAME=${GAME%%/*}
-
-			if [[ ! -e ${SCANNED_PATH} || ${UNBUNDLEABLES_A[${GAME}]} != 1 ]]; then
-				continue
-			fi
-
-			JAVA_ROOT=$(realpath -m "${SCANNED_PATH%/*}"/../../..)
-			JAVA=$(! ls -- "${JAVA_ROOT}"/bin/java{,32,64} 2>/dev/null)
-
-			if [[ -n ${JAVA} ]]; then
-				GENTOO_JAVA="${COMMON}/${GAME}"/.gentoo-java
-
-				mkdir -p "${GENTOO_JAVA}"
-				echo "${JAVA//${COMMON}}" >> "${GENTOO_JAVA}"/bin
-
-				if [[ $(cat "${GENTOO_JAVA}"/em 2>/dev/null) != EM_X86_64 ]]; then
-					echo "${EM}" > "${GENTOO_JAVA}"/em
-				fi
-
-				chown -R --reference="${COMMON}" "${GENTOO_JAVA}"
-				chmod -R --reference="${COMMON}" "${GENTOO_JAVA}"
-				chmod a-sx "${GENTOO_JAVA}"/*
-
-				if [[ ${JAVA_ROOT} = ${COMMON}${GAME} ]]; then
-					rm -r "${JAVA_ROOT}"/{bin,lib}
-					einfo "Deleted: ${JAVA_ROOT}/{bin,lib} (Java)"
-				else
-					rm -r "${JAVA_ROOT}"
-					einfo "Deleted: ${JAVA_ROOT} (Java)"
-				fi
-			fi
-		done
-
-		unset IFS
-		for GENTOO_JAVA in "${COMMON}"/*/.gentoo-java; do
-			GAME=${GENTOO_JAVA%/*}
-			GAME=${GAME##*/}
-
-			EM=$(cat "${GENTOO_JAVA}"/em)
-			BINS=$(cat "${GENTOO_JAVA}"/bin | sed "s:^:${COMMON}:")
-			IFS=$'\n'
-
-			for BIN in ${BINS}; do
-				mkdir -p "${BIN%/*}"
-			done
-
-			if [[ ${EM} = EM_386 && ${ARCH} != x86 ]]; then
-				GAME_ATOMS[${GAME}]+=dev-java/icedtea-bin:8[abi_x86_32,multilib]$'\n'
-				cat <<EOF | tee ${BINS} >/dev/null
-#!@GENTOO_PORTAGE_EPREFIX@/bin/sh
-export GENTOO_VM=icedtea-bin-8-x86
-exec "@GENTOO_PORTAGE_EPREFIX@/usr/bin/java" "\${@}"
-EOF
-		else
-			GAME_ATOMS[${GAME}]+=virtual/jre:1.8$'\n'
-			cat <<EOF | tee ${BINS} >/dev/null
-#!@GENTOO_PORTAGE_EPREFIX@/bin/sh
-@GENTOO_PORTAGE_EPREFIX@/usr/bin/depend-java-query -s "virtual/jre:1.8" >/dev/null || export GENTOO_VM=\$(@GENTOO_PORTAGE_EPREFIX@/usr/bin/depend-java-query -v "virtual/jre:1.8")
-exec "@GENTOO_PORTAGE_EPREFIX@/usr/bin/java" "\${@}"
-EOF
-			fi
-
-			for BIN in ${BINS}; do
-				chown -R --reference="${COMMON}" "${BIN%/*}"
-				chmod -R --reference="${COMMON}" "${BIN%/*}"
-			done
-
-			chmod a-s ${BINS}
-		done
 
 		SCAN_RESULT=$(scanelf ${SCAN_ARGS} -yBRF $'%F\t%a\t%n' "${COMMON}")
 
@@ -298,12 +222,18 @@ EOF
 
 							if [[ ${EM} = EM_386 ]]; then
 								case "${NEEDED_ATOM}" in
-									"${GLIBC}["*) MULTILIB+=",stack-realign(+)" ;;
+									*@ABI64@*)
+										eerror "Mismatch: ${MSG}" && true
+										continue ;;
+									"${GLIBC}["*)
+										MULTILIB+=",stack-realign(+)" ;;
 								esac
 
 								if [[ ${ARCH} != x86 ]]; then
 									MULTILIB+=",multilib"
 								fi
+							else
+								ATOM=${ATOM//@ABI64@}
 							fi
 
 							ATOM=${ATOM//@MULTILIB@/${MULTILIB#,}}

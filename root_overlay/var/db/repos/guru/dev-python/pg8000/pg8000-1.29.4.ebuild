@@ -5,6 +5,8 @@ EAPI=8
 
 PYTHON_COMPAT=( python3_{10..11} )
 DISTUTILS_USE_PEP517=setuptools
+declare -A DATABASES_REQ_USE=( [postgres]="xml" )
+
 inherit databases distutils-r1 edo pypi
 
 DESCRIPTION="PostgreSQL interface library"
@@ -13,8 +15,8 @@ HOMEPAGE="
 	https://pypi.org/project/pg8000/
 "
 
-SLOT="0"
 LICENSE="BSD"
+SLOT="0"
 KEYWORDS="~amd64"
 
 RDEPEND="
@@ -24,8 +26,7 @@ RDEPEND="
 BDEPEND="
 	dev-python/versioningit[${PYTHON_USEDEP}]
 	test? (
-		$(python_gen_impl_dep "ssl")
-		$(epostgres --get-depend "xml")
+		${DATABASES_DEPEND[postgres]}
 		dev-python/pytest-mock[${PYTHON_USEDEP}]
 		dev-python/pytz[${PYTHON_USEDEP}]
 	)

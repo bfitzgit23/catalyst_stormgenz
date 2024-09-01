@@ -2,10 +2,6 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 <maintainer type="person">
-	<email>cyber+gentoo@sysrq.in</email>
-	<name>Anna</name>
-</maintainer>
-<maintainer type="person">
 	<email>alarig@swordarmor.fr</email>
 	<name>Alarig Le Lay</name>
 </maintainer>
@@ -21,7 +17,6 @@
 	secure communications.
 </longdescription>
 <use>
-	<flag name="fribidi">Use <pkg>dev-libs/fribidi</pkg> for bidirectional text</flag>
 	<flag name="harfbuzz">Use <pkg>media-libs/harfbuzz</pkg> to shape text</flag>
 </use>
 <upstream>

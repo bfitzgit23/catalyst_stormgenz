@@ -1,15 +1,17 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10,11} )
+PYTHON_COMPAT=( python3_{10..13} )
 
 inherit autotools prefix python-any-r1 xdg
 
 DESCRIPTION="A limit-removing enhanced-resolution Doom source port based on Chocolate Doom"
 HOMEPAGE="https://github.com/fabiangreffrath/crispy-doom"
 SRC_URI="https://github.com/fabiangreffrath/${PN}/archive/${P}.tar.gz"
+
+S="${WORKDIR}"/${PN}-${P}
 
 LICENSE="BSD GPL-2+"
 SLOT="0"
@@ -28,8 +30,6 @@ RDEPEND="${DEPEND}"
 BDEPEND="
 	${PYTHON_DEPS}
 	doc? ( ${PYTHON_DEPS} )"
-
-S="${WORKDIR}"/${PN}-${P}
 
 DOCS=(
 	"AUTHORS"

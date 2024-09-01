@@ -15,6 +15,8 @@ else
 	KEYWORDS="~amd64"
 fi
 
+S="${WORKDIR}/${PN}-${MYPV}"
+
 LICENSE="GPL-3"
 SLOT="0"
 
@@ -28,10 +30,8 @@ BDEPEND="
 	dev-util/intltool
 	sys-devel/bison
 	>=sys-devel/gcc-8.1
-	sys-devel/libtool
+	dev-build/libtool
 "
-
-S="${WORKDIR}/${PN}-${MYPV}"
 
 src_prepare() {
 	default

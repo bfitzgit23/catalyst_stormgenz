@@ -1,29 +1,30 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-EGIT_REPO_URI="https://github.com/dimkr/nss-tls.git"
-DESCRIPTION="A DNS over HTTPS resolver for glibc"
-HOMEPAGE="https://github.com/dimkr/nss-tls"
-
 inherit git-r3 meson systemd
 
+DESCRIPTION="A DNS over HTTPS resolver for glibc"
+HOMEPAGE="https://github.com/dimkr/nss-tls"
+EGIT_REPO_URI="https://github.com/dimkr/nss-tls.git"
+EGIT_BRANCH="master"
+
 S="${WORKDIR}/${PN}-9999"
+
 LICENSE="LGPL-2.1"
-IUSE="systemd"
 SLOT="0"
+IUSE="systemd"
 
 RDEPEND="dev-libs/glib
 		net-libs/libsoup"
 DEPEND="${RDEPEND}
 		sys-libs/glibc[nscd(+)]"
-BDEPEND="${DEPEND}
-		dev-util/meson
-		dev-util/ninja"
-
-EGIT_REPO_URI="https://github.com/dimkr/nss-tls.git"
-EGIT_BRANCH="master"
+BDEPEND="
+		${DEPEND}
+		app-alternatives/ninja
+		dev-build/meson
+"
 
 src_prepare() {
 			default

@@ -11,7 +11,6 @@ EGIT_REPO_URI="https://github.com/dh4/mupen64plus-qt"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS=""
 
 RDEPEND="
 	dev-qt/qtcore:5
@@ -19,7 +18,7 @@ RDEPEND="
 	dev-qt/qtxml:5
 	dev-qt/qtsql:5
 	dev-qt/qtwidgets:5
-	dev-libs/quazip
+	|| ( <dev-libs/quazip-1.3 >=dev-libs/quazip-1.3[qt5] )
 "
 DEPEND=">=games-emulation/mupen64plus-core-2.5
 		${RDEPEND}"

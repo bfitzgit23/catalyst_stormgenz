@@ -1,10 +1,10 @@
-# Copyright 2022-2023 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 PYPI_NO_NORMALIZE=1
 PYPI_PN="Mastodon.py"
 inherit distutils-r1 optfeature pypi
@@ -38,6 +38,12 @@ BDEPEND="
 		dev-python/vcrpy[${PYTHON_USEDEP}]
 	)
 "
+
+EPYTEST_DESELECT=(
+	# something related to simplejson
+	tests/test_notifications.py::test_notifications_dismiss_pre_2_9_2
+	tests/test_status.py::test_status_card_pre_2_9_2
+)
 
 distutils_enable_tests pytest
 

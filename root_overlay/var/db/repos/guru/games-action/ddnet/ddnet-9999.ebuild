@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=(python3_{9..12})
 
 inherit cargo git-r3 cmake python-any-r1 xdg
 
@@ -21,10 +21,10 @@ EGIT_SUBMODULES=()
 LICENSE="CC-BY-SA-3.0 OFL-1.1 BSD"
 SLOT="0"
 IUSE="antibot autoupdate +client download-gtest headless-client +inform-update +server +tools upnp +videorecorder vulkan websockets"
-KEYWORDS=""
 
 DEPEND="
 	client? (
+		media-libs/libglvnd
 		media-libs/freetype
 		media-libs/glew
 		media-libs/libogg
@@ -39,6 +39,7 @@ DEPEND="
 	)
 	dev-libs/openssl
 	dev-db/sqlite
+	dev-libs/glib
 	download-gtest? (
 		dev-cpp/gtest
 		dev-vcs/git
@@ -54,7 +55,6 @@ DEPEND="
 RDEPEND="${DEPEND}"
 BDEPEND="
 	>=dev-lang/python-3.9
-	dev-util/cmake
 	dev-util/glslang
 	dev-util/spirv-tools
 "
@@ -68,7 +68,7 @@ src_unpack() {
 	cargo_live_src_unpack
 }
 
-src_configure(){
+src_configure() {
 	local mycmakeargs=(
 		-DANTIBOT=$(usex antibot ON OFF)
 		-DAUTOUPDATE=$(usex autoupdate ON OFF)

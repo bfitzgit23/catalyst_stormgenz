@@ -2,8 +2,12 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person">
-		<email>rmicielski@purelymail.com</email>
-		<name>Remigiusz Micielski</name>
+		<email>mia@xenialinux.com</email>
+		<name>Mia Neufeld</name>
+	</maintainer>
+	<maintainer type="person">
+		<name>Gonçalo Negrier Duarte</name>
+		<email>gonegrier.duarte@gmail.com</email>
 	</maintainer>
 	<upstream>
 		<doc lang="en">https://wiki.hyprland.org/hyprland-wiki/pages/Useful-Utilities/Hyprland-desktop-portal/</doc>
