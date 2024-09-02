@@ -245,5 +245,5 @@ livecd/packages:
 	media-fonts/joypixels
 	media-fonts/fontawesome
 	media-fonts/corefonts
-	x11-terms/alacrity
+	x11-terms/alacritty
 	x11-misc/picom
