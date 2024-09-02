@@ -1,2 +1,2 @@
-# catalyast-xinnixOS
-Gentoo spec files for making XinnixOS XFCE
+# catalyast-Stormgenz
+Gentoo spec files for making Stormgenz XFCE
