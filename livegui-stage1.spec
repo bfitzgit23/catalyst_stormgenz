@@ -86,6 +86,7 @@ livecd/packages:
 	dev-lang/perl
 	dev-lang/python
 	dev-lang/ruby
+	dev-ruby/bundler
 #	Gone until it supports python3_10
 #	dev-util/kdevelop-python
 	dev-vcs/git
