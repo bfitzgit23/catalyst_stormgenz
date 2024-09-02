@@ -33,6 +33,7 @@ livecd/use:
 	plymouth
         widgets
 	build
+	-smtp
 
 livecd/packages:
 	app-admin/hddtemp
@@ -84,6 +85,7 @@ livecd/packages:
 	app-vim/gentoo-syntax
 	dev-lang/perl
 	dev-lang/python
+	dev-lang/ruby
 #	Gone until it supports python3_10
 #	dev-util/kdevelop-python
 	dev-vcs/git
@@ -243,3 +245,5 @@ livecd/packages:
 	media-fonts/joypixels
 	media-fonts/fontawesome
 	media-fonts/corefonts
+	x11-terms/alacrity
+	x11-misc/picom

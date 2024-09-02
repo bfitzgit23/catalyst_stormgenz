@@ -23,6 +23,7 @@ livecd/readme: Welcome to StormGenZ, making Gentoo GNU/Linux easy for anyone, pr
 livecd/motd: "Welcome to StormGenZ"
 livecd/users: stormgenz-user
 livecd/xsession: xfce
+livecd/overlay: /home/bennji/catalyst_stormgenz/root_overlay
 
 livecd/fsscript: /home/bennji/catalyst_stormgenz/stage2.sh
 livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default lightdm|default cupsd|default sshd|default ntpd|default syslog-ng|default cronie|default bluetooth|&lt;/nowikidefault samba&lt;nowiki&gt;|default

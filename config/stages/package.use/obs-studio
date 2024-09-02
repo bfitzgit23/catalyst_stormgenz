@@ -1,0 +1,5 @@
+media-video/obs-studio nvenc browser decklink v4l
+# required by media-video/obs-studio-30.2.3::gentoo
+# required by @selected
+# required by @world (argument)
+>=media-video/ffmpeg-6.1.1-r8 nvenc
