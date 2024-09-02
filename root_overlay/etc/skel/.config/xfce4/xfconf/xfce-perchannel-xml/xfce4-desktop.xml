@@ -58,8 +58,8 @@
     <property name="single-workspace-mode" type="bool" value="false"/>
   </property>
   <property name="last" type="empty">
-    <property name="window-width" type="int" value="610"/>
-    <property name="window-height" type="int" value="552"/>
+    <property name="window-width" type="int" value="633"/>
+    <property name="window-height" type="int" value="576"/>
   </property>
   <property name="desktop-icons" type="empty">
     <property name="file-icons" type="empty">

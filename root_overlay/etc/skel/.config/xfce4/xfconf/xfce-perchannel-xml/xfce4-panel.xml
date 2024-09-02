@@ -5,9 +5,10 @@
   <property name="panels" type="array">
     <value type="int" value="1"/>
     <value type="int" value="2"/>
+    <value type="int" value="3"/>
     <property name="dark-mode" type="bool" value="true"/>
     <property name="panel-1" type="empty">
-      <property name="position" type="string" value="p=6;x=0;y=0"/>
+      <property name="position" type="string" value="p=8;x=960;y=1063"/>
       <property name="length" type="double" value="100"/>
       <property name="position-locked" type="bool" value="true"/>
       <property name="icon-size" type="uint" value="0"/>
@@ -19,7 +20,9 @@
         <value type="int" value="5"/>
         <value type="int" value="7"/>
         <value type="int" value="6"/>
+        <value type="int" value="15"/>
         <value type="int" value="8"/>
+        <value type="int" value="14"/>
         <value type="int" value="9"/>
         <value type="int" value="11"/>
         <value type="int" value="12"/>
@@ -36,8 +39,8 @@
       <property name="span-monitors" type="bool" value="false"/>
     </property>
     <property name="panel-2" type="empty">
-      <property name="position" type="string" value="p=12;x=918;y=1055"/>
-      <property name="size" type="uint" value="48"/>
+      <property name="position" type="string" value="p=1;x=1895;y=494"/>
+      <property name="size" type="uint" value="68"/>
       <property name="position-locked" type="bool" value="true"/>
       <property name="background-style" type="uint" value="1"/>
       <property name="background-rgba" type="array">
@@ -47,10 +50,29 @@
         <value type="double" value="0.55067567567567566"/>
       </property>
       <property name="length" type="double" value="1"/>
-      <property name="autohide-behavior" type="uint" value="0"/>
+      <property name="autohide-behavior" type="uint" value="2"/>
       <property name="plugin-ids" type="array">
-        <value type="int" value="10"/>
+        <value type="int" value="16"/>
       </property>
+      <property name="mode" type="uint" value="1"/>
+    </property>
+    <property name="panel-3" type="empty">
+      <property name="position" type="string" value="p=11;x=851;y=25"/>
+      <property name="size" type="uint" value="35"/>
+      <property name="background-style" type="uint" value="1"/>
+      <property name="background-rgba" type="array">
+        <value type="double" value="0"/>
+        <value type="double" value="0"/>
+        <value type="double" value="0"/>
+        <value type="double" value="0.55067567567567566"/>
+      </property>
+      <property name="plugin-ids" type="array">
+        <value type="int" value="17"/>
+      </property>
+      <property name="length" type="double" value="1"/>
+      <property name="position-locked" type="bool" value="true"/>
+      <property name="mode" type="uint" value="0"/>
+      <property name="length-adjust" type="bool" value="true"/>
     </property>
   </property>
   <property name="plugins" type="empty">
@@ -70,12 +92,21 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-legacy-items" type="array">
+        <value type="string" value="lutris"/>
+        <value type="string" value="wi-fi network connection “spirit-of-76” active: spirit-of-76 (77%)"/>
+        <value type="string" value="wi-fi network connection “spirit-of-76” active: spirit-of-76 (76%)"/>
+        <value type="string" value="wi-fi network connection “spirit-of-76” active: spirit-of-76 (83%)"/>
+        <value type="string" value="notifications"/>
         <value type="string" value="wi-fi network connection “spirit-of-76” active: spirit-of-76 (90%)"/>
         <value type="string" value="wi-fi network connection “spirit-of-76” active: spirit-of-76 (82%)"/>
         <value type="string" value="notification-daemon"/>
         <value type="string" value="wi-fi network connection “spirit-of-76” active: spirit-of-76 (58%)"/>
       </property>
       <property name="known-items" type="array">
+        <value type="string" value="obs"/>
+        <value type="string" value="vlc"/>
+        <value type="string" value="qBittorrent"/>
+        <value type="string" value="flameshot"/>
         <value type="string" value="blueman"/>
         <value type="string" value="Optimus Manager Qt"/>
         <value type="string" value="steam"/>
@@ -85,7 +116,7 @@
     <property name="plugin-8" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
       <property name="show-notifications" type="bool" value="true"/>
-      <property name="known-players" type="string" value="firefox"/>
+      <property name="known-players" type="string" value="firefox;spotify;vlc"/>
     </property>
     <property name="plugin-9" type="string" value="power-manager-plugin"/>
     <property name="plugin-11" type="string" value="separator">
@@ -129,13 +160,16 @@
       <property name="hover-switch-category" type="bool" value="true"/>
       <property name="button-icon" type="string" value="distributor-logo-gentoo"/>
       <property name="recent" type="array">
-        <value type="string" value="firefox-esr.desktop"/>
-        <value type="string" value="discord.desktop"/>
-        <value type="string" value="xfce4-terminal.desktop"/>
         <value type="string" value="org.xfce.mousepad.desktop"/>
-        <value type="string" value="thunar.desktop"/>
+        <value type="string" value="gparted.desktop"/>
+        <value type="string" value="xfce-display-settings.desktop"/>
+        <value type="string" value="discord.desktop"/>
         <value type="string" value="steam.desktop"/>
-        <value type="string" value="io.optimus_manager.OptimusManagerQt.desktop"/>
+        <value type="string" value="net.lutris.Lutris.desktop"/>
+        <value type="string" value="com.obsproject.Studio.desktop"/>
+        <value type="string" value="winetricks.desktop"/>
+        <value type="string" value="x2goclient.desktop"/>
+        <value type="string" value="xfce-session-settings.desktop"/>
       </property>
       <property name="favorites" type="array">
         <value type="string" value="xfce4-web-browser.desktop"/>
@@ -183,6 +217,17 @@
         <property name="label1" type="int" value="9"/>
       </property>
     </property>
-    <property name="plugin-10" type="string" value="docklike"/>
+    <property name="plugin-14" type="string" value="separator">
+      <property name="expand" type="bool" value="false"/>
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-15" type="string" value="separator">
+      <property name="style" type="uint" value="0"/>
+    </property>
+    <property name="plugin-16" type="string" value="docklike"/>
+    <property name="plugin-17" type="string" value="tasklist">
+      <property name="show-tooltips" type="bool" value="false"/>
+      <property name="show-handle" type="bool" value="false"/>
+    </property>
   </property>
 </channel>
