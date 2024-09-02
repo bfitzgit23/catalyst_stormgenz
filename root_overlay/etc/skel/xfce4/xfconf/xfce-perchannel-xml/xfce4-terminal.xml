@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="xfce4-terminal" version="1.0">
+  <property name="misc-show-unsafe-paste-dialog" type="bool" value="false"/>
+  <property name="misc-default-geometry" type="string" value="97x30"/>
+  <property name="background-mode" type="string" value="TERMINAL_BACKGROUND_TRANSPARENT"/>
+  <property name="background-darkness" type="double" value="0.89000000000000001"/>
+  <property name="cell-width-scale" type="double" value="1.1000000000000001"/>
+  <property name="cell-height-scale" type="double" value="1"/>
+  <property name="font-name" type="string" value="Ubuntu Mono 18"/>
+  <property name="font-allow-bold" type="bool" value="true"/>
+</channel>

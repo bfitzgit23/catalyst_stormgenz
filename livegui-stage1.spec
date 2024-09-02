@@ -3,7 +3,7 @@ version_stamp: stormgenz-09-01-2024
 target: livecd-stage1
 rel_type: default
 profile: default/linux/amd64/23.0/desktop
-snapshot_treeish: 4a2b956e472e6109d38fe805a2058fb855b419c7 
+snapshot_treeish: c34f7dd28806f83646e35a497a6e48f777e9de3c
 source_subpath: default/stage3-amd64-openrc-latest.tar.xz
 compression_mode: pixz
 portage_confdir: /home/bennji/catalyst_stormgenz/config/stages
@@ -33,7 +33,7 @@ livecd/use:
 	plymouth
         widgets
 	build
-	-smtp
+	-ruby31
 
 livecd/packages:
 	app-admin/hddtemp
@@ -87,6 +87,7 @@ livecd/packages:
 	dev-lang/python
 	dev-lang/ruby
 	dev-ruby/bundler
+	dev-ruby/em-websocket
 #	Gone until it supports python3_10
 #	dev-util/kdevelop-python
 	dev-vcs/git
@@ -229,7 +230,6 @@ livecd/packages:
  	xfce-base/xfce4-meta
 	dev-qt/qtstyleplugins
 	media-video/vlc
-	mail-client/thunderbird-bin
 	x11-themes/adwaita-icon-theme
 	x11-themes/gtk-engines-adwaita
  	media-gfx/flameshot

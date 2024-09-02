@@ -2,8 +2,8 @@ subarch: amd64
 version_stamp: stormgenz-09-01-2024
 target: livecd-stage2
 rel_type: default
-profile: default/linux/amd64/23.0/desktop
-snapshot_treeish: 4a2b956e472e6109d38fe805a2058fb855b419c7
+profile: 2default/linux/amd64/23.0/desktop
+snapshot_treeish: c34f7dd28806f83646e35a497a6e48f777e9de3c
 source_subpath: default/livecd-stage1-amd64-xfce-latest
 portage_confdir: /home/bennji/catalyst_stormgenz/config/stages
 repos: /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/guru
