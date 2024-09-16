@@ -201,6 +201,9 @@ livecd/packages:
 	www-client/firefox-bin
 	x11-misc/lightdm-gtk-greeter
 	x11-misc/lightdm
+ 	gnome-base/gnome-common
+  	sys-auth/polkit
+   	sys-auth/polkit-gnome
 	xfce-base/thunar-volman
 	xfce-extra/thunar-archive-plugin
 	xfce-extra/thunar-media-tags-plugin
