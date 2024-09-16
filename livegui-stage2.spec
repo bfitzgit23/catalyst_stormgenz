@@ -1,5 +1,5 @@
 subarch: amd64
-version_stamp: stormgenz-09-01-2024
+version_stamp: stormgenz-09-15-2024
 target: livecd-stage2
 rel_type: default
 profile: 2default/linux/amd64/23.0/desktop
@@ -18,7 +18,7 @@ livecd/depclean: no
 livecd/fstype: squashfs
 livecd/iso: StormGenz_latest.iso
 livecd/type: gentoo-release-livecd
-livecd/volid: StormGenZ_LiveDVD_09-01-2024
+livecd/volid: StormGenZ_LiveDVD_09-15-2024
 livecd/readme: Welcome to StormGenZ, making Gentoo GNU/Linux easy for anyone, pro or newbie! Containing the famous calamares installer, a highly customized XFCE desktop, bash aliases in the users .bashrc in their home directory, oh-my-bash to simplify bash usage and more!
 livecd/motd: "Welcome to StormGenZ"
 livecd/users: gentoo
