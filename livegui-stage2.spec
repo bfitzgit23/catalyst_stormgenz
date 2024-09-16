@@ -21,8 +21,9 @@ livecd/type: gentoo-release-livecd
 livecd/volid: StormGenZ_LiveDVD_09-01-2024
 livecd/readme: Welcome to StormGenZ, making Gentoo GNU/Linux easy for anyone, pro or newbie! Containing the famous calamares installer, a highly customized XFCE desktop, bash aliases in the users .bashrc in their home directory, oh-my-bash to simplify bash usage and more!
 livecd/motd: "Welcome to StormGenZ"
-livecd/users: stormgenz-user
+livecd/users: gentoo
 livecd/xsession: xfce
+livecd/xdm: lightdm
 livecd/overlay: /home/bennji/catalyst_stormgenz/root_overlay
 
 livecd/fsscript: /home/bennji/catalyst_stormgenz/stage2.sh
