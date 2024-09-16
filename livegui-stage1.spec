@@ -203,7 +203,7 @@ livecd/packages:
 	x11-misc/lightdm
  	gnome-base/gnome-common
   	sys-auth/polkit
-   	sys-auth/polkit-gnome
+   	gnome-extra/polkit-gnome
 	xfce-base/thunar-volman
 	xfce-extra/thunar-archive-plugin
 	xfce-extra/thunar-media-tags-plugin
