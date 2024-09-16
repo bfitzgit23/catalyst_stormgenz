@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo Running StormGenz stage2 fsscript ...
+echo Running gentoo stage2 fsscript ...
 
 source /etc/profile
 env-update
@@ -14,12 +14,12 @@ echo "[main]
 plugins=keyfile 
 hostname-mode=none" > /etc/NetworkManager/NetworkManager.conf
 
-# Set up stormgenz user
-pushd /home/stormgenz
+# Set up gentoo user
+pushd /home/gentoo
 mkdir -pv .config Desktop
 
 # User face image
-cp /etc/skel/.face /home/stormgenz/.faace
+cp /etc/skel/.face /home/gentoo/.faace
 
 # Desktop icon setups
 #DESKTOP_APPS=( org.kde.konsole firefox org.kde.dolphin )
@@ -29,23 +29,23 @@ cp /etc/skel/.face /home/stormgenz/.faace
 
 popd
 # Clean up perms
-cp -avRT /etc/skel/* /home/stormgenz
+cp -avRT /etc/skel/* /home/gentoo
 
 groupadd -r autologin
-gpasswd -a stormgenz autologin
+gpasswd -a gentoo autologin
 
 groupadd -r nopasswdlogin
-gpasswd -a stormgenz nopasswdlogin
+gpasswd -a gentoo nopasswdlogin
 
-cp -af /usr/share/applications/calamares.desktop /home/stormgenz/Desktop/calamares.desktop
-chown stormgenz:users /home/stormgenz/Desktop/calamares.desktop
-chmod +x /home/stormgenz/Desktop/calamares.desktop
+cp -af /usr/share/applications/calamares.desktop /home/gentoo/Desktop/calamares.desktop
+chown gentoo:users /home/gentoo/Desktop/calamares.desktop
+chmod +x /home/gentoo/Desktop/calamares.desktop
 
 chage -E -1 lightdm
 
 LC_ALL=C xdg-user-dirs-update --force
 
-chown -R stormgenz:users /home/stormgenz
+chown -R gentoo:users /home/gentoo
 
 plymouth-set-default-theme natural-gentoo-remastered
 
