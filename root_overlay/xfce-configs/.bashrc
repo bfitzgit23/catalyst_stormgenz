@@ -5,7 +5,7 @@ case $- in
 esac
 
 # Path to your oh-my-bash installation.
-export OSH='/home/bennji/.oh-my-bash'
+export OSH='~/.oh-my-bash'
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-bash is loaded.
@@ -78,6 +78,10 @@ OMB_USE_SUDO=true
 # To enable/disable display of Python virtualenv and condaenv
 # OMB_PROMPT_SHOW_PYTHON_VENV=true  # enable
 # OMB_PROMPT_SHOW_PYTHON_VENV=false # disable
+
+# To enable/disable Spack environment information
+# OMB_PROMPT_SHOW_SPACK_ENV=true  # enable
+# OMB_PROMPT_SHOW_SPACK_ENV=false # disable
 
 # Which completions would you like to load? (completions can be found in ~/.oh-my-bash/completions/*)
 # Custom completions may be added to ~/.oh-my-bash/custom/completions/

@@ -49,6 +49,7 @@
     <property name="plugin-6" type="string" value="systray">
       <property name="square-icons" type="bool" value="true"/>
       <property name="known-items" type="array">
+        <value type="string" value="vlc"/>
         <value type="string" value="blueman"/>
       </property>
       <property name="known-legacy-items" type="array">
@@ -72,6 +73,7 @@
     <property name="plugin-1" type="string" value="power-manager-plugin"/>
     <property name="plugin-4" type="string" value="pulseaudio">
       <property name="enable-keyboard-shortcuts" type="bool" value="true"/>
+      <property name="known-players" type="string" value="vlc"/>
     </property>
     <property name="plugin-9" type="string" value="weather">
       <property name="location" type="empty">
@@ -121,7 +123,11 @@
       <property name="button-icon" type="string" value="/usr/share/pixmaps/gentoo/misc/10389-gentoo-g-transparent.png"/>
       <property name="hover-switch-category" type="bool" value="true"/>
       <property name="recent" type="array">
+        <value type="string" value="qt6ct.desktop"/>
+        <value type="string" value="xfce4-power-manager-settings.desktop"/>
+        <value type="string" value="vlc.desktop"/>
         <value type="string" value="rustdesk.desktop"/>
+        <value type="string" value="kvantummanager.desktop"/>
         <value type="string" value="firefox.desktop"/>
         <value type="string" value="plank.desktop"/>
         <value type="string" value="xfce-session-settings.desktop"/>

@@ -8,10 +8,12 @@
   <property name="cell-height-scale" type="double" value="1.1000000000000001"/>
   <property name="misc-default-geometry" type="string" value="90x30"/>
   <property name="font-name" type="string" value="DejaVu Sans Mono 18"/>
-  <property name="color-palette" type="string" value="rgb(0,0,0);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255);rgb(85,85,255)"/>
-  <property name="color-foreground" type="string" value="#55555555ffff"/>
+  <property name="color-palette" type="string" value="rgb(0,0,0);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141);rgb(95,76,141)"/>
+  <property name="color-foreground" type="string" value="#ffffffffffff"/>
   <property name="dropdown-show-borders" type="bool" value="false"/>
   <property name="dropdown-status-icon" type="bool" value="false"/>
   <property name="dropdown-keep-open-default" type="bool" value="true"/>
   <property name="dropdown-toggle-focus" type="bool" value="true"/>
+  <property name="color-use-theme" type="bool" value="false"/>
+  <property name="color-background-vary" type="bool" value="false"/>
 </channel>
