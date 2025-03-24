@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Gentoo Package Manager
 Comment=GUI Package Manager for Gentoo
-Exec=sudo /usr/bin/gentoo-pkg-manager.sh
+Exec=/usr/bin/gentoo-pkg-manager.sh
 Icon=/usr/share/pixmaps/gentoo/misc/10389-gentoo-g-transparent.png
 Terminal=false
 Type=Application
