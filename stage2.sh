@@ -20,6 +20,13 @@ hostname-mode=none" > /etc/NetworkManager/NetworkManager.conf
 name=$(ls -1 /home/gentoo)
 REAL_NAME=/home/gentoo
 
+groupadd vboxusers
+groupadd vmware
+groupadd vboxguest
+groupadd ntp
+
+useradd -m -p "" -G "adm,audio,wheel,cdrom,usb,video,power,games,users,vboxusers,vboxguest,vmware,kvm,storage,rfkill,ntp" -s /bin/bash gentoo
+chown -R gentoo:gentoo /home/gentoo
 pushd /home/gentoo
 mkdir -pv .config Desktop .local .oh-my-bash .cache/oh-my-bash
 
@@ -79,7 +86,7 @@ cp -af /usr/share/applications/gentoo-pkg-manager.desktop /home/gentoo/Desktop/g
 chown -R gentoo:users /home/gentoo/Desktop/gentoo-pkg-manager.desktop
 chmod +x /home/gentoo/Desktop/gentoo-pkg-manager.desktop
 
-
+groupadd lightdm
 
 chage -E -1 lightdm
 
