@@ -1,9 +1,0 @@
-# This file is deprecated as per GLEP 56 in favor of metadata.xml.
-# Please add your descriptions to your package's metadata.xml ONLY.
-# * generated automatically using pmaint *
-
-games-util/steam-launcher:desktop-portal - Enable desktop integration, e.g. for file pickers
-games-util/steam-launcher:dialogs - Support additional dialogs before the client starts
-games-util/steam-launcher:steamruntime - Use the official Steam runtime libraries
-games-util/steam-launcher:steamvr - Enable SteamVR virtual reality support
-games-util/steam-launcher:trayicon - Enable system tray icon

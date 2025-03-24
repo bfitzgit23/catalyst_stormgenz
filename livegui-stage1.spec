@@ -8,10 +8,10 @@ source_subpath: default/stage3-amd64-openrc-latest.tar.xz
 compression_mode: pixz
 portage_confdir: /home/ben/Desktop/catalyst_stormg/config/stages
 repos: /home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/guru
-/home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/tezeta
-/home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/tatsh-overlay
-/home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/edgets
-/home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/steam-overlay
+/home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/tezeta
+/home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/tatsh-overlay
+/home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/edgets
+/home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/steam-overlay
 
 livecd/use:
 	-aac

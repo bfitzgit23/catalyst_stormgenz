@@ -27,7 +27,7 @@ mkdir -pv .config Desktop .local .oh-my-bash .cache/oh-my-bash
 
 cp -rv /xfce-configs/.config/* /home/gentoo/.config
 cp -rv /xfce-configs/.oh-my-bash/* /home/gentoo/.oh-my-bash/
-cp -rv /xfce-configs.cache/oh-my-bash/* /home/gentoo/.cache/oh-my-bash/
+cp -rv /xfce-configs/.cache/oh-my-bash/* /home/gentoo/.cache/oh-my-bash/
 
 cp -r /xfce-configs/.bashrc /home/gentoo/.bashrc
 cp -r /xfce-configs/.bashrc /root
@@ -57,7 +57,7 @@ chown -R gentoo:gentoo /home/gentoo/.config
 chown -R gentoo:gentoo /home/gentoo/*
 
 # User face image
-cp /xfce-configs/.face /home/gentoo/.face
+cp /root_overlay/xfce-configs/.face /home/gentoo/.face
 
 # Desktop icon setups
 DESKTOP_APPS=( firefox chromium calamares )

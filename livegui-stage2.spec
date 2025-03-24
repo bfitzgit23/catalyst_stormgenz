@@ -5,12 +5,12 @@ rel_type: default
 profile: 2default/linux/amd64/23.0/desktop
 snapshot_treeish: b5449a876ab62c0424d1476d3716e8f8dc32876e
 source_subpath: default/livecd-stage1-amd64-stormg-22-03-2025
-portage_confdir: /home/ben/Desktop/catalyst_stormg//config/stages
-repos: /home/ben/Desktop/catalyst_stormg//root_overlay/var/db/repos/guru
-/home/ben/Desktop/catalyst_stormg//root_overlay/var/db/repos/tezeta
-/home/ben/Desktop/catalyst_stormg//root_overlay/var/db/repos/tatsh-overlay
-/home/ben/Desktop/catalyst_stormg//root_overlay/var/db/repos/edgets
-/home/ben/Desktop/catalyst_stormg//root_overlay/var/db/repos/steam-overlay
+portage_confdir: /home/ben/Desktop/catalyst_stormg/config/stages
+repos: /home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/guru
+/home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/tezeta
+/home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/tatsh-overlay
+/home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/edgets
+/home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/steam-overlay
 
 
 livecd/bootargs: overlayfs nodhcp dokeymap dodetect dousb quiet splash zram.num_devices=1
@@ -22,7 +22,8 @@ livecd/volid: StormGenZ_LiveDVD_22-03-2025
 livecd/readme: Welcome to StormG, making Gentoo GNU/Linux easy for anyone, pro or newbie! Containing the famous calamares installer, a highly customized XFCE desktop, bash aliases in the users .bashrc in their home directory, oh-my-bash to simplify bash usage and more!
 livecd/motd: "Welcome to StormG"
 livecd/users: gentoo
-livecd/overlay: /home/ben/Desktop/catalyst_stormg/root_overlay
+livecd/root_overlay: /home/ben/Desktop/catalyst_stormg/root_overlay
+livecd/overlay: /home/ben/Desktop/catalyst_stormg/overlay
 
 livecd/fsscript: /home/ben/Desktop/catalyst_stormg//stage2.sh
 livecd/rcadd: udev|sysinit udev-mount|sysinit acpid|default dbus|default gpm|default NetworkManager|default bluetooth|default elogind|boot alsasound|boot ntpd|default display-manager|default cupsd|default sshd|default ntpd|default syslog-ng|default cronie|default bluetooth|&lt;/nowikidefault samba&lt;nowiki&gt;|default

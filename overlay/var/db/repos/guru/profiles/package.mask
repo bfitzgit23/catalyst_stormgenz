@@ -1,0 +1,176 @@
+# Copyright 1999-2025 Gentoo Authors
+# Distributed under the terms of the GNU General Public License v2
+
+# Nowa Ammerlaan <nowa@gentoo.org> (2021-03-29)
+# James Beddek <telans@posteo.de> (2021-10-09)
+# Per profile masking in overlays is currently not working
+# with pkgcore/pkgdev/pkgcheck. Mask offending packages for all profiles
+# as a workaround that both makes repoman happy and works with
+# pkgcore/pkgdev/pkgcheck.
+# Sorry for the inconvenience.
+#
+# TODO: Either fix per profile masking in overlays, or move
+# relevant entries to the relevant package.mask files in ::gentoo
+
+# Note: Use the extended `Closes: https://bugs.gentoo.org/NNNN (pkgremoved)`
+# tag when treecleaning a package. The bug will automatically get closed with
+# the PKGREMOVED resolution.
+
+# New entries go on top.
+
+# Rahil Bhimjiani <me@rahil.rocks> (2025-03-17)
+# Not worth the hassle of maintaining
+# Removal on 2025-04-17
+www-apps/vaultwarden-web
+
+# Rahil Bhimjiani <me@rahil.rocks> (2025-03-17)
+# Not worth the hassle of maintaining
+# Removal on 2025-04-17
+app-admin/bitwarden-cli
+
+# David Roman <davidroman96@gmail.com> (2025-03-12)
+# It's just a Windows .exe with a wine wrapper
+# HOMEPAGE just points to a Wikipedia article
+# Removal on 2025-04-12
+games-strategy/swine
+games-strategy/ground-control
+games-rpg/sacred-demo
+
+# David Roman <davidroman96@gmail.com> (2025-03-12)
+# Uses deprecated EGO_SUM. Last release in 2019.
+# Unmaintained upstream + security vulnerabilities: 
+# 	- https://github.com/sqshq/sampler/issues/128
+# Removal on 2025-04-12
+sys-apps/sampler
+sys-apps/sampler-bin
+
+# David Roman <davidroman96@gmail.com> (2025-03-12)
+# Uses deprecated EGO_SUM. Last release in 2023.
+# Removal on 2025-05-12
+www-misc/gorss
+
+# Eric Joldasov <bratishkaerik@landless-city.net> (2025-03-05)
+# Unbuildable now. Required Zig version diverged a lot, now seems like
+# it requires so called "Mach-nominated" version (somewhere between
+# stable and 9999). Gentoo does not provide such versions.
+# Removal on 2025-04-05.
+dev-debug/uscope
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU.
+# Removal on 2025-04-05.
+media-fonts/twemoji
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #901337.
+# Removal on 2025-04-05.
+net-libs/td
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU.
+# Removal on 2025-04-05.
+www-apps/snac
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left.
+# Removal on 2025-04-05.
+dev-python/zopfli
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left.
+# Removal on 2025-04-05.
+dev-python/webpy
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left.
+# Removal on 2025-04-05.
+dev-python/trailrunner
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #884687.
+# Removal on 2025-04-05.
+dev-python/stdlibs
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps.
+# Removal on 2025-04-05.
+dev-python/sphinx-argparse-cli
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #931931.
+# Removal on 2025-04-05.
+dev-python/pyodbc
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left.
+# Removal on 2025-04-05.
+dev-python/pykeepass
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #928257, #928265.
+# Removal on 2025-04-05.
+dev-python/pg8000
+dev-python/scramp
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps.
+# Removal on 2025-04-05.
+dev-python/opentype-sanitizer
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps.
+# Removal on 2025-04-05.
+dev-python/notion-client
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #921892.
+# Removal on 2025-04-05.
+dev-python/jupyter-sphinx
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left.
+# Removal on 2025-04-05.
+dev-python/baron
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #921776.
+# Removal on 2025-04-05.
+dev-python/asyncmy
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #922914.
+# Removal on 2025-04-05.
+dev-python/aiomysql
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained upstream, suggested replacement is dev-util/bump-my-version.
+# Open bugs: #945117.
+# Removal on 2025-04-05.
+dev-util/bump2version
+
+# Takuya Wakazono <pastalian46@gmail.com> (2025-02-24)
+# No reverse dependencies left. (The last one was removed in e17a1e7.)
+# One of its test dependencies, dev-python/zstd, is being removed.
+# Removal on 2025-03-24. Bug #928259.
+dev-python/pymemcache
+
+# David Roman <davidroman96@gmail.com> (2025-01-30)
+# Depends on qtpy[pyqt5] but pyqt5 USE has been removed from it
+# Removal on 2025-03-24
+app-misc/brightness-control
+
+# Julien Roy <julien@jroy.ca> (2024-03-21)
+# sys-libs/libucontext is masked in ::gentoo
+sys-libs/gcompat
+
+# Julien Roy <julien@jroy.ca> (2024-03-09)
+# Dracut fails to boot with Clevis 20
+# https://github.com/latchset/clevis/issues/456
+~app-crypt/clevis-20
+~app-crypt/clevis-21
+
+# Viorel Munteanu <ceamac@gentoo.org> (2023-06-07)
+# Does not work on no-multilib profiles and cannot be masked per profile
+# (See also top comment)
+# Sorry for the inconvenience.
+app-office/lotus123r3
