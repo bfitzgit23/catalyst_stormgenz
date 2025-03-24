@@ -1,12 +1,10 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
-DISTUTILS_SINGLE_IMPL=1
-DISTUTILS_USE_SETUPTOOLS=no
-inherit gnome2 distutils-r1 optfeature
+PYTHON_COMPAT=( python3_{10..13} )
+inherit gnome2 python-single-r1 optfeature meson verify-sig
 
 DESCRIPTION="A graphical tool for administering virtual machines"
 HOMEPAGE="https://virt-manager.org https://github.com/virt-manager/virt-manager"
@@ -17,18 +15,24 @@ if [[ ${PV} == *9999* ]]; then
 	SRC_URI=""
 	inherit git-r3
 else
-	SRC_URI="https://virt-manager.org/download/sources/${PN}/${P}.tar.gz"
+	SRC_URI="
+		https://releases.pagure.org/${PN}/${P}.tar.xz
+		verify-sig? ( https://releases.pagure.org/${PN}/${P}.tar.xz.asc	)
+	"
 	KEYWORDS="~amd64 ~arm64 ~ppc64 ~x86"
 fi
 
-LICENSE="GPL-2"
+LICENSE="GPL-2+"
 SLOT="0"
-IUSE="gui policykit sasl"
+IUSE="gui policykit sasl verify-sig"
 
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
+
+# https://github.com/virt-manager/virt-manager/blob/main/virt-manager.spec.in
 RDEPEND="
 	${PYTHON_DEPS}
-	app-cdr/cdrtools
-	>=app-emulation/libvirt-glib-1.0.0[introspection]
+	|| ( dev-libs/libisoburn app-cdr/cdrtools )
+	>=app-emulation/libvirt-glib-0.0.9[introspection]
 	>=sys-libs/libosinfo-0.2.10[introspection]
 	$(python_gen_cond_dep '
 		dev-libs/libxml2[python,${PYTHON_USEDEP}]
@@ -41,65 +45,65 @@ RDEPEND="
 		gnome-base/dconf
 		>=net-libs/gtk-vnc-0.3.8[gtk3(+),introspection]
 		net-misc/spice-gtk[usbredir,gtk3,introspection,sasl?]
-		sys-apps/dbus[X]
+		sys-apps/dbus
 		x11-libs/gtk+:3[introspection]
-		x11-libs/gtksourceview:4[introspection]
+		|| (
+			x11-libs/gtksourceview:4[introspection]
+			x11-libs/gtksourceview:3.0[introspection]
+		)
 		x11-libs/vte:2.91[introspection]
 		policykit? ( sys-auth/polkit[introspection] )
 	)
 "
 DEPEND="${RDEPEND}"
-BDEPEND="dev-python/docutils"
+BDEPEND="
+	dev-python/docutils
+	sys-devel/gettext
+	verify-sig? ( >=sec-keys/openpgp-keys-virt-manager-20250106 )
+"
 
-DOCS=( README.md NEWS.md )
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/virt-manager.asc
 
-DISTUTILS_ARGS=(
-	--no-update-icon-cache
-	--no-compile-schemas
-)
+DOCS=( {DESIGN,NEWS,README}.md )
 
-EPYTEST_IGNORE=(
-	# Wants to use /tmp osinfo config?
-	tests/test_cli.py
+src_configure() {
+	local emesonargs=( # in upstream's order
+		-Dupdate-icon-cache=false
+		-Dcompile-schemas=false
 
-	# These seem to be essentially coverage tests
-	tests/test_checkprops.py
-)
+		# -Ddefault-graphics=spice # default
+		# we do not ship OpenVZ and bhyve does not work on linux
+		-Ddefault-hvs="['qemu','xen','lxc']"
 
-distutils_enable_tests pytest
+		# While in the past we did allow test suite to run, any errors from
+		# test_cli.py were ignored. Since that's where like 90% of tests actually
+		# lives, just disable tests (and do not drag additional dependencies).
+		-Dtests=disabled
+	)
 
-python_configure() {
-	esetup.py configure --default-graphics=spice
+	meson_src_configure
 }
 
-python_test() {
-	export VIRTINST_TEST_SUITE_FORCE_LIBOSINFO=0
+src_install() {
+	meson_src_install
 
-	epytest
-}
-
-python_install() {
-	esetup.py install
-}
-
-pkg_preinst() {
-	if use gui ; then
-		gnome2_pkg_preinst
-
-		cd "${ED}" || die
-		export GNOME2_ECLASS_ICONS=$(find 'usr/share/virt-manager/icons' -maxdepth 1 -mindepth 1 -type d 2> /dev/null || die)
-	else
-		rm -r "${ED}/usr/share/virt-manager/ui/" || die
-		rm -r "${ED}/usr/share/virt-manager/icons/" || die
+	if ! use gui; then
+		rm -r "${ED}/usr/share/applications/${PN}.desktop" || die
+		rm -r "${ED}/usr/share/${PN}/icons/" || die
+		rm -r "${ED}/usr/share/${PN}/ui/" || die
 		rm -r "${ED}/usr/share/icons/" || die
-		rm -r "${ED}/usr/share/applications/virt-manager.desktop" || die
-		rm -r "${ED}/usr/bin/virt-manager" || die
+		rm -r "${ED}/usr/bin/${PN}" || die
 	fi
+
+	python_fix_shebang "${ED}"
 }
 
 pkg_postinst() {
 	use gui && gnome2_pkg_postinst
 
-	optfeature "SSH_ASKPASS program implementation" lxqt-base/lxqt-openssh-askpass net-misc/ssh-askpass-fullscreen net-misc/x11-ssh-askpass
-	optfeature "QEMU host support" app-emulation/qemu[usbredir,spice]
+	optfeature "Full QEMU host support" app-emulation/qemu[usbredir,spice]
+	optfeature "SSH_ASKPASS program implementation" lxqt-base/lxqt-openssh-askpass \
+		net-misc/ssh-askpass-fullscreen net-misc/x11-ssh-askpass
+	# it's possible this also requires libguestfs-appliance but it's a RDEPEND of libguestfs
+	optfeature "Inspection of guest filesystems" app-emulation/libguestfs[libvirt,python]
 }

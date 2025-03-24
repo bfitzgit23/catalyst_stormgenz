@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -40,7 +40,7 @@ RDEPEND="
 	x11-libs/pango
 	gpg? ( app-crypt/gpgme:= )
 	http? ( net-libs/libsoup:2.4 )
-	notification-sound? ( media-libs/libcanberra:0[sound] )
+	notification-sound? ( media-libs/libcanberra:0[sound(+)] )
 	omemo? (
 		dev-libs/libgcrypt:=
 		media-gfx/qrencode:=
@@ -51,8 +51,7 @@ RDEPEND="
 		media-libs/webrtc-audio-processing:0
 	)
 "
-DEPEND="
-	${RDEPEND}
+DEPEND="${RDEPEND}
 	media-libs/gst-plugins-base
 	media-libs/gstreamer
 "
@@ -77,6 +76,8 @@ src_configure() {
 		"-DENABLED_PLUGINS=$(local IFS=";"; echo "${enabled_plugins[*]}")"
 		"-DDISABLED_PLUGINS=$(local IFS=";"; echo "${disabled_plugins[*]}")"
 		"-DVALA_EXECUTABLE=${VALAC}"
+		# libsoup-2 for bug #948374
+		# dino -> libnice[upnp] -> gupnp-igd:0 -> gupnp:0 -> libsoup:2.4
 		"-DSOUP_VERSION=2"
 		"-DBUILD_TESTS=$(usex test)"
 	)

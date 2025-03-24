@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 inherit cmake python-single-r1
 
 MY_P="${PN}1-${PV}"
@@ -15,11 +15,6 @@ else
 	S="${WORKDIR}/${MY_P}"
 
 	KEYWORDS="~amd64 ~arm ~arm64 ~loong ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86"
-
-	PATCHES=(
-		"${FILESDIR}"/${P}-tests-no-cxx.patch
-		"${FILESDIR}"/${P}-cmake-cxx.patch
-	)
 fi
 
 DESCRIPTION="Userspace access to FTDI USB interface chips"
@@ -41,8 +36,8 @@ DEPEND="${RDEPEND}
 	test? ( dev-libs/boost )
 "
 BDEPEND="
-	doc? ( app-doc/doxygen )
-	python? ( dev-lang/swig )
+	doc? ( app-text/doxygen )
+	python? ( >=dev-lang/swig-4.2.0 )
 "
 
 pkg_setup() {

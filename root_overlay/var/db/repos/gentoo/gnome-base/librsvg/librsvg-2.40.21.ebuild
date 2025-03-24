@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,7 +11,7 @@ HOMEPAGE="https://wiki.gnome.org/Projects/LibRsvg"
 
 LICENSE="LGPL-2+"
 SLOT="2"
-KEYWORDS="~alpha arm hppa ~ia64 ~loong ~mips ppc ~s390 sparc x86 ~amd64-linux ~x86-linux ~x64-macos ~x64-solaris"
+KEYWORDS="~alpha arm hppa ~loong ~mips ppc ppc64 ~s390 sparc x86 ~amd64-linux ~x86-linux ~x64-macos ~x64-solaris"
 
 IUSE="+introspection tools +vala"
 REQUIRED_USE="vala? ( introspection )"
@@ -31,7 +31,7 @@ BDEPEND="
 	dev-libs/gobject-introspection-common
 	dev-libs/vala-common
 	dev-util/glib-utils
-	>=dev-util/gtk-doc-am-1.13
+	>=dev-build/gtk-doc-am-1.13
 	virtual/pkgconfig
 	x11-libs/gdk-pixbuf
 	vala? ( $(vala_depend) )

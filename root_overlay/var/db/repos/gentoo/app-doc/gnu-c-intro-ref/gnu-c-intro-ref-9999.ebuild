@@ -1,4 +1,4 @@
-# Copyright 2022-2023 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -12,7 +12,7 @@ if [[ ${PV} == *9999 ]] ; then
 	EGIT_REPO_URI="https://git.savannah.gnu.org/git/c-intro-and-ref.git"
 	inherit git-r3
 else
-	MY_COMMIT="36a1041cfa542b8c00aa6daad2624797164d87f4"
+	MY_COMMIT="62962013107481127176ef04d69826e41f51313c"
 	SRC_URI="https://git.savannah.nongnu.org/cgit/c-intro-and-ref.git/snapshot/c-intro-and-ref-${MY_COMMIT}.tar.gz"
 	S="${WORKDIR}"/c-intro-and-ref-${MY_COMMIT}
 	KEYWORDS="~amd64"
@@ -27,12 +27,9 @@ BDEPEND="
 	pdf? (
 		app-text/ghostscript-gpl
 		app-text/texlive-core
+		virtual/texi2dvi
 	)
 "
-
-PATCHES=(
-	"${FILESDIR}"/gnu-c-intro-ref-9999-autotools.patch
-)
 
 src_prepare() {
 	default

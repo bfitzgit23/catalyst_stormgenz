@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -19,18 +19,19 @@ SRC_URI="https://dbus.freedesktop.org/releases/dbus/${P}.tar.xz"
 
 LICENSE="|| ( AFL-2.1 GPL-2 )"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x64-solaris"
+KEYWORDS="~alpha amd64 arm arm64 hppa ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x64-solaris"
 # TODO: USE=daemon
 IUSE="debug doc elogind selinux static-libs systemd test valgrind X"
 RESTRICT="!test? ( test )"
 
 BDEPEND="
+	${PYTHON_DEPS}
 	acct-user/messagebus
 	app-text/xmlto
 	app-text/docbook-xml-dtd:4.4
-	sys-devel/autoconf-archive
+	dev-build/autoconf-archive
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 "
 COMMON_DEPEND="
 	>=dev-libs/expat-2.1.0
@@ -48,11 +49,8 @@ COMMON_DEPEND="
 DEPEND="
 	${COMMON_DEPEND}
 	dev-libs/expat
-	test? (
-		${PYTHON_DEPS}
-		>=dev-libs/glib-2.40:2
-	)
-	valgrind? ( >=dev-util/valgrind-3.6 )
+	test? ( >=dev-libs/glib-2.40:2[${MULTILIB_USEDEP}] )
+	valgrind? ( >=dev-debug/valgrind-3.6 )
 	X? ( x11-base/xorg-proto )
 "
 RDEPEND="
@@ -72,7 +70,8 @@ PATCHES=(
 )
 
 pkg_setup() {
-	use test && python-any-r1_pkg_setup
+	# Python interpeter required unconditionally (bug #932517)
+	python-any-r1_pkg_setup
 
 	if use kernel_linux; then
 		CONFIG_CHECK="~EPOLL"
@@ -116,16 +115,16 @@ multilib_src_configure() {
 
 		$(meson_native_true tools)
 
-		$(meson_feature elogind)
-		$(meson_feature systemd)
+		$(meson_native_use_feature elogind)
+		$(meson_native_use_feature systemd)
 		$(meson_use systemd user_session)
-		$(meson_feature X x11_autolaunch)
+		$(meson_native_use_feature X x11_autolaunch)
 		$(meson_native_use_feature valgrind)
 
 		# libaudit is *only* used in DBus wrt SELinux support, so disable it if
 		# not on an SELinux profile.
-		$(meson_feature selinux)
-		$(meson_feature selinux libaudit)
+		$(meson_native_use_feature selinux)
+		$(meson_native_use_feature selinux libaudit)
 
 		-Dsession_socket_dir="${EPREFIX}"/tmp
 		-Dsystem_pid_file="${EPREFIX}${rundir}"/dbus.pid
@@ -142,14 +141,6 @@ multilib_src_configure() {
 	fi
 
 	meson_src_configure
-}
-
-amultilib_src_configure() {
-	myconf=(
-		$(use_enable static-libs static)
-	)
-
-	# $(has_version dev-libs/dbus-glib && echo --enable-modular-tests)
 }
 
 multilib_src_compile() {

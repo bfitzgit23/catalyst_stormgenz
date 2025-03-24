@@ -1,10 +1,10 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 CMAKE_MAKEFILE_GENERATOR="emake"
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit cmake flag-o-matic python-single-r1
 
@@ -101,6 +101,13 @@ src_prepare() {
 }
 
 src_configure() {
+	# -Werror=odr
+	# https://bugs.gentoo.org/859829
+	#
+	# Upstream has abandoned sourceforge for github. And doesn't enable github issues.
+	# Message received, no bug reported.
+	filter-lto
+
 	# See bug 432322.
 	use x86 && replace-flags -O0 -O1
 

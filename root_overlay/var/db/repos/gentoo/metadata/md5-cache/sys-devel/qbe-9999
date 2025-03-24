@@ -1,5 +1,5 @@
 BDEPEND=>=dev-vcs/git-1.8.2.1[curl]
-DEFINED_PHASES=compile install unpack
+DEFINED_PHASES=compile install prepare unpack
 DESCRIPTION=Pure-C embeddable compiler backend
 EAPI=8
 HOMEPAGE=https://c9x.me/compile/
@@ -7,5 +7,5 @@ INHERIT=toolchain-funcs git-r3
 LICENSE=MIT
 PROPERTIES=live
 SLOT=0
-_eclasses_=git-r3	2358a7b20091609e24bd3a83b3ac5991	multilib	c19072c3cd7ac5cb21de013f7e9832e0	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=2c9995f77e74cc6a6258ffc697cc417f
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	git-r3	875eb471682d3e1f18da124be97dcc81
+_md5_=b2c6633fe1c62c575db2359fd2a221db

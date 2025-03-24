@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -11,7 +11,7 @@ SRC_URI="https://people.freedesktop.org/~svu/${P}.tar.bz2"
 
 LICENSE="LGPL-2"
 SLOT="0/16"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ~mips ppc ppc64 ~riscv sparc x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv sparc x86 ~amd64-linux ~x86-linux"
 IUSE="+introspection vala"
 REQUIRED_USE="vala? ( introspection )"
 
@@ -29,11 +29,13 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="
 	dev-util/glib-utils
-	>=dev-util/gtk-doc-am-1.4
+	>=dev-build/gtk-doc-am-1.4
 	sys-devel/gettext
 	virtual/pkgconfig
 	vala? ( $(vala_depend) )
 "
+
+PATCHES=( "${FILESDIR}"/clang-17.patch )
 
 src_prepare() {
 	default

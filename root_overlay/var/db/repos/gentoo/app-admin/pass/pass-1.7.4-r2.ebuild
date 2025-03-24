@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -10,9 +10,9 @@ HOMEPAGE="https://www.passwordstore.org/"
 SRC_URI="https://git.zx2c4.com/password-store/snapshot/password-store-${PV}.tar.xz"
 S="${WORKDIR}/password-store-${PV}"
 
-LICENSE="GPL-2"
+LICENSE="GPL-2+"
 SLOT="0"
-KEYWORDS="amd64 ~arm arm64 ~ppc64 ~riscv x86 ~arm64-macos ~x64-macos"
+KEYWORDS="amd64 ~arm arm64 ppc64 ~riscv x86 ~arm64-macos ~x64-macos"
 IUSE="+git wayland X emacs dmenu importers"
 
 RDEPEND="

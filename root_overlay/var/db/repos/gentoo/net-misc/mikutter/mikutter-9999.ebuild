@@ -1,32 +1,39 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-USE_RUBY="ruby30 ruby31"
+USE_RUBY="ruby31 ruby32"
 
 inherit desktop ruby-ng
 
 PLUGIN_HASH="30071c3008e4616e723cf4e734fc79254019af09"
+BLOWFISH_PATCH_NAME="1585-use-own-blowfish-impl.patch"
+BLOWFISH_PATCH_URI="https://dev.mikutter.hachune.net/attachments/download/813/${BLOWFISH_PATCH_NAME}"
 
 if [ "${PV}" = "9999" ]; then
-	EGIT_REPO_URI="git://mikutter.hachune.net/mikutter.git
-		https://github.com/toshia/twitter_api_keys.git"
+	EGIT_REPO_URI="git://mikutter.hachune.net/mikutter.git"
 	inherit git-r3
-	SRC_URI="https://raw.githubusercontent.com/toshia/twitter_api_keys/${PLUGIN_HASH}/twitter_api_keys.rb"
+	SRC_URI=" ${BLOWFISH_PATCH_URI}"
 	EGIT_CHECKOUT_DIR="${WORKDIR}/all"
 else
 	SRC_URI="http://mikutter.hachune.net/bin/${P}.tar.gz
-		https://raw.githubusercontent.com/toshia/twitter_api_keys/${PLUGIN_HASH}/twitter_api_keys.rb"
+		${BLOWFISH_PATCH_URI}"
 	KEYWORDS="~amd64 ~riscv"
 fi
 
 DESCRIPTION="Simple, powerful and moeful twitter client"
 HOMEPAGE="https://mikutter.hachune.net/"
 
-LICENSE="MIT"
+# Apache license for the blowfish patch
+# https://dev.mikutter.hachune.net/issues/1585
+LICENSE="Apache-2.0 MIT"
 SLOT="0"
 IUSE="+libnotify"
+
+PATCHES=(
+	"${DISTDIR}/${BLOWFISH_PATCH_NAME}"
+)
 
 DEPEND=""
 RDEPEND="
@@ -56,7 +63,6 @@ ruby_add_rdepend "=dev-ruby/addressable-2.8*
 	dev-ruby/ruby-gtk3
 	>=dev-ruby/typed-array-0.1.2
 	!>=dev-ruby/typed-array-0.2
-	dev-ruby/twitter-text
 	virtual/ruby-ssl"
 
 all_ruby_unpack() {
@@ -68,12 +74,11 @@ all_ruby_unpack() {
 }
 
 all_ruby_install() {
-	local rubyversion
-	local r
+	local ruby
 
-	for r in $USE_RUBY; do
-		if use ruby_targets_${r}; then
-			rubyversion=${r}
+	for ruby in ${RUBY_TARGETS_PREFERENCE}; do
+		if use ruby_targets_${ruby}; then
+			break
 		fi
 	done
 
@@ -81,44 +86,9 @@ all_ruby_install() {
 	doexe mikutter.rb
 	insinto /usr/share/mikutter
 	doins -r core plugin
-	sed -e "s/ruby19/${rubyversion}/" "${FILESDIR}"/mikutter \
+	sed -e "s/ruby19/${ruby}/" "${FILESDIR}"/mikutter \
 		| newbin - mikutter
 	dodoc README
 	make_desktop_entry mikutter Mikutter \
 		/usr/share/mikutter/core/skin/data/icon.png
-
-	insinto /usr/share/mikutter/plugin/twitter_api_keys
-	newins "${DISTDIR}"/twitter_api_keys.rb twitter_api_keys.rb.in
-}
-
-pkg_postinst() {
-	echo
-	elog "To use Twitter, you need to setup your Consumer Key/Consumer Secret by running"
-	elog "  emerge --config =${PF}"
-}
-
-pkg_config() {
-	local PLUGIN_DIR="${EROOT}"/usr/share/mikutter/plugin
-	local CK CS
-
-	echo
-	einfon "Please input your Consumer Key for Twitter: "
-	read -r CK
-
-	echo
-	einfon "Please input your Consumer Secret for Twitter: "
-	read -r CS
-
-	if [ -z "${CK}" -o -z "${CS}" ]; then
-		eerror "Consumer Key or Consumer Secret is missing."
-		return
-	fi
-
-	sed -e "/consumer_key = /s!''!'${CK}'!" \
-		-e "/consumer_secret = /s!''!'${CS}'!" \
-		${PLUGIN_DIR}/twitter_api_keys/twitter_api_keys.rb.in > \
-			${PLUGIN_DIR}/twitter_api_keys/twitter_api_keys.rb
-
-	echo
-	einfo "Consuker Key/Consumer secret is set."
 }

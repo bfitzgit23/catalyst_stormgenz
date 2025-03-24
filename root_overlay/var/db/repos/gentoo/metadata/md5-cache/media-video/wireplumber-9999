@@ -1,6 +1,6 @@
-BDEPEND=dev-libs/glib dev-util/gdbus-codegen dev-util/glib-utils sys-devel/gettext test? ( sys-apps/dbus ) >=dev-util/meson-0.62.2 >=dev-util/ninja-1.8.2 dev-util/meson-format-array virtual/pkgconfig >=dev-vcs/git-1.8.2.1[curl]
+BDEPEND=dev-libs/glib dev-util/gdbus-codegen dev-util/glib-utils sys-devel/gettext test? ( sys-apps/dbus ) >=dev-build/meson-1.2.3 app-alternatives/ninja dev-build/meson-format-array virtual/pkgconfig >=dev-vcs/git-1.8.2.1[curl]
 DEFINED_PHASES=compile configure install postinst setup test unpack
-DEPEND=lua_single_target_lua5-3? ( dev-lang/lua:5.3 ) lua_single_target_lua5-4? ( dev-lang/lua:5.4 ) >=dev-libs/glib-2.62 >=media-video/pipewire-0.3.65-r1:= virtual/libintl elogind? ( sys-auth/elogind ) systemd? ( sys-apps/systemd )
+DEPEND=lua_single_target_lua5-3? ( dev-lang/lua:5.3 ) lua_single_target_lua5-4? ( dev-lang/lua:5.4 ) >=dev-libs/glib-2.68 >=media-video/pipewire-1.0.5-r1:= virtual/libintl elogind? ( sys-auth/elogind ) systemd? ( sys-apps/systemd )
 DESCRIPTION=Replacement for pipewire-media-session
 EAPI=8
 HOMEPAGE=https://gitlab.freedesktop.org/pipewire/wireplumber
@@ -8,9 +8,9 @@ INHERIT=lua-single meson systemd git-r3
 IUSE=elogind system-service systemd test lua_single_target_lua5-3 lua_single_target_lua5-4
 LICENSE=MIT
 PROPERTIES=live
-RDEPEND=lua_single_target_lua5-3? ( dev-lang/lua:5.3 ) lua_single_target_lua5-4? ( dev-lang/lua:5.4 ) >=dev-libs/glib-2.62 >=media-video/pipewire-0.3.65-r1:= virtual/libintl elogind? ( sys-auth/elogind ) systemd? ( sys-apps/systemd ) system-service? ( acct-user/pipewire acct-group/pipewire )
+RDEPEND=lua_single_target_lua5-3? ( dev-lang/lua:5.3 ) lua_single_target_lua5-4? ( dev-lang/lua:5.4 ) >=dev-libs/glib-2.68 >=media-video/pipewire-1.0.5-r1:= virtual/libintl elogind? ( sys-auth/elogind ) systemd? ( sys-apps/systemd ) system-service? ( acct-user/pipewire acct-group/pipewire )
 REQUIRED_USE=^^ ( lua_single_target_lua5-3 lua_single_target_lua5-4 ) ?? ( elogind systemd ) system-service? ( systemd )
 RESTRICT=!test? ( test )
-SLOT=0/0.4
-_eclasses_=git-r3	2358a7b20091609e24bd3a83b3ac5991	lua-single	86d497a20c93c7ce83af442f627515c1	lua-utils	d37a16dbcc1f07f71bc48da75ed7a0cb	meson	08b7183c3f4811568ee93eb0f79a89fe	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	python-utils-r1	59e60e9c5cbd3f214d7f1002e798b387	systemd	5f4bb0758df2e483babf68cd517078ca	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=15153b997f7052f3ab23a39c3544ef1e
+SLOT=0/0.5
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	lua-utils	7c89927eda6f21c4c48136247077ab37	lua-single	75fe955a36b18e199213c8739eaebdbb	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	multiprocessing	1e32df7deee68372153dca65f4a7c21f	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	python-utils-r1	b7726144f5af59e186d66746d0f513e5	meson	99466844dd8d4fcfb07578a76f5a9922	systemd	54bd206bb5c4efac6ae28b6b006713b0	git-r3	875eb471682d3e1f18da124be97dcc81
+_md5_=13cb4a3f9650759988b415776332f541

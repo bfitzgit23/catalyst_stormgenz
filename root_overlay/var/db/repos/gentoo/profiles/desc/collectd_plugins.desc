@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # This file contains descriptions of COLLECTD_PLUGINS USE_EXPAND flags.
@@ -39,7 +39,6 @@ exec - Build the exec input/output plugin (executes scripts / applications and r
 fhcount - Build the file handles input plugin (reports the number of used file handles)
 filecount - Build the filecount input plugin (counts the number of files in a directory and all its subdirectories)
 fscache - Build the fscache input plugin (collects information about the file-system based caching infrastructure for network file-systems and other slow media)
-gmond - Build the gmond input plugin (receives data from gmond, the client daemon of the Ganglia project)
 gps - Build the gps input plugin (collects number of satellites seen by a GPS receiver using sci-geosciences/gpsd)
 gpu_nvidia - Build the NVIDIA GPU input plugin (collects stats from NVIDIA GPU)
 hddtemp - Build the hddtemp input plugin (collects the temperature of disks from hddtemp daemon)
@@ -105,7 +104,6 @@ rrdtool - Build the rrdtool output plugin (writes values to RRD-files)
 sensors - Build the sensors input plugin (reads hardware sensors from lm-sensors)
 serial - Build the serial input plugin (collects the traffic on serial interfaces)
 sigrok - Build the sigrok input plugin (reads measurements from any supported hardware from sigrok project)
-slurm - Build the slurm input plugin (collects metrics from the SLURM workload manager)
 smart - Build the S.M.A.R.T input plugin (collects S.M.A.R.T statistics from disk drives)
 snmp - Build the snmp input plugin (reads values from network devices using SNMP)
 snmp_agent - Build an input plugin which implements an SNMP AgentX subagent that receives and handles queries from SNMP master agent and returns configured metrics

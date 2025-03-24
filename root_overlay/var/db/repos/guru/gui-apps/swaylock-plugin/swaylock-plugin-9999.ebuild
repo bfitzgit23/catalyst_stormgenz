@@ -1,15 +1,21 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit fcaps git-r3 meson
+inherit fcaps meson
+
+if [[ "${PV}" == 9999 ]]
+then
+	  inherit git-r3
+	  EGIT_REPO_URI="https://github.com/mstoeckl/${PN}.git"
+else
+	SRC_URI="https://github.com/mstoeckl/swaylock-plugin/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64"
+fi
 
 DESCRIPTION="Fork of Swaylock that supports animated backgrounds"
 HOMEPAGE="https://github.com/mstoeckl/swaylock-plugin"
-
-EGIT_REPO_URI="https://github.com/mstoeckl/${PN}.git"
-
 LICENSE="MIT"
 SLOT="0"
 IUSE="+gdk-pixbuf +man +pam"
@@ -48,10 +54,6 @@ src_configure() {
 
 pkg_postinst() {
 	if ! use pam; then
-		fcaps cap_sys_admin usr/bin/swaylock
+		  fcaps cap_sys_admin usr/bin/swaylock
 	fi
-	# see https://github.com/mstoeckl/swaylock-plugin/issues/8
-	elog "If gui-apps/swaylock is not installed alongside, "
-	elog "symlink /etc/pam.d/swaylock to /etc/pam.d/swaylock-plugin."
-	elog "!!! Otherwise swaylock plugin will work but can not unlock !!!"
 }

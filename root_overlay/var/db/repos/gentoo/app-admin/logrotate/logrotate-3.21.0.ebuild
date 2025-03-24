@@ -3,7 +3,7 @@
 
 EAPI=8
 
-VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}"/usr/share/openpgp-keys/kamildudka.asc
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/kamildudka.asc
 inherit systemd tmpfiles verify-sig
 
 DESCRIPTION="Rotates, compresses, and mails system logs"
@@ -13,7 +13,7 @@ SRC_URI+=" verify-sig? ( https://github.com/${PN}/${PN}/releases/download/${PV}/
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 hppa ~ia64 ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 hppa ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86"
 IUSE="acl +cron selinux"
 
 DEPEND="

@@ -17,11 +17,12 @@
     <flag name="argon2">
       Enable password hashing algorithm from <pkg>app-crypt/argon2</pkg>
     </flag>
-    <flag name="avif">
-      Enable AVIF support in bundled libgd
-    </flag>
     <flag name="bcmath">
       Enable the BCMath Arbitrary Precision Mathematics extension
+    </flag>
+    <flag name="capstone">
+      Support opcache JIT disassembly through
+      <pkg>dev-libs/capstone</pkg>
     </flag>
     <flag name="cli">
       Enable the Command-Line Interface (CLI) SAPI
@@ -61,14 +62,16 @@
       <pkg>media-libs/libjpeg-turbo</pkg> and
       <pkg>media-libs/libpng</pkg>)
     </flag>
+    <!-- leave this global flag defined here to avoid a pkgcheck warning -->
+    <flag name="ipv6">
+      Support IPv6 connectivity in fopen and friends, and v6 address
+      conversions in functions like inet_pton and inet_ntop.
+    </flag>
     <flag name="inifile">
       Add dbm support for .ini files
     </flag>
     <flag name="jit">
       Enable PCRE JIT support
-    </flag>
-    <flag name="json">
-      Enable the JavaScript Object Notation extension
     </flag>
     <flag name="ldap-sasl">
       Add SASL support for the PHP LDAP extension using
@@ -82,6 +85,9 @@
     </flag>
     <flag name="opcache">
       Enables built-in opcode cache, replacing pecl-apc et al.
+    </flag>
+    <flag name="opcache-jit">
+      Enable Just In Time (JIT) compilation within the opcache extension
     </flag>
     <flag name="pcntl">
       Enable the Process Control extension
@@ -124,9 +130,6 @@
     </flag>
     <flag name="xslt">
       Build the XSL extension
-    </flag>
-    <flag name="webp">
-      Enable webp support for GD in php-7.x
     </flag>
   </use>
   <upstream>

@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,7 +7,7 @@ inherit cmake udev
 
 DESCRIPTION="Implementation of the OBEX protocol used for transferring data to mobile devices"
 HOMEPAGE="https://sourceforge.net/projects/openobex/"
-SRC_URI="mirror://sourceforge/${PN}/${PV}/${P}-Source.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/${PN}/${PV}/${P}-Source.tar.gz"
 
 LICENSE="GPL-2 LGPL-2.1"
 SLOT="0/2"
@@ -15,7 +15,7 @@ KEYWORDS="amd64 arm ~hppa ppc ppc64 ~sparc x86"
 IUSE="bluetooth doc irda usb"
 
 BDEPEND="
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 	virtual/pkgconfig
 "
 DEPEND="

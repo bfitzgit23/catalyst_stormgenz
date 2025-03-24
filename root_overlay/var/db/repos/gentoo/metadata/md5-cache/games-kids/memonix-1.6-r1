@@ -1,14 +1,14 @@
-BDEPEND=>=dev-util/ninja-1.8.2 >=dev-util/cmake-3.20.5
+BDEPEND=app-alternatives/ninja >=dev-build/cmake-3.20.5
 DEFINED_PHASES=compile configure install prepare test
 DEPEND=media-libs/libsdl:0[sound,opengl,video,X] media-libs/sdl-image[jpeg] media-libs/sdl-mixer[vorbis]
 DESCRIPTION=Brain teasers, puzzle and memory games for kid's in one pack
 EAPI=7
 HOMEPAGE=https://www.viewizard.com/memonix/
-INHERIT=cmake desktop wrapper
+INHERIT=cmake desktop flag-o-matic wrapper
 KEYWORDS=~amd64 ~x86
 LICENSE=GPL-3
 RDEPEND=media-libs/libsdl:0[sound,opengl,video,X] media-libs/sdl-image[jpeg] media-libs/sdl-mixer[vorbis]
 SLOT=0
 SRC_URI=http://www.viewizard.com/download/memonix_1.6_src.tar.bz2
-_eclasses_=cmake	ea305d3be967deed8faa5c9e94f9aee4	desktop	021728fdc1b03b36357dbc89489e0f0d	flag-o-matic	be27a904c614cb93ae037762dc69bcc2	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	toolchain-funcs	862d337d98edb576796827be2c6b11ca	wrapper	4a1902f969e5718126434fc35f3a0d9c	xdg-utils	baea6080dd821f5562d715887954c9d3
-_md5_=47dfadcb327f4558721638fdc8d9e157
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	multiprocessing	1e32df7deee68372153dca65f4a7c21f	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	xdg-utils	42869b3c8d86a70ef3cf75165a395e09	cmake	10a50dfaf728b802fcfd37f8d0da9056	desktop	3a72ffe0d8e1dd73af3a1c8c15a59fed	wrapper	11a2a3bd712784986679b60a0cab34a0
+_md5_=c45ad54f0cad28187b790304d02dce20

@@ -1,12 +1,13 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-USE_RUBY="ruby30 ruby31 ruby32"
+USE_RUBY="ruby31 ruby32 ruby33"
 
 RUBY_FAKEGEM_BINWRAP=""
 RUBY_FAKEGEM_EXTRADOC="CHANGELOG.md README.md"
 RUBY_FAKEGEM_GEMSPEC="version_gem.gemspec"
+RUBY_FAKEGEM_RECIPE_TEST="rspec3"
 
 #RUBY_FAKEGEM_GEMSPEC="oauth.gemspec"
 
@@ -20,7 +21,9 @@ RUBY_S="version_gem-v${PV}"
 LICENSE="MIT"
 SLOT="$(ver_cut 1)"
 KEYWORDS="~amd64 ~ppc ~riscv ~x86"
-IUSE=""
+IUSE="test"
+
+ruby_add_bdepend "test? ( dev-ruby/rspec-block_is_expected )"
 
 all_ruby_prepare() {
 	sed -i -e 's/if RUN_COVERAGE/if false/' spec/spec_helper.rb || die

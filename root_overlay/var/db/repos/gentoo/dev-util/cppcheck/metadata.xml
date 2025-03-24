@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<maintainer type="person">
-		<email>tamiko@gentoo.org</email>
-		<name>Matthias Maier</name>
+	<maintainer type="person" proxied="yes">
+		<email>davidroman96@gmail.com</email>
+		<name>David Roman</name>
+	</maintainer>
+	<maintainer type="project" proxied="proxy">
+		<email>proxy-maint@gentoo.org</email>
+		<name>Proxy Maintainers</name>
 	</maintainer>
 	<use>
+		<flag name="charts">Enable QtCharts usage in the GUI</flag>
 		<flag name="htmlreport">install cppcheck-htmlreport</flag>
-		<flag name="z3">
-			Enable support for <pkg>sci-mathematics/z3</pkg> backend
-		</flag>
 	</use>
 	<upstream>
 		<remote-id type="github">danmar/cppcheck</remote-id>

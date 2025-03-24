@@ -5,7 +5,7 @@ EAPI=8
 
 MY_P="${PN}-$(ver_rs 2 -)"
 
-VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}"/usr/share/openpgp-keys/thomasdickey.asc
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/thomasdickey.asc
 inherit verify-sig
 
 DESCRIPTION="A library of curses widgets"
@@ -16,7 +16,7 @@ S="${WORKDIR}"/${MY_P}
 
 LICENSE="MIT"
 SLOT="0/6" # subslot = soname version
-KEYWORDS="~alpha amd64 ~arm64 ~hppa ~ia64 ppc ppc64 ~s390 sparc x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~alpha amd64 ~arm64 ~hppa ppc ppc64 ~s390 sparc x86 ~amd64-linux ~x86-linux"
 IUSE="examples unicode"
 
 DEPEND="sys-libs/ncurses:=[unicode(+)?]"

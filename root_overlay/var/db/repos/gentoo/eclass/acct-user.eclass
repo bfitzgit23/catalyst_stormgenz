@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Gentoo Authors
+# Copyright 2019-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: acct-user.eclass
@@ -58,12 +58,12 @@ inherit user-info
 # << Eclass variables >>
 
 # @ECLASS_VARIABLE: ACCT_USER_NAME
-# @INTERNAL
 # @DESCRIPTION:
-# The name of the user.  This is forced to ${PN} and the policy prohibits
-# it from being changed.
+# The name of the user.  This is forced to ${PN} and the policy
+# prohibits it from being changed.  The variable is left writable for
+# use in overlays; package naming restrictions would prohibit some
+# otherwise-valid usernames.
 ACCT_USER_NAME=${PN}
-readonly ACCT_USER_NAME
 
 # @ECLASS_VARIABLE: ACCT_USER_ID
 # @REQUIRED
@@ -144,7 +144,7 @@ readonly ACCT_USER_NAME
 # << Boilerplate ebuild variables >>
 : "${DESCRIPTION:="System user: ${ACCT_USER_NAME}"}"
 : "${SLOT:=0}"
-: "${KEYWORDS:=~alpha amd64 arm arm64 hppa ~ia64 ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux ~arm64-macos ~ppc-macos ~x64-macos ~x64-solaris}"
+: "${KEYWORDS:=~alpha amd64 arm arm64 hppa ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux ~arm64-macos ~ppc-macos ~x64-macos ~x64-solaris}"
 S=${WORKDIR}
 
 
@@ -155,7 +155,7 @@ S=${WORKDIR}
 # Generate appropriate RDEPEND from ACCT_USER_GROUPS.  This must be
 # called if ACCT_USER_GROUPS are set.
 acct-user_add_deps() {
-	debug-print-function ${FUNCNAME} "${@}"
+	debug-print-function ${FUNCNAME} "$@"
 
 	# ACCT_USER_GROUPS sanity check
 	if [[ $(declare -p ACCT_USER_GROUPS) != "declare -a"* ]]; then
@@ -218,7 +218,7 @@ eislocked() {
 # Performs sanity checks for correct eclass usage, and early-checks
 # whether requested UID can be enforced.
 acct-user_pkg_pretend() {
-	debug-print-function ${FUNCNAME} "${@}"
+	debug-print-function ${FUNCNAME} "$@"
 
 	# verify that acct-user_add_deps() has been called
 	# (it verifies ACCT_USER_GROUPS itself)
@@ -231,8 +231,9 @@ acct-user_pkg_pretend() {
 	[[ ${ACCT_USER_ID} -ge -1 ]] || die "Ebuild error: ACCT_USER_ID=${ACCT_USER_ID} invalid!"
 	local user_id=${ACCT_USER_ID}
 
-	# check for the override
-	local override_name=${ACCT_USER_NAME^^}
+	# check for the override, use PN in case this is an overlay and
+	# ACCT_USER_NAME is not PN and not valid in a bash variable name
+	local override_name=${PN^^}
 	local override_var=ACCT_USER_${override_name//-/_}_ID
 	if [[ -n ${!override_var} ]]; then
 		user_id=${!override_var}
@@ -266,7 +267,7 @@ acct-user_pkg_pretend() {
 # Installs a keep-file into the user's home directory to ensure it is
 # owned by the package, and sysusers.d file.
 acct-user_src_install() {
-	debug-print-function ${FUNCNAME} "${@}"
+	debug-print-function ${FUNCNAME} "$@"
 
 	# Replace reserved characters in comment
 	: "${ACCT_USER_COMMENT:=${DESCRIPTION//[:,=]/;}}"
@@ -274,8 +275,9 @@ acct-user_src_install() {
 	# serialize for override support
 	local ACCT_USER_GROUPS=${ACCT_USER_GROUPS[*]}
 
-	# support make.conf overrides
-	local override_name=${ACCT_USER_NAME^^}
+	# support make.conf overrides, use PN in case this is an overlay and
+	# ACCT_USER_NAME is not PN and not valid in a bash variable name
+	local override_name=${PN^^}
 	override_name=${override_name//-/_}
 	local var
 	for var in ACCT_USER_{ID,COMMENT,SHELL,HOME{,_OWNER,_PERMS},GROUPS}; do
@@ -326,7 +328,7 @@ acct-user_src_install() {
 # Creates the user if it does not exist yet.  Sets permissions
 # of the home directory in install image.
 acct-user_pkg_preinst() {
-	debug-print-function ${FUNCNAME} "${@}"
+	debug-print-function ${FUNCNAME} "$@"
 
 	unset _ACCT_USER_ADDED
 
@@ -395,7 +397,7 @@ acct-user_pkg_preinst() {
 # Updates user properties if necessary.  This needs to be done after
 # new home directory is installed.
 acct-user_pkg_postinst() {
-	debug-print-function ${FUNCNAME} "${@}"
+	debug-print-function ${FUNCNAME} "$@"
 
 	if [[ -n ${_ACCT_USER_ADDED} ]]; then
 		# We just added the user; no need to update it
@@ -431,6 +433,22 @@ acct-user_pkg_postinst() {
 		opts+=( --prefix "${ROOT}" )
 	fi
 
+	local g old_groups del_groups=""
+	old_groups=$(egetgroups "${ACCT_USER_NAME}")
+	for g in ${old_groups//,/ }; do
+		has "${g}" "${groups[@]}" || del_groups+="${del_groups:+, }${g}"
+	done
+	if [[ -n ${del_groups} ]]; then
+		local override_name=${PN^^}
+		override_name=${override_name//-/_}
+		ewarn "Removing user ${ACCT_USER_NAME} from group(s): ${del_groups}"
+		ewarn "To retain the user's group membership in the local system"
+		ewarn "config, override with ACCT_USER_${override_name}_GROUPS or"
+		ewarn "ACCT_USER_${override_name}_GROUPS_ADD in make.conf."
+		ewarn "Documentation reference:"
+		ewarn "https://wiki.gentoo.org/wiki/Practical_guide_to_the_GLEP_81_migration#Override_user_groups"
+	fi
+
 	elog "Updating user ${ACCT_USER_NAME}"
 	# usermod outputs a warning if unlocking the account would result in an
 	# empty password. Hide stderr in a text file and display it if usermod fails.
@@ -463,7 +481,7 @@ acct-user_pkg_postinst() {
 # @DESCRIPTION:
 # Ensures that the user account is locked out when it is removed.
 acct-user_pkg_prerm() {
-	debug-print-function ${FUNCNAME} "${@}"
+	debug-print-function ${FUNCNAME} "$@"
 
 	if [[ -n ${REPLACED_BY_VERSION} ]]; then
 		return

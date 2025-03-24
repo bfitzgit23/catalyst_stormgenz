@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -9,7 +9,7 @@ if [[ ${PV} = 9999* ]]; then
 	EXPERIMENTAL="true"
 fi
 
-PYTHON_COMPAT=( python3_{9..12} )
+PYTHON_COMPAT=( python3_{10..13} )
 inherit meson python-any-r1 readme.gentoo-r1 xdg-utils ${GIT_ECLASS}
 
 DESCRIPTION="Wayland reference compositor"
@@ -19,7 +19,7 @@ if [[ ${PV} = *9999* ]]; then
 	SRC_URI="${SRC_PATCHES}"
 else
 	SRC_URI="https://gitlab.freedesktop.org/wayland/${PN}/-/releases/${PV}/downloads/${P}.tar.xz"
-	KEYWORDS="~amd64 ~arm ~arm64 ~ia64 ~loong ~riscv ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
 fi
 
 LICENSE="MIT CC-BY-SA-3.0"
@@ -33,14 +33,14 @@ REQUIRED_USE="
 	pipewire? ( drm )
 	remoting? ( drm gles2 )
 	screen-sharing? ( rdp )
-	test? ( desktop headless lcms xwayland )
+	test? ( headless )
 	wayland-compositor? ( gles2 )
 	|| ( drm headless rdp vnc wayland-compositor X )
 "
 
 RDEPEND="
 	>=dev-libs/libinput-1.2.0
-	>=dev-libs/wayland-1.20.0
+	>=dev-libs/wayland-1.22.0
 	media-libs/libpng:0=
 	sys-auth/seatd:=
 	>=x11-libs/cairo-1.11.3
@@ -49,13 +49,14 @@ RDEPEND="
 	>=x11-libs/pixman-0.25.2
 	x11-misc/xkeyboard-config
 	drm? (
+		<media-libs/libdisplay-info-0.3.0:=
 		>=media-libs/mesa-17.1[gbm(+)]
 		>=sys-libs/mtdev-1.1.0
 		>=virtual/udev-136
 	)
 	editor? ( x11-libs/pango )
 	examples? ( x11-libs/pango )
-	gles2? ( media-libs/mesa[gles2,wayland] )
+	gles2? ( media-libs/libglvnd )
 	jpeg? ( media-libs/libjpeg-turbo:0= )
 	lcms? ( >=media-libs/lcms-2.9:2 )
 	pipewire? ( >=media-video/pipewire-0.3:= )
@@ -67,7 +68,7 @@ RDEPEND="
 	systemd? ( sys-apps/systemd )
 	vnc? (
 		=dev-libs/aml-0.3*
-		=gui-libs/neatvnc-0.6*
+		=gui-libs/neatvnc-0.8*
 		sys-libs/pam
 	)
 	webp? ( media-libs/libwebp:0= )
@@ -84,18 +85,13 @@ RDEPEND="
 	)
 "
 DEPEND="${RDEPEND}
-	>=dev-libs/wayland-protocols-1.24
+	>=dev-libs/wayland-protocols-1.33
 "
 BDEPEND="
 	${PYTHON_DEPS}
 	dev-util/wayland-scanner
 	virtual/pkgconfig
-	$(python_gen_any_dep 'dev-python/setuptools[${PYTHON_USEDEP}]')
 "
-
-python_check_deps() {
-	python_has_version "dev-python/setuptools[${PYTHON_USEDEP}]"
-}
 
 src_configure() {
 	local emesonargs=(
@@ -111,7 +107,6 @@ src_configure() {
 		-Dbackend-default=auto
 		$(meson_use gles2 renderer-gl)
 		$(meson_use xwayland)
-		-Dlauncher-libseat=true
 		$(meson_use systemd)
 		$(meson_use remoting)
 		$(meson_use pipewire)
@@ -126,6 +121,7 @@ src_configure() {
 		$(meson_use examples demo-clients)
 		-Dsimple-clients=$(usex examples damage,dmabuf-v4l,im,shm,touch$(usex gles2 ,dmabuf-egl,egl "") "")
 		$(meson_use resize-optimization resize-pool)
+		$(meson_use test tests)
 		-Dtest-junit-xml=false
 		"${myconf[@]}"
 	)

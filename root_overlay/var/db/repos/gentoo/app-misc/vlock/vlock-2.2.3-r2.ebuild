@@ -13,11 +13,12 @@ SRC_URI="https://github.com/WorMzy/vlock/archive/${EGIT_COMMIT}.tar.gz -> ${P}.t
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm ~hppa ~ia64 ~mips ppc ppc64 sparc x86"
+KEYWORDS="~alpha amd64 ~arm ~hppa ~mips ppc ppc64 sparc x86"
 IUSE="pam selinux test"
 RESTRICT="!test? ( test )"
 
 COMMON_DEPEND="
+	virtual/libcrypt:=
 	!sys-apps/kbd[pam]
 	pam? ( sys-libs/pam )
 "

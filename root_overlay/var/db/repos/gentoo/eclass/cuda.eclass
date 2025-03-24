@@ -10,7 +10,7 @@
 # This eclass contains functions to be used with cuda package. Currently it is
 # setting and/or sanitizing NVCCFLAGS, the compiler flags for nvcc. This is
 # automatically done and exported in src_prepare() or manually by calling
-# cuda_sanatize.
+# cuda_sanitize.
 # @EXAMPLE:
 # inherit cuda
 
@@ -81,7 +81,7 @@ cuda_gccdir() {
 	# Try the current gcc version first
 	ver=$(gcc-version)
 	if [[ -n "${ver}" ]] && [[ ${vers} =~ ${ver} ]]; then
-		dirs=( ${EPREFIX}/usr/*pc-linux-gnu/gcc-bin/${ver%.*}*/ )
+		dirs=( "${EPREFIX}"/usr/*pc-linux-gnu/gcc-bin/${ver%.*}*/ )
 		gcc_bindir="${dirs[${#dirs[@]}-1]}"
 	fi
 
@@ -90,14 +90,14 @@ cuda_gccdir() {
 		ver=$(ver_cut 1-2 "${ver##*sys-devel/gcc-}")
 
 		if [[ -n "${ver}" ]] && [[ ${vers} =~ ${ver} ]]; then
-			dirs=( ${EPREFIX}/usr/*pc-linux-gnu/gcc-bin/${ver%.*}*/ )
+			dirs=( "${EPREFIX}"/usr/*pc-linux-gnu/gcc-bin/${ver%.*}*/ )
 			gcc_bindir="${dirs[${#dirs[@]}-1]}"
 		fi
 	fi
 
 	for ver in ${vers}; do
 		if has_version "=sys-devel/gcc-${ver}*"; then
-			dirs=( ${EPREFIX}/usr/*pc-linux-gnu/gcc-bin/${ver%.*}*/ )
+			dirs=( "${EPREFIX}"/usr/*pc-linux-gnu/gcc-bin/${ver%.*}*/ )
 			gcc_bindir="${dirs[${#dirs[@]}-1]}"
 		fi
 	done

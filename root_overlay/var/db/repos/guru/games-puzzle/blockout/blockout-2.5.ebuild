@@ -8,7 +8,8 @@ DESCRIPTION="BlockOut II is an adaptation of the original Blockout DOS game"
 HOMEPAGE="https://www.blockout.net/blockout2/"
 SRC_URI="
 	https://downloads.sourceforge.net/blockout/bl25-src.tar.gz
-	https://downloads.sourceforge.net/blockout/bl25-linux-x86.tar.gz"
+	https://downloads.sourceforge.net/blockout/bl25-linux-x86.tar.gz
+	https://downloads.sourceforge.net/blockout/bl25-linux-x64.tar.gz"
 
 S="${WORKDIR}"/BL_SRC
 
@@ -25,7 +26,15 @@ RDEPEND="
 	virtual/opengl"
 DEPEND="${RDEPEND}"
 
-PATCHES="${FILESDIR}"/${P}-datadir.patch
+PATCHES=(
+	"${FILESDIR}/${P}-blockout-makefile.patch"
+	"${FILESDIR}/${P}-image-makefile.patch"
+	"${FILESDIR}/${P}-datadir.patch"
+)
+
+src_prepare() {
+	default
+}
 
 src_compile() {
 	GAME_DATADIR="/usr/share/${PN}"

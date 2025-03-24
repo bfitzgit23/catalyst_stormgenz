@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -8,21 +8,15 @@ inherit autotools flag-o-matic toolchain-funcs pax-utils
 DESCRIPTION="Fast password cracker, community enhanced version"
 HOMEPAGE="http://www.openwall.com/john/"
 
-MY_PN="JohnTheRipper"
-
 if [[ ${PV} == "9999" ]] ; then
-	EGIT_REPO_URI="https://github.com/magnumripper/${MY_PN}.git"
+	EGIT_REPO_URI="https://github.com/openwall/john.git"
+	EGIT_BRANCH="bleeding-jumbo"
 	inherit git-r3
 else
-	JUMBO="jumbo-1.1"
-	MY_PV="${PV}-${JUMBO}"
-	MY_P="john-${MY_PV}"
-	HASH_COMMIT="5d0c85f16f96ca7b6dd06640e95a5801081d6e20"
-
+	HASH_COMMIT="8a72b12fe6e1626ef6014e5a190b9d1f69a9edde"
 	SRC_URI="https://github.com/openwall/john/archive/${HASH_COMMIT}.tar.gz -> ${P}.tar.gz"
 	S="${WORKDIR}/john-${HASH_COMMIT}"
-
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~mips ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos"
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos"
 fi
 
 LICENSE="GPL-2"
@@ -43,6 +37,7 @@ DEPEND=">=dev-libs/openssl-1.0.1:=
 # - Digest::x
 # See bug #777369.
 RDEPEND="${DEPEND}
+	dev-perl/Compress-Raw-Lzma
 	dev-perl/Digest-MD2
 	virtual/perl-Digest-MD5
 	dev-perl/Digest-SHA3
@@ -70,7 +65,13 @@ src_prepare() {
 src_configure() {
 	cd src || die
 
-	use custom-cflags || strip-flags
+	if ! use custom-cflags ; then
+		strip-flags
+
+		# Nasty (and incomplete) workaround for bug #729422
+		filter-flags '-march=native'
+		append-flags $(test-flags-CC '-mno-avx')
+	fi
 
 	econf \
 		--enable-pkg-config \

@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..11} )
 
 inherit python-r1 toolchain-funcs
 
@@ -16,7 +16,7 @@ SRC_URI="https://brick.kernel.dk/snaps/${MY_P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 arm ~arm64 ~ia64 ~loong ~ppc ppc64 ~riscv x86"
+KEYWORDS="amd64 arm ~arm64 ~loong ~ppc ppc64 ~riscv x86"
 IUSE="aio curl glusterfs gnuplot gtk io-uring nfs numa python rbd rdma static tcmalloc test valgrind zbc zlib"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )
 	gnuplot? ( python )
@@ -49,7 +49,7 @@ RDEPEND="!static? ( ${LIB_DEPEND//\[static-libs(+)]} )
 DEPEND="${RDEPEND}
 	static? ( ${LIB_DEPEND} )
 	test? ( dev-util/cunit )
-	valgrind? ( dev-util/valgrind )"
+	valgrind? ( dev-debug/valgrind )"
 RDEPEND+="
 	python? (
 		${PYTHON_DEPS}
@@ -61,6 +61,12 @@ S="${WORKDIR}/${MY_P}"
 
 PATCHES=(
 	"${FILESDIR}"/fio-2.2.13-libmtd.patch
+)
+
+QA_CONFIG_IMPL_DECL_SKIP+=(
+	# Internally uses -Werror=implicit-function-declaration for all configure
+	# checks. bug #904276
+	'*'
 )
 
 src_prepare() {

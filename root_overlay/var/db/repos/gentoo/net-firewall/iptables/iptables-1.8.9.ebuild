@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -13,7 +13,7 @@ LICENSE="GPL-2"
 # Subslot reflects PV when libxtables and/or libip*tc was changed
 # the last time.
 SLOT="0/1.8.3"
-KEYWORDS="~alpha amd64 arm arm64 hppa ~ia64 ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 hppa ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86"
 IUSE="conntrack netlink nftables pcap static-libs"
 
 COMMON_DEPEND="
@@ -33,7 +33,7 @@ DEPEND="
 BDEPEND="
 	virtual/pkgconfig
 	nftables? (
-		sys-devel/flex
+		app-alternatives/lex
 		app-alternatives/yacc
 	)
 "

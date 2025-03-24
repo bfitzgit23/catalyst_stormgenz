@@ -1,32 +1,31 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit autotools flag-o-matic
+inherit autotools flag-o-matic systemd
 
 DESCRIPTION="Terminal multiplexer"
 HOMEPAGE="https://tmux.github.io/"
 if [[ ${PV} == 9999 ]] ; then
 	inherit git-r3
-	SRC_URI="https://raw.githubusercontent.com/przepompownia/tmux-bash-completion/678a27616b70c649c6701cae9cd8c92b58cc051b/completions/tmux -> tmux-bash-completion-678a27616b70c649c6701cae9cd8c92b58cc051b"
 	EGIT_REPO_URI="https://github.com/tmux/tmux.git"
 else
 	SRC_URI="https://github.com/tmux/tmux/releases/download/${PV}/${P/_/-}.tar.gz"
 	if [[ ${PV} != *_rc* ]] ; then
-		KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos"
+		KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos"
 	fi
 	S="${WORKDIR}/${P/_/-}"
 fi
 
 LICENSE="ISC"
 SLOT="0"
-IUSE="debug selinux systemd utempter vim-syntax"
+IUSE="debug jemalloc selinux sixel systemd utempter vim-syntax"
 
-# See https://github.com/tmux/tmux/issues/3531 for minimum ncurses version
 DEPEND="
 	dev-libs/libevent:=
-	>=sys-libs/ncurses-6.4_p20230424:=
+	sys-libs/ncurses:=
+	jemalloc? ( dev-libs/jemalloc:= )
 	systemd? ( sys-apps/systemd:= )
 	utempter? ( sys-libs/libutempter )
 	kernel_Darwin? ( dev-libs/libutf8proc:= )
@@ -43,6 +42,13 @@ RDEPEND="
 	vim-syntax? ( app-vim/vim-tmux )
 "
 
+QA_CONFIG_IMPL_DECL_SKIP=(
+	# BSD only functions
+	strtonum recallocarray
+	# missing on musl, tmux has fallback impl which it uses
+	b64_ntop
+)
+
 DOCS=( CHANGES README )
 
 PATCHES=(
@@ -50,18 +56,20 @@ PATCHES=(
 )
 
 src_prepare() {
-	# bug 438558
-	# 1.7 segfaults when entering copy mode if compiled with -Os
-	replace-flags -Os -O2
-
 	default
 	eautoreconf
 }
 
 src_configure() {
+	# bug 438558
+	# 1.7 segfaults when entering copy mode if compiled with -Os
+	replace-flags -Os -O2
+
 	local myeconfargs=(
 		--sysconfdir="${EPREFIX}"/etc
 		$(use_enable debug)
+		$(use_enable jemalloc)
+		$(use_enable sixel)
 		$(use_enable systemd)
 		$(use_enable utempter)
 
@@ -81,4 +89,9 @@ src_install() {
 
 	dodoc example_tmux.conf
 	docompress -x /usr/share/doc/${PF}/example_tmux.conf
+
+	if use systemd; then
+		systemd_newuserunit "${FILESDIR}"/tmux.service tmux@.service
+		systemd_newuserunit "${FILESDIR}"/tmux.socket tmux@.socket
+	fi
 }

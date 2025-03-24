@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: kde.org.eclass
@@ -55,6 +55,7 @@ declare -A KDE_ORG_CATEGORIES=(
 	[games-board]=games
 	[games-kids]=education
 	[games-mud]=games
+	[games-puzzle]=games
 	[kde-frameworks]=frameworks
 	[kde-plasma]=plasma
 	[mail-client]=pim
@@ -98,7 +99,7 @@ readonly KDE_ORG_CATEGORIES
 # @PRE_INHERIT
 # @DESCRIPTION:
 # If unset, default value is set to ${PN}.
-# Name of the package as hosted on kde.org mirrors.
+# Name of the package (repository) as hosted on invent.kde.org.
 : "${KDE_ORG_NAME:=$PN}"
 
 # @ECLASS_VARIABLE: KDE_ORG_SCHEDULE_URI
@@ -113,6 +114,15 @@ readonly KDE_ORG_CATEGORIES
 # For any other value, add selinux to IUSE, and depending on that useflag
 # add a dependency on sec-policy/selinux-${KDE_SELINUX_MODULE} to (R)DEPEND.
 : "${KDE_SELINUX_MODULE:=none}"
+
+# @ECLASS_VARIABLE: KDE_ORG_TAR_PN
+# @PRE_INHERIT
+# @DESCRIPTION:
+# If unset, default value is set to ${KDE_ORG_NAME}.
+# Filename sans version of the tarball as hosted on kde.org download mirrors.
+# This is used e.g. when upstream's tarball name differs from repository,
+# especially after repository moves.
+: "${KDE_ORG_TAR_PN:=$KDE_ORG_NAME}"
 
 case ${KDE_SELINUX_MODULE} in
 	none)   ;;
@@ -179,7 +189,7 @@ case ${KDE_BUILD_TYPE} in
 			S=${WORKDIR}/${KDE_ORG_NAME}-${KDE_ORG_COMMIT}
 			[[ ${CATEGORY} == dev-qt ]] && QT5_BUILD_DIR="${S}_build"
 		else
-			S=${WORKDIR}/${KDE_ORG_NAME}-${PV}
+			S=${WORKDIR}/${KDE_ORG_TAR_PN}-${PV}
 		fi
 		;;
 esac
@@ -225,6 +235,14 @@ kde.org_src_unpack() {
 	esac
 }
 
+kde.org_pkg_info() {
+	if [[ ${KDE_BUILD_TYPE} = live ]]; then
+		echo "WARNING! This is an experimental live ebuild of ${CATEGORY}/${PN}"
+		echo "Use it at your own risk."
+		echo "Only file bugs at bugs.gentoo.org if convinced that ebuild needs an update!"
+	fi
+}
+
 fi
 
-EXPORT_FUNCTIONS pkg_nofetch src_unpack
+EXPORT_FUNCTIONS pkg_nofetch src_unpack pkg_info

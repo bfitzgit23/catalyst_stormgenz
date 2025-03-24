@@ -1,4 +1,4 @@
-# Copyright 2001-2023 Gentoo Authors
+# Copyright 2001-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -14,7 +14,7 @@ if [[ ${PV} == *9999* ]]; then
 else
 	MY_P=qet-${PV/%0/.0}
 	SRC_URI="https://git.tuxfamily.org/qet/qet.git/snapshot/${MY_P}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="amd64 ~x86"
+	KEYWORDS="amd64 ~arm64 ~x86"
 	S="${WORKDIR}"/${MY_P}
 fi
 
@@ -24,7 +24,7 @@ IUSE="doc"
 
 BDEPEND="
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 "
 RDEPEND="
 	dev-db/sqlite:3

@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -41,7 +41,7 @@ fi
 
 LICENSE="GPL-2"
 SLOT="${MY_PV}"
-KEYWORDS="~alpha amd64 arm arm64 hppa ~ia64 ~m68k ~mips ppc ppc64 ~s390 sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 hppa ~m68k ~mips ppc ppc64 ~s390 sparc x86"
 IUSE="afs +net nls +readline static"
 
 LIB_DEPEND=">=sys-libs/ncurses-5.2-r2[static-libs(+)]
@@ -100,6 +100,16 @@ src_prepare() {
 }
 
 src_configure() {
+	#/var/tmp/portage/app-shells/bash-3.2_p57/temp/ccW7JJDK.ltrans2.ltrans.o: in function `shell_execve':
+	# <artificial>:(.text+0x8b30): undefined reference to `__setostype'
+	#
+	# It works fine in bash 4+. Backporting may not be worth it.
+	filter-lto
+
+	# bash 5.3 drops unprototyped functions, earlier versions are
+	# incompatible with C23.
+	append-cflags $(test-flags-CC -std=gnu17)
+
 	local myconf=(
 		--with-installed-readline=.
 

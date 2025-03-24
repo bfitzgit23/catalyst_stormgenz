@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 inherit distutils-r1 xdg
 
 MY_PV=${PV/_rc/.dev}
@@ -29,7 +29,7 @@ RDEPEND="
 	>=dev-python/keyrings-alt-3.1.0[${PYTHON_USEDEP}]
 	dev-python/packaging[${PYTHON_USEDEP}]
 	>=dev-python/pathspec-0.5.8[${PYTHON_USEDEP}]
-	>=dev-python/Pyro5-5.10[${PYTHON_USEDEP}]
+	>=dev-python/pyro5-5.10[${PYTHON_USEDEP}]
 	>=dev-python/requests-2.16.2[${PYTHON_USEDEP}]
 	dev-python/rich[${PYTHON_USEDEP}]
 	dev-python/survey[${PYTHON_USEDEP}]
@@ -42,7 +42,7 @@ BDEPEND="
 "
 
 EPYTEST_DESELECT=(
-	# requires dev-python/pytest-benchmark not available for py3.11
+	# disable benchmarks
 	tests/offline/test_clean_local_events.py::test_performance
 
 	# requires systemd

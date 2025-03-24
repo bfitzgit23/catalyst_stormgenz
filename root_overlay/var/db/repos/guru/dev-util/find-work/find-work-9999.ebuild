@@ -3,9 +3,9 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{11..12} )
+PYTHON_COMPAT=( python3_{11..13} )
 DISTUTILS_USE_PEP517=hatchling
-inherit distutils-r1
+inherit click-app distutils-r1
 
 DESCRIPTION="Personal advice utility for Gentoo package maintainers"
 HOMEPAGE="
@@ -26,7 +26,6 @@ SLOT="0"
 IUSE="minimal"
 
 RDEPEND="
-	<app-portage/gentoopm-2[${PYTHON_USEDEP}]
 	>=dev-python/aiohttp-3[${PYTHON_USEDEP}]
 	<dev-python/aiohttp-4[${PYTHON_USEDEP}]
 	dev-python/click[${PYTHON_USEDEP}]
@@ -39,6 +38,12 @@ RDEPEND="
 	<dev-python/pydantic-3[${PYTHON_USEDEP}]
 	>=dev-python/requests-2[${PYTHON_USEDEP}]
 	<dev-python/requests-3[${PYTHON_USEDEP}]
+	>=dev-python/typing-extensions-4.3.0[${PYTHON_USEDEP}]
+	<dev-python/typing-extensions-5[${PYTHON_USEDEP}]
+	!minimal? (
+		$(python_gen_any_dep '>=dev-python/lxml-4.5[${PYTHON_USEDEP}]')
+		$(python_gen_any_dep 'dev-python/tabulate[${PYTHON_USEDEP}]')
+	)
 "
 BDEPEND="
 	test? (
@@ -46,22 +51,28 @@ BDEPEND="
 	)
 "
 
-# No ${PYTHON_USEDEP} because plugin deps can lag behind
 PDEPEND="
 	!minimal? (
-		dev-util/find-work-bugzilla
-		dev-util/find-work-pkgcheck
-		dev-util/find-work-repology
+		$(python_gen_any_dep 'dev-util/find-work-bugzilla[${PYTHON_USEDEP}]')
+		$(python_gen_any_dep 'dev-util/find-work-pkgcheck[${PYTHON_USEDEP}]')
+		$(python_gen_any_dep 'dev-util/find-work-repology[${PYTHON_USEDEP}]')
 	)
 "
-
-EPYTEST_DESELECT=(
-	# fails with plug-ins installed
-	find_work/__main__.py::import-check
-)
 
 distutils_enable_tests pytest
 
 distutils_enable_sphinx docs \
 	dev-python/insipid-sphinx-theme \
 	dev-python/sphinx-prompt
+
+click-app_enable_completions find-work
+
+python_test() {
+	distutils_write_namespace find_work
+	distutils-r1_python_test
+}
+
+src_install() {
+	distutils-r1_src_install
+	emake DESTDIR="${D}" PREFIX="${EPREFIX}"/usr install-man
+}

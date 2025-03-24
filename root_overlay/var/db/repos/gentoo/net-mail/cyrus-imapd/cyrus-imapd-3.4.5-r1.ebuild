@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -12,7 +12,7 @@ SRC_URI="https://github.com/cyrusimap/${PN}/releases/download/${P}/${P}.tar.gz"
 
 LICENSE="BSD-with-attribution GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc x86"
+KEYWORDS="amd64 ~arm ~hppa ~ppc ~ppc64 ~sparc x86"
 IUSE="afs backup calalarm caps clamav http kerberos ldap \
 	mysql nntp pam perl postgres replication +server sieve \
 	sqlite ssl static-libs tcpd test xapian"
@@ -63,7 +63,7 @@ RDEPEND="${DEPEND}
 	!net-mail/courier-imap
 	!app-arch/dump"
 DEPEND+=" test? ( dev-util/cunit )"
-BDEPEND="sys-devel/flex
+BDEPEND="app-alternatives/lex
 	virtual/pkgconfig
 	app-alternatives/yacc"
 

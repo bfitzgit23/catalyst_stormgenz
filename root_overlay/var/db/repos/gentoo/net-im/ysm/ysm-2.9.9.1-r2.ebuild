@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -9,7 +9,7 @@ MY_PV=$(ver_rs 1- _)
 
 DESCRIPTION="A console ICQ client supporting versions 7/8"
 HOMEPAGE="http://ysmv7.sourceforge.net/"
-SRC_URI="mirror://sourceforge/ysmv7/${PN}v7_${MY_PV}.tar.bz2"
+SRC_URI="https://downloads.sourceforge.net/ysmv7/${PN}v7_${MY_PV}.tar.bz2"
 S="${WORKDIR}"/${PN}v7_${MY_PV}
 
 LICENSE="GPL-2"
@@ -18,7 +18,7 @@ KEYWORDS="amd64 ppc x86"
 RESTRICT="mirror"
 
 # Introduced by fix-configure.patch
-BDEPEND="sys-devel/autoconf-archive"
+BDEPEND="dev-build/autoconf-archive"
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-2.9.9.1-dont-strip-binary.patch

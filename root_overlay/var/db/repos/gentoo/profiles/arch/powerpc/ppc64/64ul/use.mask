@@ -1,10 +1,12 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Michał Górny <mgorny@gentoo.org> (2021-12-31)
 # PyPy3 is keyworded here.
 -python_targets_pypy3
 -python_single_target_pypy3
+-python_targets_pypy3_11
+-python_single_target_pypy3_11
 
 # Georgy Yakovlev <gyakovlev@gentoo.org> (2020-06-03)
 # clang is keyworded and works on ppc64
@@ -14,7 +16,6 @@
 # There is no luajit support on ppc64 userland. Bug #608326.
 lua_single_target_luajit
 lua_targets_luajit
-luajit
 
 # Anthony G. Basile <blueness@gentoo.org> (2015-08-01)
 # There is no luajit support on ppc64 userland.  Bug #554376.
@@ -25,7 +26,6 @@ luajittex
 opencl
 
 pda
-prelude
 mono
 
 # not tested on ppc64
@@ -37,9 +37,6 @@ diet
 # we don't have hardware to test. also see bug #113398
 dvb
 
-# Donnie Berkholz <dberkholz@gentoo.org> (2006-03-20)
-# Modular X: mask for architectures on which they aren't available
-video_cards_glint
 # llvm is not keyworded
 video_cards_radeonsi
 

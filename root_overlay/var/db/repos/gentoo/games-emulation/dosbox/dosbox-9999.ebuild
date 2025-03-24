@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -20,7 +20,7 @@ case ${PV} in
 	*)
 		MY_PV=$(ver_rs 2 -)
 		MY_P=${PN}-${MY_PV}
-		SRC_URI="mirror://sourceforge/dosbox/${MY_P}.tar.gz"
+		SRC_URI="https://downloads.sourceforge.net/dosbox/${MY_P}.tar.gz"
 		;;
 esac
 
@@ -58,6 +58,14 @@ src_prepare() {
 }
 
 src_configure() {
+	# -Werror=strict-aliasing, -Weror=odr
+	# https://bugs.gentoo.org/858638
+	#
+	# Upstream is kinda dead. Just use dosbox-staging... where I reported
+	# similar issues and they were fixed. ;)
+	append-flags -fno-strict-aliasing
+	filter-lto
+
 	use glide && append-cppflags -I"${EPREFIX}"/usr/include/openglide
 
 	ac_cv_lib_X11_main=$(usex X yes no) \

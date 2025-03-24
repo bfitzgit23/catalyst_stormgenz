@@ -1,12 +1,12 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 inherit toolchain-funcs
 
-DESCRIPTION="collection of games from NetBSD"
-HOMEPAGE="https://www.polyomino.org.uk/computer/software/bsd-games/"
+DESCRIPTION="Collection of games from NetBSD"
+HOMEPAGE="https://sourceforge.net/projects/bsd-games/"
 SRC_URI="https://github.com/msharov/bsd-games/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz"
 SRC_URI+=" https://dev.gentoo.org/~sam/distfiles/${CATEGORY}/${PN}/${PN}-3.1-verbose-build.patch.gz"
 
@@ -14,7 +14,7 @@ LICENSE="BSD"
 # Subslot indicates the fork / new version
 # 3 doesn't include the same games as the classic variant, etc
 SLOT="0/3"
-KEYWORDS="~alpha ~amd64 ~arm64 ~hppa ~mips ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~hppa ~mips ~riscv ~x86"
 
 # 'check' target doesn't exist, nor do any actual tests
 # bug #779649
@@ -31,8 +31,8 @@ RDEPEND="
 	acct-group/gamestat
 "
 BDEPEND="
-	sys-devel/bison
-	sys-devel/flex
+	app-alternatives/yacc
+	app-alternatives/lex
 	virtual/pkgconfig
 "
 

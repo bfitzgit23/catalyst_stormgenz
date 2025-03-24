@@ -8,6 +8,6 @@ KEYWORDS=~amd64 ~x86
 LICENSE=GPL-2
 RDEPEND=>=dev-db/postgresql-8.0:= >=dev-libs/libgcrypt-1.2.0:0= sys-libs/pam virtual/libcrypt:=
 SLOT=0
-SRC_URI=mirror://sourceforge/pam-pgsql/pam-pgsql-0.7.3.2.tar.gz
-_eclasses_=flag-o-matic	be27a904c614cb93ae037762dc69bcc2	multilib	c19072c3cd7ac5cb21de013f7e9832e0	pam	b56d0c9c20fc5b553f13c8ae165a10a5	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=4b1aa7ceb3faadbe36f2e9f08bcaf7b6
+SRC_URI=https://downloads.sourceforge.net/pam-pgsql/pam-pgsql-0.7.3.2.tar.gz
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	pam	b56d0c9c20fc5b553f13c8ae165a10a5
+_md5_=a230caedc81dff7c6f95a1d01c6cee04

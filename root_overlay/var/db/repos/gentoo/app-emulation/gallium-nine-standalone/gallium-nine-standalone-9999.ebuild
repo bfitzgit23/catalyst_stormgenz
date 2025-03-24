@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit meson-multilib toolchain-funcs
 
@@ -32,14 +32,17 @@ RDEPEND="
 
 DEPEND="
 	${RDEPEND}
-	virtual/pkgconfig
 	virtual/wine[${MULTILIB_USEDEP}]
-	>=dev-util/meson-0.50.1
+"
+
+BDEPEND="
+	dev-build/meson-format-array
+	virtual/pkgconfig
 "
 
 PATCHES=(
 	"${FILESDIR}"/0.8-cross-files.patch
-	"${FILESDIR}"/0.3-nine-dll-path.patch
+	"${FILESDIR}"/0.9-nine-dll-path.patch
 )
 
 bits() {
@@ -61,12 +64,12 @@ src_prepare() {
 	# which doesn't play well with our multi-Wine environment.
 	bootstrap_nine() {
 		local file=tools/cross-wine$(bits)
-		local g9dll=\"Z:${EPREFIX}/usr/$(get_libdir)/d3d9-nine.dll.so\"
+		local g9dll=\"z:${EPREFIX}/usr/$(get_libdir)/d3d9-nine.dll.so\"
 
 		sed \
 			-e "s!@PKG_CONFIG@!$(tc-getPKG_CONFIG)!" \
-			-e "s!@CFLAGS@!$(_meson_env_array "${CFLAGS} '-DG9DLL=${g9dll}'")!" \
-			-e "s!@LDFLAGS@!$(_meson_env_array "${LDFLAGS}")!" \
+			-e "s!@CFLAGS@!$(meson-format-array "${CFLAGS} '-DG9DLL=${g9dll}'")!" \
+			-e "s!@LDFLAGS@!$(meson-format-array "${LDFLAGS}")!" \
 			-e "s!@PKG_CONFIG_LIBDIR@!${PKG_CONFIG_LIBDIR:-${ESYSROOT}/usr/$(get_libdir)/pkgconfig}!" \
 			${file}.in > ${file} || die
 	}

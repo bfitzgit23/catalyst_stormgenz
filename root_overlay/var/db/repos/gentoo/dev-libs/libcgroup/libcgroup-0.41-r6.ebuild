@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -7,7 +7,7 @@ inherit autotools flag-o-matic linux-info pam systemd
 
 DESCRIPTION="Tools and libraries to configure and manage kernel control groups"
 HOMEPAGE="http://libcg.sourceforge.net/"
-SRC_URI="mirror://sourceforge/project/libcg/${PN}/v${PV}/${P}.tar.bz2"
+SRC_URI="https://downloads.sourceforge.net/project/libcg/${PN}/v${PV}/${P}.tar.bz2"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
@@ -20,18 +20,19 @@ REQUIRED_USE="daemon? ( tools )"
 RESTRICT="test"
 
 BDEPEND="
-	sys-devel/bison
-	sys-devel/flex
+	app-alternatives/yacc
+	app-alternatives/lex
 	elibc_musl? ( sys-libs/fts-standalone )
 "
 DEPEND="pam? ( sys-libs/pam )"
 RDEPEND="${DEPEND}"
 
 PATCHES=(
-	"${FILESDIR}"/${P}-replace-DECLS.patch
-	"${FILESDIR}"/${P}-replace-INLCUDES.patch
+	"${FILESDIR}"/${P}-replace_DECLS.patch
+	"${FILESDIR}"/${P}-replace_INLCUDES.patch
 	"${FILESDIR}"/${P}-reorder-headers.patch
 	"${FILESDIR}"/${P}-remove-umask.patch
+	"${FILESDIR}"/${P}-slibtool.patch
 )
 
 pkg_setup() {
@@ -41,14 +42,6 @@ pkg_setup() {
 	fi
 	linux-info_pkg_setup
 }
-
-PATCHES=(
-	"${FILESDIR}"/${P}-replace_DECLS.patch
-	"${FILESDIR}"/${P}-replace_INLCUDES.patch
-	"${FILESDIR}"/${P}-reorder-headers.patch
-	"${FILESDIR}"/${P}-remove-umask.patch
-	"${FILESDIR}"/${P}-slibtool.patch
-)
 
 src_prepare() {
 	default

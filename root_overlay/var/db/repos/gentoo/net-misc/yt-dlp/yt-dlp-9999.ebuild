@@ -1,10 +1,10 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{9..11} )
+DISTUTILS_USE_PEP517=hatchling
+PYTHON_COMPAT=( pypy3 pypy3_11 python3_{10..13} )
 inherit bash-completion-r1 distutils-r1 git-r3 optfeature wrapper
 
 DESCRIPTION="youtube-dl fork with additional features and fixes"
@@ -13,24 +13,17 @@ EGIT_REPO_URI="https://github.com/yt-dlp/yt-dlp.git"
 
 LICENSE="Unlicense"
 SLOT="0"
-KEYWORDS=""
 IUSE="man"
 
 RDEPEND="
 	dev-python/pycryptodome[${PYTHON_USEDEP}]
-	!net-misc/youtube-dl[-yt-dlp(-)]"
-BDEPEND="man? ( virtual/pandoc )"
+	!net-misc/youtube-dl[-yt-dlp(-)]
+"
+BDEPEND="
+	man? ( virtual/pandoc )
+"
 
 distutils_enable_tests pytest
-
-src_prepare() {
-	distutils-r1_src_prepare
-
-	# adjust requires for pycryptodome and optional dependencies (bug #828466)
-	sed -ri requirements.txt \
-		-e "s/^(pycryptodome)x/\1/" \
-		-e "/^(brotli.*|certifi|mutagen|websockets)/d" || die
-}
 
 python_compile() {
 	# generate missing files in live, not in compile_all nor prepare
@@ -43,6 +36,17 @@ python_compile() {
 }
 
 python_test() {
+	local EPYTEST_DESELECT=(
+		# fails with FEATURES=network-sandbox
+		test/test_networking.py::TestHTTPRequestHandler::test_connect_timeout
+		# fails with FEATURES=distcc, bug #915614
+		test/test_networking.py::TestYoutubeDLNetworking::test_proxy\[None-expected2\]
+		# websockets tests break easily depending on dev-python/websockets
+		# version and, as far as I know, most users do not use/need it --
+		# thus being neither in RDEPEND nor optfeature (bug #940630,#950030)
+		test/test_websockets.py
+	)
+
 	epytest -m 'not download'
 }
 
@@ -65,6 +69,7 @@ pkg_postinst() {
 	optfeature "various features (merging tracks, streamed content)" media-video/ffmpeg
 	has_version media-video/atomicparsley || # allow fallback but don't advertise
 		optfeature "embedding metadata thumbnails in MP4/M4A files" media-libs/mutagen
+	optfeature "decrypting cookies from Chromium-based browsers" dev-python/secretstorage
 
 	if [[ ! ${REPLACING_VERSIONS} ]]; then
 		elog 'A wrapper using "yt-dlp --compat-options youtube-dl" was installed'

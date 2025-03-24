@@ -1,9 +1,9 @@
-# Copyright 2019-2021 Gentoo Authors
+# Copyright 2019-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-inherit toolchain-funcs
+inherit meson
 
 DESCRIPTION="linux port of OpenBSD imsg"
 
@@ -21,21 +21,10 @@ fi
 
 LICENSE="ISC"
 SLOT="0"
-IUSE="static-libs test"
-RESTRICT="!test? ( test )"
-
-src_prepare() {
-	default
-	sed "s/@LIBDIR@/$(get_libdir)/" -i libimsg.pc.in || die
-}
-
-src_configure() {
-	tc-export CC AR
-}
+IUSE="static-libs"
 
 src_install() {
-	emake DESTDIR="${D}" PREFIX="${EPREIFX}/usr" LIBDIR="${EPREFIX}/usr/$(get_libdir)" install
-	if ! use static-libs ; then
-		find "${ED}"/usr/$(get_libdir) -name "*.a" -delete || die
-	fi
+	meson_src_install
+
+	use static-libs || rm "${ED}/usr/$(get_libdir)/libimsg.a" || die
 }

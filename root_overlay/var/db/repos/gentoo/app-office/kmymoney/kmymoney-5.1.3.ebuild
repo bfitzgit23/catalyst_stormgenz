@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -8,21 +8,20 @@ ECM_HANDBOOK="optional"
 ECM_TEST="forceoptional"
 KFMIN=5.82.0
 QTMIN=5.15.5
-VIRTUALX_REQUIRED="test"
 VIRTUALDBUS_TEST="true"
-inherit ecm kde.org optfeature
+inherit ecm flag-o-matic kde.org optfeature
 
 DESCRIPTION="Personal finance manager based on KDE Frameworks"
 HOMEPAGE="https://kmymoney.org/"
 
 if [[ ${KDE_BUILD_TYPE} = release ]]; then
 	SRC_URI="mirror://kde/stable/${PN}/${PV}/src/${P}.tar.xz"
-	KEYWORDS="amd64 ~x86"
+	KEYWORDS="amd64"
 fi
 
 LICENSE="GPL-2"
 SLOT="5"
-IUSE="activities addressbook calendar hbci holidays"
+IUSE="calendar hbci holidays"
 [[ ${KDE_BUILD_TYPE} = live ]] && IUSE+=" experimental"
 
 RDEPEND="
@@ -62,12 +61,6 @@ RDEPEND="
 	>=kde-frameworks/kwidgetsaddons-${KFMIN}:5
 	>=kde-frameworks/kxmlgui-${KFMIN}:5
 	>=kde-frameworks/sonnet-${KFMIN}:5
-	activities? ( >=kde-frameworks/kactivities-${KFMIN}:5 )
-	addressbook? (
-		kde-apps/akonadi:5
-		kde-apps/kidentitymanagement:5
-		>=kde-frameworks/kcontacts-${KFMIN}:5
-	)
 	calendar? ( dev-libs/libical:= )
 	hbci? (
 		>=dev-qt/qtdeclarative-${QTMIN}:5
@@ -93,15 +86,18 @@ pkg_setup() {
 }
 
 src_configure() {
+	# -Werror=odr
+	# https://bugs.gentoo.org/865943
+	# https://bugs.kde.org/show_bug.cgi?id=486486
+	filter-lto
+
 	local mycmakeargs=(
 		-DENABLE_OFXIMPORTER=ON
 		-DENABLE_WEBENGINE=ON
 		-DENABLE_WOOB=OFF # ported to Py3; not yet re-added in Gentoo
 		-DUSE_QT_DESIGNER=OFF
-		$(cmake_use_find_package activities KF5Activities)
-		$(cmake_use_find_package addressbook KF5Akonadi)
-		$(cmake_use_find_package addressbook KF5Contacts)
-		$(cmake_use_find_package addressbook KF5IdentityManagement)
+		-DCMAKE_DISABLE_FIND_PACKAGE_KF5Activities=ON
+		-DENABLE_ADDRESSBOOK=OFF
 		-DENABLE_LIBICAL=$(usex calendar)
 		-DENABLE_KBANKING=$(usex hbci)
 		$(cmake_use_find_package holidays KF5Holidays)

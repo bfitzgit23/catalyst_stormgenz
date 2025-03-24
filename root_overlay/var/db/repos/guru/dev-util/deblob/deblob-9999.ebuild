@@ -5,24 +5,28 @@ EAPI=8
 
 if [[ "$PV" == 9999 ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://git.sr.ht/~lanodan/deblob"
+	EGIT_REPO_URI="https://anongit.hacktivis.me/git/deblob"
 else
 	VERIFY_SIG_METHOD=signify
 	inherit verify-sig
 
 	SRC_URI="
-		https://hacktivis.me/releases/${P}.tar.gz
-		verify-sig? ( https://hacktivis.me/releases/${P}.tar.gz.sign )
+		https://distfiles.hacktivis.me/releases/${P}.tar.gz
+		verify-sig? ( https://distfiles.hacktivis.me/releases/${P}.tar.gz.sign )
 	"
 	KEYWORDS="~amd64 ~arm64 ~riscv"
 fi
 
 DESCRIPTION="remove binary executables from a directory"
-HOMEPAGE="https://git.sr.ht/~lanodan/deblob"
+# permalink
+HOMEPAGE="https://hacktivis.me/projects/deblob"
 LICENSE="BSD"
 SLOT="0"
 
-DEPEND="dev-lang/hare:="
+DEPEND="
+	dev-lang/hare:=
+	dev-hare/hare-json
+"
 
 # built by hare
 QA_FLAGS_IGNORED="usr/bin/deblob"

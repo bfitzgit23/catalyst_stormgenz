@@ -12,9 +12,9 @@ DOCS_DEPEND="
 "
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 
-inherit distutils-r1 git-r3 docs
+inherit distutils-r1 docs git-r3
 
 DESCRIPTION="Animation engine for explanatory math videos"
 HOMEPAGE="https://github.com/3b1b/manim https://pypi.org/project/manimgl/"
@@ -31,10 +31,14 @@ LICENSE="MIT"
 SLOT="0"
 
 RDEPEND="
+	dev-python/addict[${PYTHON_USEDEP}]
+	dev-python/appdirs[${PYTHON_USEDEP}]
 	dev-python/colour[${PYTHON_USEDEP}]
-	dev-python/ipython[${PYTHON_USEDEP}]
+	dev-python/diskcache[${PYTHON_USEDEP}]
+	>=dev-python/ipython-8.18.0[${PYTHON_USEDEP}]
 	dev-python/isosurfaces[${PYTHON_USEDEP}]
-	=dev-python/ManimPango-0.4*[${PYTHON_USEDEP}]
+	dev-python/fonttools[${PYTHON_USEDEP}]
+	>=dev-python/ManimPango-0.6.0[${PYTHON_USEDEP}]
 	dev-python/mapbox-earcut[${PYTHON_USEDEP}]
 	dev-python/matplotlib[${PYTHON_USEDEP}]
 	dev-python/moderngl[${PYTHON_USEDEP}]
@@ -54,7 +58,7 @@ RDEPEND="
 	dev-python/sympy[${PYTHON_USEDEP}]
 	dev-python/tqdm[${PYTHON_USEDEP}]
 	dev-python/validators[${PYTHON_USEDEP}]
-	app-text/texlive
+	app-text/texlive[extra]
 	media-video/ffmpeg
 	virtual/opengl
 	x11-libs/pango

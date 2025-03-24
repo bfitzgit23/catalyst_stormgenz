@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -10,7 +10,7 @@ HOMEPAGE="https://gitlab.gnome.org/GNOME/libdazzle"
 
 LICENSE="GPL-3+"
 SLOT="0"
-KEYWORDS="amd64 ~arm arm64 ~ppc ~ppc64 ~riscv ~sparc x86"
+KEYWORDS="amd64 ~arm arm64 ~loong ~ppc ~ppc64 ~riscv ~sparc x86"
 
 IUSE="gtk-doc +introspection test +vala"
 REQUIRED_USE="vala? ( introspection )"
@@ -25,7 +25,7 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 # libxml2 required for glib-compile-resources; glib-utils for glib-mkenums
 BDEPEND="
-	>=dev-util/meson-0.49.0
+	>=dev-build/meson-0.49.0
 	vala? ( $(vala_depend) )
 	dev-libs/libxml2:2
 	dev-util/glib-utils

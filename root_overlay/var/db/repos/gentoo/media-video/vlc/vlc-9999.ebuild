@@ -1,4 +1,4 @@
-# Copyright 2000-2023 Gentoo Authors
+# Copyright 2000-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -8,7 +8,7 @@ LUA_COMPAT=( lua5-{1..2} )
 MY_PV="${PV/_/-}"
 MY_PV="${MY_PV/-beta/-test}"
 MY_P="${PN}-${MY_PV}"
-if [[ ${PV} = *9999 ]] ; then
+if [[ ${PV} = *9999* ]] ; then
 	if [[ ${PV%.9999} != ${PV} ]] ; then
 		EGIT_BRANCH="3.0.x"
 	fi
@@ -22,10 +22,12 @@ else
 	fi
 	KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc ~ppc64 -sparc ~x86"
 fi
+
 inherit autotools flag-o-matic lua-single toolchain-funcs virtualx xdg
 
 DESCRIPTION="Media player and framework with support for most multimedia files and streaming"
 HOMEPAGE="https://www.videolan.org/vlc/"
+S="${WORKDIR}/${MY_P}"
 
 LICENSE="LGPL-2.1 GPL-2"
 SLOT="0/12-9" # vlc - vlccore
@@ -55,11 +57,14 @@ REQUIRED_USE="
 "
 BDEPEND="
 	>=sys-devel/gettext-0.19.8
+	sys-devel/flex
 	virtual/pkgconfig
 	lua? ( ${LUA_DEPS} )
 	amd64? ( dev-lang/yasm )
+	wayland? ( dev-util/wayland-scanner )
 	x86? ( dev-lang/yasm )
 "
+# <media-plugins/live-2024.11.28: https://github.com/gentoo/gentoo/pull/40610#issuecomment-2664870395
 RDEPEND="
 	media-libs/libvorbis
 	net-dns/libidn:=
@@ -113,14 +118,12 @@ RDEPEND="
 	keyring? ( app-crypt/libsecret )
 	gstreamer? ( >=media-libs/gst-plugins-base-1.4.5:1.0 )
 	gui? (
-		dev-qt/qtcore:5
-		dev-qt/qtgui:5
-		dev-qt/qtsvg:5
-		dev-qt/qtwidgets:5
-		X? (
-			dev-qt/qtx11extras:5
-			x11-libs/libX11
-		)
+		dev-qt/qt5compat:6[qml]
+		dev-qt/qtbase:6=[gui,widgets]
+		dev-qt/qtdeclarative:6
+		dev-qt/qtsvg:6
+		kde-frameworks/kwindowsystem:6
+		X? ( x11-libs/libX11 )
 	)
 	ieee1394? (
 		sys-libs/libavc1394
@@ -140,13 +143,13 @@ RDEPEND="
 		x11-libs/gdk-pixbuf:2
 		x11-libs/libnotify
 	)
-	libplacebo? ( media-libs/libplacebo )
+	libplacebo? ( media-libs/libplacebo:= )
 	libsamplerate? ( media-libs/libsamplerate )
 	libtar? ( dev-libs/libtar )
 	libtiger? ( media-libs/libtiger )
 	linsys? ( media-libs/zvbi )
 	lirc? ( app-misc/lirc )
-	live? ( media-plugins/live:= )
+	live? ( <media-plugins/live-2024.11.28:= )
 	loudness? ( >=media-libs/libebur128-1.2.4:= )
 	lua? ( ${LUA_DEPS} )
 	mad? ( media-libs/libmad )
@@ -155,7 +158,7 @@ RDEPEND="
 		media-libs/libmatroska:=
 	)
 	modplug? ( >=media-libs/libmodplug-0.8.9.0 )
-	mp3? ( media-sound/mpg123 )
+	mp3? ( media-sound/mpg123-base )
 	mpeg? ( media-libs/libmpeg2 )
 	mtp? ( media-libs/libmtp:= )
 	musepack? ( media-sound/musepack-tools )
@@ -169,7 +172,7 @@ RDEPEND="
 		>=media-libs/libprojectm-3.1.12:0=
 	)
 	pulseaudio? ( media-libs/libpulse )
-	rdp? ( >=net-misc/freerdp-2.0.0_rc0:=[client(+)] )
+	rdp? ( >=net-misc/freerdp-2.0.0_rc0:2= )
 	samba? ( >=net-fs/samba-4.0.0:0[client,-debug(-)] )
 	sdl-image? ( media-libs/sdl-image )
 	sftp? ( net-libs/libssh2 )
@@ -191,7 +194,7 @@ RDEPEND="
 		gnome-base/librsvg:2
 		x11-libs/cairo
 	)
-	taglib? ( >=media-libs/taglib-1.9 )
+	taglib? ( media-libs/taglib:= )
 	theora? ( media-libs/libtheora )
 	tremor? ( media-libs/tremor )
 	truetype? (
@@ -235,8 +238,6 @@ PATCHES=(
 )
 
 DOCS=( AUTHORS THANKS NEWS README.md doc/fortunes.txt )
-
-S="${WORKDIR}/${MY_P}"
 
 pkg_setup() {
 	if use lua; then
@@ -283,9 +284,13 @@ src_prepare() {
 }
 
 src_configure() {
+	# bug #944778
+	unset LEX
+
 	local -x BUILDCC="$(tc-getBUILD_CC)"
 
 	local myeconfargs=(
+		--disable-amf-frc # DirectX specific
 		--disable-optimizations
 		--disable-rpath
 		--disable-update-check
@@ -433,20 +438,18 @@ src_configure() {
 	)
 	# ^ We don't have these disabled libraries in the Portage tree yet.
 
+	# https://code.videolan.org/videolan/vlc/-/issues/17626 (bug #861143)
+	append-flags -fno-strict-aliasing
+	filter-lto
+
 	# Compatibility fix for Samba 4.
-	use samba && append-cppflags "-I/usr/include/samba-4.0"
+	use samba && append-cppflags "-I${ESYSROOT}/usr/include/samba-4.0"
 
 	if use x86; then
 		# We need to disable -fstack-check if use >=gcc 4.8.0. bug #499996
 		append-cflags $(test-flags-CC -fno-stack-check)
 		# Bug 569774
 		replace-flags -Os -O2
-	fi
-
-	if use omxil; then
-		# bug #723006
-		# https://trac.videolan.org/vlc/ticket/24617
-		append-cflags -fcommon
 	fi
 
 	# FIXME: Needs libresid-builder from libsidplay:2 which is in another directory...

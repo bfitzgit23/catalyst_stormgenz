@@ -1,16 +1,14 @@
-BDEPEND=nls? ( sys-devel/gettext ) test? ( || ( dev-lang/python:3.11 dev-lang/python:3.10 ) dev-tcltk/expect || ( ( dev-lang/python:3.11 dev-python/pexpect[python_targets_python3_11(-)] ) ( dev-lang/python:3.10 dev-python/pexpect[python_targets_python3_10(-)] ) ) ) >=dev-util/ninja-1.8.2 >=dev-util/cmake-3.20.5 >=dev-vcs/git-1.8.2.1[curl]
+BDEPEND=nls? ( sys-devel/gettext ) test? ( || ( dev-lang/python:3.13 dev-lang/python:3.12 dev-lang/python:3.11 ) || ( ( dev-lang/python:3.13 dev-python/pexpect[python_targets_python3_13(-)] ) ( dev-lang/python:3.12 dev-python/pexpect[python_targets_python3_12(-)] ) ( dev-lang/python:3.11 dev-python/pexpect[python_targets_python3_11(-)] ) ) ) doc? ( dev-python/sphinx ) || ( dev-lang/rust-bin:9999 dev-lang/rust:9999 dev-lang/rust-bin:1.86.0 dev-lang/rust:1.86.0 dev-lang/rust-bin:1.85.1 dev-lang/rust:1.85.1 dev-lang/rust-bin:1.85.0 dev-lang/rust:1.85.0 dev-lang/rust-bin:1.84.1 dev-lang/rust:1.84.1 dev-lang/rust-bin:1.84.0 dev-lang/rust:1.84.0 dev-lang/rust-bin:1.83.0 dev-lang/rust:1.83.0 dev-lang/rust-bin:1.82.0 dev-lang/rust:1.82.0 dev-lang/rust-bin:1.81.0 dev-lang/rust:1.81.0 dev-lang/rust-bin:1.80.1 dev-lang/rust:1.80.1 dev-lang/rust-bin:1.79.0 dev-lang/rust:1.79.0 dev-lang/rust-bin:1.78.0 dev-lang/rust:1.78.0 dev-lang/rust-bin:1.77.1 dev-lang/rust:1.77.1 dev-lang/rust-bin:1.76.0 dev-lang/rust:1.76.0 dev-lang/rust-bin:1.75.0 dev-lang/rust:1.75.0 dev-lang/rust-bin:1.74.1 dev-lang/rust:1.74.1 dev-lang/rust-bin:1.71.1 dev-lang/rust:1.71.1 ) app-alternatives/ninja >=dev-build/cmake-3.20.5 >=dev-vcs/git-1.8.2.1[curl]
 DEFINED_PHASES=compile configure install postinst postrm preinst prepare setup test unpack
-DEPEND=>=dev-libs/libpcre2-10.32:=[pcre32] sys-apps/coreutils sys-libs/ncurses:=[unicode(+)] doc? ( dev-python/sphinx )
 DESCRIPTION=Friendly Interactive SHell
 EAPI=8
 HOMEPAGE=https://fishshell.com/
 IDEPEND=dev-util/desktop-file-utils x11-misc/shared-mime-info
-INHERIT=cmake python-any-r1 readme.gentoo-r1 xdg git-r3
-IUSE=+doc nls split-usr test
-LICENSE=GPL-2
+INHERIT=cargo cmake multiprocessing python-any-r1 readme.gentoo-r1 xdg git-r3
+IUSE=+doc nls test debug
+LICENSE=GPL-2 BSD BSD-2 CC0-1.0 GPL-2+ ISC LGPL-2+ MIT PSF-2 ZLIB MIT Unicode-DFS-2016 WTFPL-2 ZLIB
 PROPERTIES=live
-RDEPEND=>=dev-libs/libpcre2-10.32:=[pcre32] sys-apps/coreutils sys-libs/ncurses:=[unicode(+)]
 RESTRICT=!test? ( test )
 SLOT=0
-_eclasses_=cmake	ea305d3be967deed8faa5c9e94f9aee4	flag-o-matic	be27a904c614cb93ae037762dc69bcc2	git-r3	2358a7b20091609e24bd3a83b3ac5991	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	python-any-r1	f5169813d1619761b459800587005fd2	python-utils-r1	59e60e9c5cbd3f214d7f1002e798b387	readme.gentoo-r1	204091a2cde6179cd9d3db26d09412d3	toolchain-funcs	862d337d98edb576796827be2c6b11ca	xdg	4a14c5c24f121e7da66e5aab4a168c6e	xdg-utils	baea6080dd821f5562d715887954c9d3
-_md5_=1b762e59d1a4ce6dfbba00ebd58634ac
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	multiprocessing	1e32df7deee68372153dca65f4a7c21f	rust	e9d31591b9b0251018cd5c60a43bafa1	rust-toolchain	76468983281b0a7fc167ca224f84ecfd	cargo	eb4315c13bbb1d5195ce27f8934644f9	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	xdg-utils	42869b3c8d86a70ef3cf75165a395e09	cmake	10a50dfaf728b802fcfd37f8d0da9056	python-utils-r1	b7726144f5af59e186d66746d0f513e5	python-any-r1	891415dfe39ad9b41b461f2b86354af0	readme.gentoo-r1	b045f3acf546393ab6b3170781875358	xdg	3ef49a87c52c8b77c476351195dfe575	git-r3	875eb471682d3e1f18da124be97dcc81
+_md5_=c53c6422f9916a07c4b249bfe32c9ba7

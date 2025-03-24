@@ -9,5 +9,5 @@ LICENSE=GPL-2
 RDEPEND==www-servers/apache-2*
 SLOT=0
 SRC_URI=mirror://apache/httpd/mod_fcgid/mod_fcgid-2.3.9.tar.bz2
-_eclasses_=apache-module	c39c4721f3b26f641833bddb8ee0718e	depend.apache	416d1c5005c5f4594e79812fb7323f0d
+_eclasses_=depend.apache	3b9c533be911d4550c8972e4dfb6434a	apache-module	2778fecd257078e9c921796782f6ede1
 _md5_=5b3ffd00e0b97c8fdaed99c05ce55a9e

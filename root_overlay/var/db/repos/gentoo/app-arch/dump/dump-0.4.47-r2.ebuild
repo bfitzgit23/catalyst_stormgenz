@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -9,12 +9,12 @@ MY_P="${PN}-$(ver_rs 2 b)"
 
 DESCRIPTION="Dump/restore ext2fs backup utilities"
 HOMEPAGE="https://dump.sourceforge.io/"
-SRC_URI="mirror://sourceforge/dump/${MY_P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/dump/${MY_P}.tar.gz"
 S="${WORKDIR}/${MY_P}"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~hppa ~ia64 ppc ppc64 sparc x86"
+KEYWORDS="~alpha amd64 ~hppa ppc ppc64 sparc x86"
 # We keep uuid USE flag default dsiabled for this version. Don't forget
 # to default enable it for later versions as this is the upstream default.
 IUSE="bzip2 debug ermt lzo readline selinux sqlite ssl static test uuid zlib"

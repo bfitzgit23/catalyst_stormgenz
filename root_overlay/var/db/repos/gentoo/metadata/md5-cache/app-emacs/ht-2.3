@@ -1,15 +1,15 @@
-BDEPEND=>=app-emacs/dash-2.12.0 test? ( app-emacs/f app-emacs/ert-runner ) >=app-editors/emacs-25.3:*
-DEFINED_PHASES=compile configure install postinst postrm prepare setup test unpack
+BDEPEND=>=app-emacs/dash-2.12.0 test? ( app-emacs/f ) test? ( app-emacs/ert-runner ) >=app-editors/emacs-25.3:*
+DEFINED_PHASES=compile configure info install postinst postrm prepare setup test unpack
 DESCRIPTION=The missing hash table library for Emacs
 EAPI=8
 HOMEPAGE=https://github.com/Wilfred/ht.el
 INHERIT=elisp
 IUSE=test
-KEYWORDS=amd64
+KEYWORDS=amd64 ~arm64
 LICENSE=GPL-3+
 RDEPEND=>=app-emacs/dash-2.12.0 >=app-editors/emacs-25.3:*
 RESTRICT=!test? ( test )
 SLOT=0
 SRC_URI=https://github.com/Wilfred/ht.el/archive/2.3.tar.gz -> ht-2.3.tar.gz
-_eclasses_=elisp	fbefa95f5e9ab880a34bc69832b7c0d7	elisp-common	dc179f98b2b4d9a4473fd3bdc154bbb6
-_md5_=d8045a6e3c7e8ba7a36f7e9be19ec7a5
+_eclasses_=elisp-common	4ee3453b022aae73f4d827a0f98920c2	elisp	8dfc7a00348fe9c91895014adc78a4a5
+_md5_=309fc3f0a2fe64e6d3872112a534af61

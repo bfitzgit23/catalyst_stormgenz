@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-inherit multilib-minimal
+inherit multilib-minimal flag-o-matic
 
 WXSUBVERSION=${PV}-gtk3				# 3.0.5.1-gtk3
 WXVERSION=${WXSUBVERSION%.*}			# 3.0.5
@@ -20,7 +20,7 @@ S="${WORKDIR}/wxWidgets-${PV}"
 
 LICENSE="wxWinLL-3 GPL-2 doc? ( wxWinFDL-3 )"
 SLOT="${WXRELEASE}"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ~mips ppc ppc64 ~riscv sparc x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv sparc x86 ~amd64-linux ~x86-linux"
 IUSE="+X doc debug gstreamer libnotify opengl pch sdl test tiff webkit"
 REQUIRED_USE="test? ( tiff ) tiff? ( X )"
 RESTRICT="!test? ( test )"
@@ -92,6 +92,9 @@ src_prepare() {
 }
 
 multilib_src_configure() {
+	# Workaround for bug #915154
+	append-ldflags $(test-flags-CCLD -Wl,--undefined-version)
+
 	# X independent options
 	local myeconfargs=(
 		--with-zlib=sys

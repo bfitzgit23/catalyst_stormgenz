@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{11..13} )
 
 inherit autotools prefix python-any-r1 xdg
 
@@ -40,6 +40,10 @@ DOCS=(
 	"README.md"
 	"README.Music.md"
 	"README.Strife.md"
+)
+
+PATCHES=(
+	${FILESDIR}/${P}-cflags.patch
 )
 
 src_prepare() {

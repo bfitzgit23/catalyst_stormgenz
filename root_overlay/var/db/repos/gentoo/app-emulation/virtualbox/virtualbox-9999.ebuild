@@ -1,4 +1,4 @@
-# Copyright 2022-2023 Gentoo Authors
+# Copyright 2022-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,9 +7,8 @@ EAPI=8
 # This compiles the latest svn version.
 # It also compiles the kernel modules.  Does not depend on virtualbox-modules.
 # It is not meant to be used, might be very unstable.
-# Upstream seem to have added support for python 3.12; I haven't checked it yet.
+# Upstream seem to have added support for python 3.12, but it crashes.
 #
-# USE=doc does not work for now.
 #
 #
 # To add a new Python here:
@@ -30,27 +29,27 @@ inherit desktop edo flag-o-matic java-pkg-opt-2 linux-mod-r1 multilib optfeature
 	python-single-r1 subversion tmpfiles toolchain-funcs udev xdg
 
 MY_PN="VirtualBox"
-BASE_PV=7.0.8
+BASE_PV=7.1.0
 MY_P=${MY_PN}-${PV}
 
 DESCRIPTION="Family of powerful x86 virtualization products for enterprise and home use"
 HOMEPAGE="https://www.virtualbox.org/"
 ESVN_REPO_URI="https://www.virtualbox.org/svn/vbox/trunk"
 SRC_URI="
-	https://gitweb.gentoo.org/proj/virtualbox-patches.git/snapshot/virtualbox-patches-7.0.10_pre20230615.tar.bz2
+	https://gitweb.gentoo.org/proj/virtualbox-patches.git/snapshot/virtualbox-patches-7.2.0_pre20250106.tar.bz2
 	gui? ( !doc? ( https://dev.gentoo.org/~ceamac/${CATEGORY}/${PN}/${PN}-help-${BASE_PV}.tar.xz ) )
 "
 S="${WORKDIR}/trunk"
 
 LICENSE="GPL-2+ GPL-3 LGPL-2.1 MIT dtrace? ( CDDL )"
 SLOT="0/$(ver_cut 1-2)"
-IUSE="alsa dbus debug doc dtrace +gui java lvm nls pam pch pulseaudio +opengl python +sdk +sdl +udev vboxwebsrv vde vnc"
+IUSE="alsa dbus debug doc dtrace +gui java lvm nls pam pch pulseaudio +opengl python +sdk +sdl +udev vboxwebsrv vde +vmmraw vnc"
 
 unset WATCOM #856769
 
 COMMON_DEPEND="
-	${PYTHON_DEPS}
 	acct-group/vboxusers
+	app-arch/xz-utils
 	dev-libs/libtpms
 	dev-libs/libxml2
 	dev-libs/openssl:0=
@@ -60,17 +59,11 @@ COMMON_DEPEND="
 	sys-libs/zlib
 	dbus? ( sys-apps/dbus )
 	gui? (
-		dev-qt/qtcore:5
-		dev-qt/qtdbus:5
-		dev-qt/qtgui:5
-		dev-qt/qthelp:5
-		dev-qt/qtprintsupport:5
-		dev-qt/qtwidgets:5
-		dev-qt/qtx11extras:5
-		dev-qt/qtxml:5
+		dev-qt/qtbase:6[widgets]
+		dev-qt/qtscxml:6
+		dev-qt/qttools:6[assistant]
 		x11-libs/libX11
 		x11-libs/libXt
-		opengl? ( dev-qt/qtopengl:5 )
 	)
 	lvm? ( sys-fs/lvm2 )
 	opengl? (
@@ -80,10 +73,10 @@ COMMON_DEPEND="
 		x11-libs/libXt
 	)
 	pam? ( sys-libs/pam )
+	python? ( ${PYTHON_DEPS} )
 	sdl? (
 		media-libs/libsdl2[X,video]
 		x11-libs/libX11
-		x11-libs/libXcursor
 		x11-libs/libXt
 	)
 	vboxwebsrv? ( net-libs/gsoap[-gnutls(-),debug?] )
@@ -104,6 +97,7 @@ DEPEND="
 	${COMMON_DEPEND}
 	>=dev-libs/libxslt-1.1.19
 	virtual/libcrypt:=
+	x11-libs/libXt
 	alsa? ( >=media-libs/alsa-lib-1.0.13 )
 	gui? (
 		x11-base/xorg-proto
@@ -123,29 +117,32 @@ DEPEND="
 		x11-libs/libXrandr
 		virtual/glu
 	)
-	sdl? ( x11-libs/libXinerama )
+	sdl? (
+		x11-libs/libXcursor
+		x11-libs/libXinerama
+	)
 	pulseaudio? ( media-libs/libpulse )
 	udev? ( >=virtual/udev-171 )
 "
 RDEPEND="
 	${COMMON_DEPEND}
+	!app-emulation/virtualbox-modules
 	gui? ( x11-libs/libxcb:= )
 	java? ( virtual/jre:1.8 )
 "
 BDEPEND="
-	${PYTHON_DEPS}
-	app-arch/makeself
 	>=app-arch/tar-1.34-r2
 	>=dev-lang/yasm-0.6.2
 	dev-libs/libIDL
 	dev-util/glslang
-	>=dev-util/kbuild-0.1.9998.3592
+	>=dev-build/kbuild-0.1.9998.3660
 	sys-apps/which
 	sys-devel/bin86
 	sys-libs/libcap
 	sys-power/iasl
 	virtual/pkgconfig
 	doc? (
+		app-doc/dita-ot-bin
 		app-text/docbook-sgml-dtd:4.4
 		app-text/docbook-xsl-ns-stylesheets
 		dev-texlive/texlive-basic
@@ -154,11 +151,13 @@ BDEPEND="
 		dev-texlive/texlive-latexextra
 		dev-texlive/texlive-fontsrecommended
 		dev-texlive/texlive-fontsextra
-		dev-qt/qthelp:5
+		dev-qt/qttools:6[assistant]
+		sys-libs/nss_wrapper
 	)
-	gui? ( dev-qt/linguist-tools:5 )
-	nls? ( dev-qt/linguist-tools:5 )
+	gui? ( dev-qt/qttools:6[linguist] )
+	nls? ( dev-qt/qttools:6[linguist] )
 	java? ( virtual/jdk:1.8 )
+	python? ( ${PYTHON_DEPS} )
 "
 
 QA_FLAGS_IGNORED="
@@ -193,30 +192,13 @@ QA_PRESTRIPPED="
 
 REQUIRED_USE="
 	java? ( sdk )
-	python? ( sdk )
+	python? ( sdk ${PYTHON_REQUIRED_USE} )
 	vboxwebsrv? ( java )
-	${PYTHON_REQUIRED_USE}
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-6.1.26-configure-include-qt5-path.patch # bug #805365
-
-	# This patch is needed to avoid automagic detection based on a hardcoded
-	# list of Pythons in configure. It's necessary but not sufficient
-	# (see the rest of the ebuild's logic for the remainder) to handle
-	# proper Python selection.
-	"${FILESDIR}"/${PN}-6.1.34-r3-python.patch
-
-	# 865361
-	"${FILESDIR}"/${PN}-6.1.36-fcf-protection.patch
-
-	"${FILESDIR}"/${PN}-7.0.0-fix-compilation-clang.patch
-	"${FILESDIR}"/${PN}-7.0.9-python.patch
-	"${FILESDIR}"/${PN}-7.0.6-gcc-13.patch
-	"${FILESDIR}"/${PN}-7.0.8-mtune-keep-size.patch
-
 	# Downloaded patchset
-	"${WORKDIR}"/virtualbox-patches-7.0.10_pre20230615/patches
+	"${WORKDIR}"/virtualbox-patches-7.2.0_pre20250106/patches
 )
 
 DOCS=()	# Don't install the default README file during einstalldocs
@@ -231,10 +213,6 @@ pkg_pretend() {
 	if ! use opengl; then
 		einfo "No USE=\"opengl\" selected, this build will lack"
 		einfo "the OpenGL feature."
-	fi
-	if ! use python; then
-		einfo "You have disabled the \"python\" USE flag. This will only"
-		einfo "disable the python bindings being installed."
 	fi
 	if ! use nls && use gui; then
 		einfo "USE=\"gui\" also selects USE=\"nls\".  This build"
@@ -253,7 +231,7 @@ pkg_pretend() {
 
 pkg_setup() {
 	java-pkg-opt-2_pkg_setup
-	python-single-r1_pkg_setup
+	use python && python-single-r1_pkg_setup
 	linux-mod-r1_pkg_setup
 }
 
@@ -285,6 +263,9 @@ src_prepare() {
 			>> LocalConfig.kmk || die
 	fi
 
+	# bug #916002, #488176, #925347
+	tc-ld-is-mold || tc-ld-force-bfd
+
 	# Respect LDFLAGS
 	sed -e "s@_LDFLAGS\.${ARCH}*.*=@& ${LDFLAGS}@g" \
 		-i Config.kmk src/libs/xpcom18a4/Config.kmk || die
@@ -309,12 +290,8 @@ src_prepare() {
 		java-pkg-opt-2_src_prepare
 	fi
 
-	#856811 #864274
-	# cannot filter out only one flag, some combinations of these flags produce buggy executables
-	for i in abm avx avx2 bmi bmi2 fma fma4 popcnt; do
-		append-cflags $(test-flags-CC -mno-$i)
-		append-cxxflags $(test-flags-CXX -mno-$i)
-	done
+	# bug #908814
+	filter-lto
 
 	# bug #843437
 	cat >> LocalConfig.kmk <<-EOF || die
@@ -331,11 +308,8 @@ src_prepare() {
 	echo -e "\nVBOX_WITH_VBOX_IMG=1" >> LocalConfig.kmk || die
 
 	if tc-is-clang; then
-		# clang assembler chokes on comments starting with /
-		sed -i -e '/^\//d' src/libs/xpcom18a4/nsprpub/pr/src/md/unix/os_Linux_x86_64.s || die
-
 		# clang does not support this extension
-		eapply "${FILESDIR}"/${PN}-7.0.8-disable-rebuild-iPxeBiosBin.patch
+		eapply "${FILESDIR}"/${PN}-7.1.0-disable-rebuild-iPxeBiosBin.patch
 	fi
 
 	# fix doc generation
@@ -373,8 +347,6 @@ src_prepare() {
 }
 
 src_configure() {
-	tc-ld-disable-gold # bug #488176
-
 	tc-export AR CC CXX LD RANLIB
 	export HOST_CC="$(tc-getBUILD_CC)"
 
@@ -394,6 +366,7 @@ src_configure() {
 		$(usev !python --disable-python)
 		$(usev vboxwebsrv --enable-webservice)
 		$(usev vde --enable-vde)
+		$(usev !vmmraw --disable-vmmraw)
 		$(usev vnc --enable-vnc)
 	)
 
@@ -424,13 +397,13 @@ src_configure() {
 		-e '/VBOX_LIB_PYTHON.*=/d' \
 		AutoConfig.kmk || die
 
-	cat >> AutoConfig.kmk <<-EOF || die
-		VBOX_WITH_PYTHON=$(usev python 1)
-		VBOX_PATH_PYTHON_INC=$(python_get_includedir)
-		VBOX_LIB_PYTHON=$(python_get_library_path)
-	EOF
-
 	if use python; then
+		cat >> AutoConfig.kmk <<-EOF || die
+			VBOX_WITH_PYTHON=$(usev python 1)
+			VBOX_PATH_PYTHON_INC=$(python_get_includedir)
+			VBOX_LIB_PYTHON=$(python_get_library_path)
+		EOF
+
 		local mangled_python="${EPYTHON#python}"
 		mangled_python="${mangled_python/.}"
 
@@ -447,6 +420,10 @@ src_configure() {
 		EOF
 
 		chmod +x src/libs/xpcom18a4/python/gen_python_deps.py || die
+	else
+		cat >> AutoConfig.kmk <<-EOF || die
+			VBOX_WITH_PYTHON:=
+		EOF
 	fi
 }
 
@@ -510,6 +487,20 @@ src_compile() {
 		)
 	fi
 
+	if use doc; then
+		# dita needs to write to ~/.fop and ~/.java
+		# but it ignores ${HOME} and tries to write to the real home of user portage
+		# resulting in a sandbox violation
+		# -Duser.home= does not work
+		# force using the temporary homedir with nss_wrapper
+		echo "${LOGNAME}::$(id -u):$(id -g):${USER}:${HOME}:/bin/bash" >> ~/passwd
+		echo "${LOGNAME}::$(id -g):" >> ~/group
+
+		local -x LD_PRELOAD=libnss_wrapper.so
+		local -x NSS_WRAPPER_PASSWD="${HOME}"/passwd
+		local -x NSS_WRAPPER_GROUP="${HOME}"/group
+	fi
+
 	MAKE="kmk" emake "${myemakeargs[@]}" all
 
 	local modlist=( {vboxdrv,vboxnetflt,vboxnetadp}=misc:"out/linux.${ARCH}/release/bin/src" )
@@ -563,7 +554,7 @@ src_install() {
 	insinto ${vbox_inst_path}
 	doins -r components
 
-	for each in VBox{Autostart,BalloonCtrl,BugReport,CpuReport,ExtPackHelperApp,Manage,SVC,VMMPreload,XPCOMIPCD} \
+	for each in VBox{Autostart,BalloonCtrl,BugReport,CpuReport,ExtPackHelperApp,Manage,SVC,VMMPreload} \
 		vboximg-mount vbox-img *so *r0; do
 		vbox_inst ${each}
 	done
@@ -574,7 +565,7 @@ src_install() {
 	done
 
 	# Install EFI Firmware files (bug #320757)
-	for each in VBoxEFI{32,64}.fd ; do
+	for each in VBoxEFI{-x86,-amd64}.fd ; do
 		vbox_inst ${each} 0644
 	done
 
@@ -724,7 +715,7 @@ src_install() {
 		fi
 
 		# 378871
-		local installer_dir="${ED}/usr/$(get_libdir)/virtualbox/sdk/installer"
+		local installer_dir="${ED}/usr/$(get_libdir)/virtualbox/sdk/installer/python/vboxapi/src"
 		pushd "${installer_dir}" &> /dev/null || die
 		sed -e "s;%VBOX_INSTALL_PATH%;${vbox_inst_path};" \
 			-e "s;%VBOX_SDK_PATH%;${vbox_inst_path}/sdk;" \
@@ -733,10 +724,14 @@ src_install() {
 		find vboxapi -name \*.py -exec sed -e "1 i\#! ${PYTHON}" -i {} \+ || die
 		python_domodule vboxapi
 		popd &> /dev/null || die
+
+		# upstream added a /bin/sh stub here
+		# use /usr/bin/python3, python_doscript will take care of it
+		sed -e '1 i #! /usr/bin/python3' -i vboxshell.py
 		python_doscript vboxshell.py
 
 		# do not install the installer
-		rm -r "${installer_dir}" || die
+		rm -r "${installer_dir%vboxapi*}" || die
 	fi
 
 	newtmpfiles "${FILESDIR}"/${PN}-vboxusb_tmpfilesd ${PN}-vboxusb.conf

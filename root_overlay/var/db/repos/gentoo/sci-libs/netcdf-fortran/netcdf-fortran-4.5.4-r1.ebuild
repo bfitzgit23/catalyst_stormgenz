@@ -1,11 +1,11 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 FORTRAN_STANDARD="77 90"
 
-inherit fortran-2
+inherit flag-o-matic fortran-2
 
 DESCRIPTION="Scientific library and interface for array oriented data access"
 HOMEPAGE="https://www.unidata.ucar.edu/software/netcdf/"
@@ -22,9 +22,14 @@ DEPEND="
 	${RDEPEND}
 	dev-lang/cfortran
 "
-BDEPEND="doc? ( app-doc/doxygen )"
+BDEPEND="doc? ( app-text/doxygen )"
 
 src_configure() {
+	# -Werror=lto-type-mismatch
+	# https://bugs.gentoo.org/927588
+	# https://github.com/Unidata/netcdf-fortran/issues/437
+	filter-lto
+
 	econf \
 		--disable-valgrind \
 		--with-temp-large="${T}" \

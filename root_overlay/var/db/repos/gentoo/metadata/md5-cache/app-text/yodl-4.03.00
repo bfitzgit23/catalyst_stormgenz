@@ -1,4 +1,4 @@
-BDEPEND=>=dev-util/icmake-8.00.00 doc? ( dev-texlive/texlive-latexextra dev-texlive/texlive-plaingeneric )
+BDEPEND=>=dev-build/icmake-8.00.00 doc? ( dev-texlive/texlive-latexextra dev-texlive/texlive-plaingeneric )
 DEFINED_PHASES=compile install prepare
 DESCRIPTION=Your Own Document Language: a pre-document language and tools to process it
 EAPI=7
@@ -9,5 +9,5 @@ KEYWORDS=~amd64 ~x86
 LICENSE=GPL-3
 SLOT=0
 SRC_URI=https://gitlab.com/fbb-git/yodl/-/archive/4.03.00/yodl-4.03.00.tar.gz
-_eclasses_=flag-o-matic	be27a904c614cb93ae037762dc69bcc2	multilib	c19072c3cd7ac5cb21de013f7e9832e0	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=78c990bf79dba4caeddc78fe1b596f23
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9
+_md5_=87a281d9215b5ece550120416c6e27f9

@@ -1,16 +1,17 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 PYTHON_REQ_USE="xml(+)"
+DISTUTILS_EXT=1
 
 inherit distutils-r1
 
 DESCRIPTION="Collection of command line audio tools"
 HOMEPAGE="https://audiotools.sourceforge.net/"
-SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2+"
 SLOT="0"
@@ -80,6 +81,12 @@ src_prepare() {
 
 python_compile_all() {
 	emake -C docs
+}
+
+python_compile() {
+	# setuptools is broken with parallel builds
+	local MAKEOPTS=-j1
+	distutils-r1_python_compile
 }
 
 python_test() {

@@ -2,8 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
   <maintainer type="person">
-    <email>gienah@gentoo.org</email>
-    <name>Mark Wright</name>
+    <email>eschwartz@gentoo.org</email>
+    <name>Eli Schwartz</name>
   </maintainer>
   <stabilize-allarches/>
   <longdescription lang="en">
@@ -21,4 +21,5 @@
   <upstream>
     <remote-id type="github">mathjax/MathJax</remote-id>
   </upstream>
+  <stabilize-allarches/>
 </pkgmetadata>

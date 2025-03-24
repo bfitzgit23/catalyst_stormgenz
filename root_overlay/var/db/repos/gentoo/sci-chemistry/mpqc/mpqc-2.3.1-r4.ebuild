@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,7 +7,7 @@ inherit autotools toolchain-funcs
 
 DESCRIPTION="The Massively Parallel Quantum Chemistry Program"
 HOMEPAGE="http://www.mpqc.org/"
-SRC_URI="mirror://sourceforge/mpqc/${P}.tar.bz2"
+SRC_URI="https://downloads.sourceforge.net/mpqc/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -22,10 +22,10 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="
 	dev-lang/perl
-	sys-devel/flex
+	app-alternatives/lex
 	virtual/pkgconfig
 	doc? (
-		app-doc/doxygen
+		app-text/doxygen
 		media-gfx/graphviz
 	)"
 

@@ -15,14 +15,14 @@ SRC_URI="https://hackage.haskell.org/package/${P}/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0/${PV}"
-KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
 
 RDEPEND=">=dev-haskell/ansi-terminal-0.6.2:=[profile?]
 	dev-haskell/call-stack:=[profile?]
 	>=dev-haskell/clock-0.7.1:=[profile?]
 	>=dev-haskell/hspec-expectations-0.8.2:=[profile?] <dev-haskell/hspec-expectations-0.8.3:=[profile?]
 	>=dev-haskell/hunit-1.6:=[profile?] <dev-haskell/hunit-1.7:=[profile?]
-	>=dev-haskell/quickcheck-2.13.1:2=[profile?]
+	>=dev-haskell/quickcheck-2.13.1:=[profile?]
 	>=dev-haskell/quickcheck-io-0.2.0:=[profile?]
 	dev-haskell/random:=[profile?]
 	dev-haskell/setenv:=[profile?]

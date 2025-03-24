@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
+	<maintainer type="person" proxied="yes">
+		<email>contact@kchibisov.com</email>
+		<name>Kirill Chibisov</name>
+	</maintainer>
+	<maintainer type="project" proxied="proxy">
+		<email>proxy-maint@gentoo.org</email>
+		<name>Proxy Maintainers</name>
+	</maintainer>
 	<maintainer type="person">
-		<email>gyakovlev@gentoo.org</email>
-		<name>Georgy Yakovlev</name>
+		<email>chutzpah@gentoo.org</email>
+		<name>Patrick McLean</name>
 	</maintainer>
 	<longdescription lang="en">
 		Alacritty is a terminal emulator with a strong focus on simplicity and performance.
@@ -13,6 +21,6 @@
 	</longdescription>
 	<upstream>
 		<doc>https://github.com/alacritty/alacritty/wiki</doc>
-		<remote-id type="github">jwilm/alacritty</remote-id>
+		<remote-id type="github">alacritty/alacritty</remote-id>
 	</upstream>
 </pkgmetadata>

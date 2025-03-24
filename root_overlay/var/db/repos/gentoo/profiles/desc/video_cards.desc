@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors.
+# Copyright 1999-2025 Gentoo Authors.
 # Distributed under the terms of the GNU General Public License v2
 
 # This file contains descriptions of VIDEO_CARDS USE_EXPAND flags.
@@ -13,7 +13,6 @@ exynos - VIDEO_CARDS setting to build driver for Samsung Exynos video cards
 freedreno - VIDEO_CARDS setting to build reverse-engineered driver for Qualcomm Adreno cards
 fbdev - VIDEO_CARDS setting to build driver for fbdev video cards
 geode - VIDEO_CARDS setting to build driver for AMD Geode GX and LX video cards
-glint - VIDEO_CARDS setting to build driver for glint video cards
 i915 - VIDEO_CARDS setting to build driver for Intel i915 video cards
 i965 - VIDEO_CARDS setting to build driver for Intel i965 video cards
 intel - VIDEO_CARDS setting to build driver for Intel video cards
@@ -22,9 +21,11 @@ lima - VIDEO_CARDS setting to build driver for Mali 200/400 video cards
 mga - VIDEO_CARDS setting to build driver for mga video cards
 nouveau - VIDEO_CARDS setting to build reverse-engineered driver for nvidia cards
 nvidia - VIDEO_CARDS setting to build driver for nvidia video cards
+nvk - VIDEO_CARDS setting to build nouveau vulkan driver for nvidia cards (Turing and newer)
 omap - VIDEO_CARDS setting to build DRM driver for TI OMAP video cards
 qxl - VIDEO_CARDS setting to build driver for qxl (QEMU virtual GPU)
 panfrost - VIDEO_CARDS setting to build driver for Mali 600/700/800 video cards
+panthor - VIDEO_CARDS setting to support for Mali 10th video cards
 r100 - VIDEO_CARDS setting to build only r100 based chips code for radeon
 r128 - VIDEO_CARDS setting to build driver for ATI r128 video cards
 r200 - VIDEO_CARDS setting to build only r200 based chips code for radeon
@@ -42,3 +43,4 @@ virgl - VIDEO_CARDS setting to build driver for virgil (virtual 3D GPU)
 virtualbox - VIDEO_CARDS setting to build driver for virtualbox emulation
 vivante - VIDEO_CARDS setting to build etnaviv driver for vivante video cards
 vmware - VIDEO_CARDS setting to build driver for vmware video cards
+zink - VIDEO_CARDS setting to build Zink OpenGL-over-Vulkan Gallium driver

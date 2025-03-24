@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>sighunter@gmx.de</email>
+		<name>Sebastian Engel</name>
+	</maintainer>
+	<use>
+		<flag name="archive">Build the libarchive input plugin using <pkg>app-arch/libarchive</pkg></flag>
+		<flag name="openmpt">Build the OpenMPT input plugin using <pkg>media-libs/libopenmpt</pkg></flag>
+		<flag name="pipewire">Enable sound support via native PipeWire backend</flag>
+		<flag name="replaygain">Enable support for Replay Gain scanning using <pkg>media-libs/libebur128</pkg> instead of using ffmpeg</flag>
+	</use>
+	<upstream>
+		<remote-id type="github">fooyin/fooyin</remote-id>
+	</upstream>
+</pkgmetadata>
+

@@ -11,14 +11,15 @@ else
 	inherit verify-sig
 
 	SRC_URI="
-		https://hacktivis.me/releases/${P}.tar.gz
-		verify-sig? ( https://hacktivis.me/releases/${P}.tar.gz.sign )
+		https://distfiles.hacktivis.me/releases/${P}.tar.gz
+		verify-sig? ( https://distfiles.hacktivis.me/releases/${P}.tar.gz.sign )
 	"
 	KEYWORDS="~amd64 ~arm64 ~riscv"
 fi
 
 DESCRIPTION="remove binary executables from a directory"
-HOMEPAGE="https://git.sr.ht/~lanodan/deblob"
+# permalink
+HOMEPAGE="https://hacktivis.me/projects/deblob"
 LICENSE="BSD"
 SLOT="0"
 

@@ -5,11 +5,11 @@
 		<email>games@gentoo.org</email>
 		<name>Gentoo Games Project</name>
 	</maintainer>
+	<use>
+		<flag name="samples">Install sample programs</flag>
+	</use>
 	<upstream>
 		<remote-id type="github">libsdl-org/SDL_image</remote-id>
 		<bugs-to>https://github.com/libsdl-org/SDL_image/issues</bugs-to>
 	</upstream>
-	<use>
-		<flag name="webp">support loading WEBP images</flag>
-	</use>
 </pkgmetadata>

@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 
 inherit meson xdg python-single-r1
 
@@ -38,7 +38,7 @@ DEPEND="
 		dev-python/svglib[${PYTHON_USEDEP}]
 		dev-python/yapsy[${PYTHON_USEDEP}]
 		dev-python/cssutils[${PYTHON_USEDEP}]
-		dev-python/jinja[${PYTHON_USEDEP}]
+		dev-python/jinja2[${PYTHON_USEDEP}]
 		dev-python/aiohttp[${PYTHON_USEDEP}]
 		dev-python/lxml[${PYTHON_USEDEP}]
 	')

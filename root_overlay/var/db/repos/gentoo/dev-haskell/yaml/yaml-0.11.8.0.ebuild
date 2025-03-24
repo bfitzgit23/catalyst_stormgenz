@@ -14,7 +14,7 @@ SRC_URI="https://hackage.haskell.org/package/${P}/${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0/${PV}"
-KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
 IUSE="examples executable"
 
 RDEPEND=">=dev-haskell/aeson-0.11:=[profile?]
@@ -39,12 +39,9 @@ DEPEND="${RDEPEND}
 		!examples? ( dev-haskell/raw-strings-qq ) )
 "
 
-src_prepare() {
-	default
-
-	cabal_chdeps \
-		'executable examples' 'executable haskell-yaml-examples'
-}
+CABAL_CHBINS=(
+	'examples' 'haskell-yaml-examples'
+)
 
 src_configure() {
 	local examples_flag="no-examples"

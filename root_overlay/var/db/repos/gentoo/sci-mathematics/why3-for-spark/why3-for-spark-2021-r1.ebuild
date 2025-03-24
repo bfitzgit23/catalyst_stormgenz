@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -10,8 +10,10 @@ ID=dd74ae7ecfd7d56aff7b17cee7a35559384a600f
 MYP=why3-${PV}-20210519-19ADF-src
 
 DESCRIPTION="Platform for deductive program verification"
-HOMEPAGE="https://why3.lri.fr/"
+HOMEPAGE="https://www.why3.org/ https://github.com/AdaCore/why3"
 SRC_URI="${ADAMIRROR}/${ID}?filename=${MYP}.tar.gz -> ${MYP}.tar.gz"
+
+S="${WORKDIR}"/${MYP}
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -21,8 +23,8 @@ RESTRICT="strip"
 
 RDEPEND="
 	>=dev-lang/ocaml-4.11:=[ocamlopt?]
-	dev-ml/menhir:=
-	dev-ml/num:=
+	dev-ml/menhir:=[ocamlopt?]
+	dev-ml/num:=[ocamlopt?]
 	dev-ml/yojson:=
 	coq? ( sci-mathematics/coq )
 	emacs? ( app-editors/emacs:* )
@@ -34,8 +36,8 @@ RDEPEND="
 		dev-ml/ppx_sexp_conv:=[ocamlopt?]
 		dev-ml/sexplib:=[ocamlopt?]
 	)
-	zarith? ( dev-ml/zarith:= )
-	zip? ( dev-ml/camlzip:= )
+	zarith? ( dev-ml/zarith:=[ocamlopt?] )
+	zip? ( dev-ml/camlzip:=[ocamlopt?] )
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
@@ -46,8 +48,6 @@ BDEPEND="
 		media-gfx/graphviz
 	)
 "
-
-S="${WORKDIR}"/${MYP}
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-2020-gentoo.patch
@@ -69,7 +69,8 @@ QA_FLAGS_IGNORED=(
 	/usr/bin/why3ide.cmxs
 )
 
-REQUIRED_USE="html? ( doc )"
+# Forcing native for bug #913497
+REQUIRED_USE="html? ( doc ) ocamlopt"
 
 src_prepare() {
 	find examples -name \*gz | xargs gunzip

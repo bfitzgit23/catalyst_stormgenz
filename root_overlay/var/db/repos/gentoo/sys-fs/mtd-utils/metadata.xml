@@ -5,10 +5,6 @@
     <email>robbat2@gentoo.org</email>
     <name>Robin H. Johnson</name>
   </maintainer>
-  <maintainer type="person">
-    <email>jsmolic@gentoo.org</email>
-    <name>Jakov Smolić</name>
-  </maintainer>
   <maintainer type="project">
     <email>embedded@gentoo.org</email>
     <name>Embedded Gentoo</name>
@@ -16,4 +12,7 @@
   <upstream>
     <remote-id type="cpe">cpe:/a:mtd-utils_project:mtd-utils</remote-id>
   </upstream>
+  <use>
+    <flag name="ubifs">Build UBIFS tools</flag>
+  </use>
 </pkgmetadata>

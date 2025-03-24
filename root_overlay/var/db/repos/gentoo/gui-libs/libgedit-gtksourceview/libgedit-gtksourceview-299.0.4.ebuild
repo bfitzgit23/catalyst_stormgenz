@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -6,18 +6,18 @@ EAPI=8
 inherit gnome.org meson virtualx xdg
 
 DESCRIPTION="Gedit Technology - Source code editing widget"
-HOMEPAGE="https://github.com/gedit-technology/libgedit-gtksourceview"
+HOMEPAGE="https://gitlab.gnome.org/World/gedit/libgedit-gtksourceview"
 SRC_URI="https://gedit-technology.net/tarballs/libgedit-gtksourceview/${P}.tar.xz"
 
 LICENSE="LGPL-2.1+"
 SLOT="300"
-KEYWORDS="~alpha amd64 ~arm arm64 ~ia64 ~loong ~ppc ~ppc64 ~riscv ~sparc x86"
+KEYWORDS="~alpha amd64 ~arm arm64 ~loong ~ppc ~ppc64 ~riscv ~sparc x86"
 
 IUSE="gtk-doc"
 
 RDEPEND="
 	>=dev-libs/glib-2.74:2
-	>=x11-libs/gtk+-3.20:3
+	>=x11-libs/gtk+-3.20:3[introspection]
 	>=dev-libs/libxml2-2.6:2
 
 	dev-libs/gobject-introspection:=

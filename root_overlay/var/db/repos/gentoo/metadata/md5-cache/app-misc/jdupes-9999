@@ -1,15 +1,15 @@
 BDEPEND=>=dev-vcs/git-1.8.2.1[curl]
 DEFINED_PHASES=compile install prepare unpack
-DEPEND=dev-libs/libjodycode
+DEPEND=>=dev-libs/libjodycode-3.0
 DESCRIPTION=Identify duplicate files on the filesystem
 EAPI=8
-HOMEPAGE=https://github.com/jbruchon/jdupes
+HOMEPAGE=https://codeberg.org/jbruchon/jdupes
 INHERIT=toolchain-funcs git-r3
-IUSE=+dedupe lowmem hardened
+IUSE=+dedupe hardened
 LICENSE=MIT
 PROPERTIES=live
-RDEPEND=dev-libs/libjodycode
+RDEPEND=>=dev-libs/libjodycode-3.0
 RESTRICT=test
 SLOT=0
-_eclasses_=git-r3	2358a7b20091609e24bd3a83b3ac5991	multilib	c19072c3cd7ac5cb21de013f7e9832e0	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=e430c38250effcbc89e09ff59d4d9ceb
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	git-r3	875eb471682d3e1f18da124be97dcc81
+_md5_=7f791dfc8a23ec1ea45107ecc4a718b1

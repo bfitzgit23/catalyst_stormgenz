@@ -1,33 +1,48 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit systemd udev
 
 DESCRIPTION="Gentoo Network Interface Management Scripts"
-HOMEPAGE="https://www.gentoo.org/proj/en/base/openrc/"
+HOMEPAGE="https://wiki.gentoo.org/wiki/Project:Netifrc"
 
-if [[ ${PV} == "9999" ]]; then
-	EGIT_REPO_URI="https://anongit.gentoo.org/git/proj/netifrc.git"
-	#EGIT_REPO_URI="https://github.com/gentoo/${PN}" # Alternate
+if [[ ${PV} == 9999 ]]; then
+	EGIT_REPO_URI="
+		https://anongit.gentoo.org/git/proj/netifrc.git
+		https://github.com/gentoo/${PN}
+	"
 	inherit git-r3
 else
 	SRC_URI="https://gitweb.gentoo.org/proj/${PN}.git/snapshot/${P}.tar.gz"
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
 fi
 
-LICENSE="BSD-2"
+LICENSE="BSD-2 GPL-2"
 SLOT="0"
 IUSE="+dhcp"
 
-RDEPEND="sys-apps/gentoo-functions
-	>=sys-apps/openrc-0.15
-	dhcp? ( || ( net-misc/dhcpcd net-misc/dhcp[client] ) )"
-BDEPEND="kernel_linux? ( virtual/pkgconfig )"
+RDEPEND="
+	sys-apps/gentoo-functions
+	|| (
+		>=sys-apps/openrc-0.15
+		sys-apps/openrc-navi
+	)
+	dhcp? (
+		|| (
+			net-misc/dhcpcd
+			net-misc/dhcp[client]
+			sys-apps/busybox
+		)
+	)
+"
+BDEPEND="
+	kernel_linux? ( virtual/pkgconfig )
+"
 
 src_prepare() {
-	if [[ ${PV} == "9999" ]] ; then
+	if [[ ${PV} == 9999 ]] ; then
 		local ver="git-${EGIT_VERSION:0:6}"
 		sed -i "/^GITVER[[:space:]]*=/s:=.*:=${ver}:" mk/git.mk || die
 		einfo "Producing ChangeLog from Git history"
@@ -65,10 +80,15 @@ src_install() {
 
 pkg_postinst() {
 	udev_reload
+
 	if [[ ! -e "${EROOT}"/etc/conf.d/net && -z ${REPLACING_VERSIONS} ]]; then
 		elog "The network configuration scripts will use dhcp by"
 		elog "default to set up your interfaces."
 		elog "If you need to set up something more complete, see"
 		elog "${EROOT}/usr/share/doc/${P}/README"
 	fi
+}
+
+pkg_postrm() {
+	udev_reload
 }

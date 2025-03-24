@@ -4,7 +4,7 @@
 EAPI=8
 PLOCALES="cs de es fr_FR hu id it ja_JP nb_NO pl pt pt_BR pt_PT ru sv tr zh_CN"
 
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 DISTUTILS_USE_PEP517=setuptools
 
 inherit cmake desktop distutils-r1 optfeature plocale xdg
@@ -45,7 +45,7 @@ DEPEND="
 	dev-python/musicbrainzngs[${PYTHON_USEDEP}]
 	dev-python/natsort[${PYTHON_USEDEP}]
 	dev-python/pillow[${PYTHON_USEDEP}]
-	dev-python/PySDL2[${PYTHON_USEDEP}]
+	dev-python/pysdl2[${PYTHON_USEDEP}]
 	dev-python/requests[${PYTHON_USEDEP}]
 	dev-python/setproctitle[${PYTHON_USEDEP}]
 	dev-python/send2trash[${PYTHON_USEDEP}]

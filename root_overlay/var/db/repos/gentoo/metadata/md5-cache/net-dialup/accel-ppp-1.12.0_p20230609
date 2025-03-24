@@ -1,12 +1,12 @@
-BDEPEND=>=dev-util/ninja-1.8.2 >=dev-util/cmake-3.20.5 ipoe? ( sys-apps/kmod[tools] modules-sign? ( dev-libs/openssl virtual/pkgconfig ) )
+BDEPEND=app-alternatives/ninja >=dev-build/cmake-3.20.5 ipoe? ( dev-util/pahole sys-apps/kmod[tools] modules-sign? ( dev-libs/openssl virtual/pkgconfig ) )
 DEFINED_PHASES=compile configure install postinst prepare setup test
-DEPEND=!libtomcrypt? ( dev-libs/openssl:0= ) libtomcrypt? ( dev-libs/libtomcrypt:0= ) lua? ( lua_single_target_lua5-1? ( dev-lang/lua:5.1 ) ) postgres? ( dev-db/postgresql:* ) snmp? ( net-analyzer/net-snmp ) dev-libs/libpcre valgrind? ( dev-util/valgrind ) ipoe? ( virtual/linux-sources )
+DEPEND=!libtomcrypt? ( dev-libs/openssl:0= ) libtomcrypt? ( dev-libs/libtomcrypt:0= ) lua? ( lua_single_target_lua5-1? ( dev-lang/lua:5.1 ) ) postgres? ( dev-db/postgresql:* ) snmp? ( net-analyzer/net-snmp ) dev-libs/libpcre valgrind? ( dev-debug/valgrind ) ipoe? ( virtual/linux-sources )
 DESCRIPTION=High performance PPTP, PPPoE and L2TP server
 EAPI=8
 HOMEPAGE=https://sourceforge.net/projects/accel-ppp/
 IDEPEND=ipoe? ( sys-apps/kmod[tools] )
 INHERIT=cmake flag-o-matic linux-mod-r1 lua-single
-IUSE=debug doc libtomcrypt lua postgres radius shaper snmp valgrind dist-kernel modules-sign +strip ipoe +lua_single_target_lua5-1
+IUSE=debug doc libtomcrypt lua postgres radius shaper snmp valgrind dist-kernel modules-compress modules-sign +strip ipoe +lua_single_target_lua5-1
 KEYWORDS=~amd64 ~x86
 LICENSE=GPL-2
 PDEPEND=net-dialup/ppp-scripts
@@ -14,5 +14,5 @@ RDEPEND=!libtomcrypt? ( dev-libs/openssl:0= ) libtomcrypt? ( dev-libs/libtomcryp
 REQUIRED_USE=lua? ( ^^ ( lua_single_target_lua5-1 ) ) valgrind? ( debug )
 SLOT=0
 SRC_URI=https://dev.gentoo.org/~pinkbyte/distfiles/snapshots/accel-ppp-1.12.0_p20230609.tar.bz2
-_eclasses_=cmake	ea305d3be967deed8faa5c9e94f9aee4	edo	c0eb9cbe6b0bd01fcb4918f12598a4d3	flag-o-matic	be27a904c614cb93ae037762dc69bcc2	linux-info	c4f1201b96a8a2c1f3b86cc8b2c71c91	linux-mod-r1	3adf4125a2c5f60764f8d3bba0d4111b	lua-single	86d497a20c93c7ce83af442f627515c1	lua-utils	d37a16dbcc1f07f71bc48da75ed7a0cb	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	toolchain-funcs	862d337d98edb576796827be2c6b11ca	xdg-utils	baea6080dd821f5562d715887954c9d3
-_md5_=a4aec8064091794930d21d9ed8953fe6
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	multiprocessing	1e32df7deee68372153dca65f4a7c21f	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	xdg-utils	42869b3c8d86a70ef3cf75165a395e09	cmake	10a50dfaf728b802fcfd37f8d0da9056	mount-boot-utils	2551bac1a772f4b6beacb494a750ae92	dist-kernel-utils	8fd483ccdf8e7fc0919507c0c7c273e4	edo	367e103a74bf77e6a8da7894d999fa3c	linux-info	ea4122ba1d8791a12b78e53f9510a2e3	linux-mod-r1	84b53048ef3f4ee4f1b3dce65d43580e	lua-utils	7c89927eda6f21c4c48136247077ab37	lua-single	75fe955a36b18e199213c8739eaebdbb
+_md5_=bb4929a630e10f52ec09b3055f938d83

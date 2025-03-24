@@ -1,11 +1,11 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DESCRIPTION="Free implementation of the OpenGL Character Renderer (GLC)"
 HOMEPAGE="https://quesoglc.sourceforge.net/"
-SRC_URI="mirror://sourceforge/${PN}/${P}-free.tar.bz2"
+SRC_URI="https://downloads.sourceforge.net/${PN}/${P}-free.tar.bz2"
 
 LICENSE="LGPL-2.1+"
 SLOT="0"
@@ -22,7 +22,7 @@ DEPEND="${RDEPEND}"
 BDEPEND="
 	virtual/pkgconfig
 	doc? (
-		app-doc/doxygen
+		app-text/doxygen
 		dev-texlive/texlive-latexextra
 		virtual/latex-base
 	)"

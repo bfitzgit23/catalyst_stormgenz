@@ -13,7 +13,7 @@
 	</longdescription>
 	<use>
 		<flag name="binutils">Use <pkg>sys-devel/binutils</pkg></flag>
-		<flag name="cpio">Use <pkg>app-arch/cpio</pkg></flag>
+		<flag name="cpio">Use <pkg>app-alternatives/cpio</pkg></flag>
 		<flag name="diff">Use <pkg>sys-apps/diffutils</pkg></flag>
 		<flag name="docx">Use <pkg>app-text/docx2txt</pkg></flag>
 		<flag name="dtc">Use <pkg>sys-apps/dtc</pkg></flag>
@@ -26,7 +26,7 @@
 		<flag name="hdf5">Use <pkg>sci-libs/hdf5</pkg></flag>
 		<flag name="hex">Use <pkg>app-editors/vim-core</pkg></flag>
 		<flag name="iso">Use <pkg>app-cdr/cdrtools</pkg></flag>
-		<flag name="llvm">Use <pkg>sys-devel/llvm</pkg></flag>
+		<flag name="llvm">Use <pkg>llvm-core/llvm</pkg></flag>
 		<flag name="opendocument">Use <pkg>app-text/odt2txt</pkg></flag>
 		<flag name="pascal">Use <pkg>dev-lang/fpc</pkg></flag>
 		<flag name="R">Use <pkg>dev-lang/R</pkg></flag>

@@ -1,4 +1,4 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -21,7 +21,7 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	sys-devel/flex
+	app-alternatives/lex
 	nls? ( sys-devel/gettext )
 "
 
@@ -64,9 +64,10 @@ src_configure() {
 }
 
 src_compile() {
+	# -std=gnu17 for bug #945298 (signal handlers)
 	emake \
 		CC="$(tc-getCC)" \
-		CFLAGS="${CFLAGS}" \
+		CFLAGS="${CFLAGS} -std=gnu17" \
 		LDFLAGS="${LDFLAGS}"
 	use nls && emake -C po
 }

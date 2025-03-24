@@ -9,5 +9,5 @@ RDEPEND=media-libs/libsdl[video,joystick,abi_x86_32(-)] media-libs/libogg[abi_x8
 RESTRICT=bindist mirror strip
 SLOT=0
 SRC_URI=http://demos.garagegames.com/thinktanks/ThinkTanksDemo_v1.1.sh.bin
-_eclasses_=desktop	021728fdc1b03b36357dbc89489e0f0d	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	toolchain-funcs	862d337d98edb576796827be2c6b11ca	unpacker	aa6a4e924009232d8b78b31e932c30b5
+_eclasses_=desktop	3a72ffe0d8e1dd73af3a1c8c15a59fed	multiprocessing	1e32df7deee68372153dca65f4a7c21f	toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	unpacker	fb4b84181244b3b9990fa0bf40232dd2
 _md5_=dabf18cb9232dc31eed01e8371c92331

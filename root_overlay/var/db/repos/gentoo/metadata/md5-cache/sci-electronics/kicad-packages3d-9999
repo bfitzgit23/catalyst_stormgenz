@@ -1,4 +1,4 @@
-BDEPEND=>=x11-misc/util-macros-1.18 >=dev-util/ninja-1.8.2 >=dev-util/cmake-3.20.5 >=dev-vcs/git-1.8.2.1[curl]
+BDEPEND=>=x11-misc/util-macros-1.18 app-alternatives/ninja >=dev-build/cmake-3.20.5 >=dev-vcs/git-1.8.2.1[curl]
 DEFINED_PHASES=compile configure install prepare pretend setup test unpack
 DESCRIPTION=Electronic Schematic and PCB design tools 3D package libraries
 EAPI=8
@@ -6,7 +6,7 @@ HOMEPAGE=https://gitlab.com/kicad/libraries/kicad-packages3D
 INHERIT=check-reqs cmake git-r3
 LICENSE=CC-BY-SA-4.0
 PROPERTIES=live
-RDEPEND=>=sci-electronics/kicad-6.0.0
+RDEPEND=>=sci-electronics/kicad-8.0.0
 SLOT=0
-_eclasses_=check-reqs	02ac7654b64f7acc7a8b1a35ad9d6ddc	cmake	ea305d3be967deed8faa5c9e94f9aee4	flag-o-matic	be27a904c614cb93ae037762dc69bcc2	git-r3	2358a7b20091609e24bd3a83b3ac5991	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	toolchain-funcs	862d337d98edb576796827be2c6b11ca	xdg-utils	baea6080dd821f5562d715887954c9d3
-_md5_=97f7c9cbde60899f29c6d9772f520970
+_eclasses_=check-reqs	2a9731073c152554078a9a8df8fc0f1b	toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	multiprocessing	1e32df7deee68372153dca65f4a7c21f	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	xdg-utils	42869b3c8d86a70ef3cf75165a395e09	cmake	10a50dfaf728b802fcfd37f8d0da9056	git-r3	875eb471682d3e1f18da124be97dcc81
+_md5_=9598358d97a29b5693a41472f43ad415

@@ -1,2 +1,2 @@
-# catalyast_stormgenz
-Gentoo spec files for making stormgenz XFCE
+# catalyst_stormg
+Gentoo spec files for making stormg XFCE

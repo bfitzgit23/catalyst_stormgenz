@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,7 +11,7 @@ HOMEPAGE="https://www.freedesktop.org/wiki/Software/Farstream"
 SRC_URI="https://freedesktop.org/software/farstream/releases/${PN}/${P}.tar.gz"
 
 LICENSE="LGPL-2.1+"
-KEYWORDS="~alpha amd64 arm arm64 ~ia64 ~loong ppc ppc64 ~riscv x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~alpha amd64 arm arm64 ~loong ppc ppc64 ~riscv x86 ~amd64-linux ~x86-linux"
 IUSE="+introspection test upnp valgrind"
 SLOT="0.2/5" # .so version
 
@@ -39,11 +39,11 @@ DEPEND="${COMMON_DEPEND}
 		media-libs/gst-plugins-base:1.0[vorbis]
 		media-libs/gst-plugins-good:1.0
 	)
-	valgrind? ( dev-util/valgrind )
+	valgrind? ( dev-debug/valgrind )
 "
 BDEPEND="
 	dev-util/glib-utils
-	>=dev-util/gtk-doc-am-1.18
+	>=dev-build/gtk-doc-am-1.18
 	virtual/pkgconfig
 "
 

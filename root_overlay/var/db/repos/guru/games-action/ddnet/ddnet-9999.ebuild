@@ -1,9 +1,9 @@
-# Copyright 2022 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=(python3_{9..12})
+PYTHON_COMPAT=(python3_{11..12})
 
 inherit cargo git-r3 cmake python-any-r1 xdg
 
@@ -58,6 +58,11 @@ BDEPEND="
 	dev-util/glslang
 	dev-util/spirv-tools
 "
+
+pkg_setup() {
+	python-any-r1_pkg_setup
+	rust_pkg_setup
+}
 
 src_unpack() {
 	default_src_unpack

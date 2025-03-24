@@ -1,4 +1,4 @@
-# Copyright 2022 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -18,11 +18,19 @@ KEYWORDS="~amd64"
 IUSE="doc test"
 RESTRICT="!test? ( test )"
 
-DEPEND="test? ( dev-util/cunit )"
-BDEPEND="doc? ( dev-python/sphinx )"
+DEPEND="
+	test? ( dev-util/cunit )
+"
+BDEPEND="
+	virtual/pkgconfig
+	doc? ( dev-python/sphinx )
+"
 
 src_prepare() {
 	default
+
+	# skip unnecessary examples & automagic dependency on nettle
+	sed -i '/build_examples=/s/yes/no/' configure.ac || die
 
 	eautoreconf
 }
@@ -32,10 +40,13 @@ src_configure() {
 		# no options... and cmake build has different issues
 		$(usev !doc ac_cv_path_SPHINX_BUILD=)
 		$(usev !test ac_cv_lib_cunit_CU_initialize_registry=)
-		PKG_CONFIG=false # disables examples by failing to find nettle
 	)
 
 	econf "${econfargs[@]}"
+}
+
+src_compile() {
+	emake $(usev doc -j1) #921192
 }
 
 src_install() {

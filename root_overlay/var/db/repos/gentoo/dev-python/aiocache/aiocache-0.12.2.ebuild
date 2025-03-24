@@ -1,9 +1,10 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
+# py3.13: https://github.com/aio-libs/aiocache/issues/863
 PYTHON_COMPAT=( python3_{10..12} )
 
 inherit distutils-r1 pypi
@@ -32,6 +33,10 @@ BDEPEND="
 distutils_enable_tests pytest
 
 python_test() {
+	local EPYTEST_DESELECT=(
+		# broken by newer dev-python/redis (?), removed upstream
+		tests/ut/backends/test_redis.py::TestRedisBackend::test_close
+	)
 	local EPYTEST_IGNORE=(
 		# benchmarks
 		tests/performance
@@ -39,7 +44,8 @@ python_test() {
 		tests/ut/backends/test_memcached.py
 	)
 
-	epytest -o addopts= -m "not memcached"
+	local -x PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
+	epytest -o addopts= -m "not memcached" -p asyncio -p pytest_mock
 }
 
 src_test() {

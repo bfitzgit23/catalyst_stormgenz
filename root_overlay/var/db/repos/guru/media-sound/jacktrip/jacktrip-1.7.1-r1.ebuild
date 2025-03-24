@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{11..13} )
 inherit python-any-r1 xdg meson
 
 DESCRIPTION="Send JACK audio over a network"
@@ -47,13 +47,13 @@ RDEPEND="${DEPEND}"
 # shellcheck disable=SC2016
 BDEPEND="
 	$(python_gen_any_dep '
-		dev-python/jinja[${PYTHON_USEDEP}]
+		dev-python/jinja2[${PYTHON_USEDEP}]
 		dev-python/pyyaml[${PYTHON_USEDEP}]
 	')
 "
 
 python_check_deps() {
-	python_has_version "dev-python/jinja[${PYTHON_USEDEP}]" && \
+	python_has_version "dev-python/jinja2[${PYTHON_USEDEP}]" && \
 	python_has_version "dev-python/pyyaml[${PYTHON_USEDEP}]"
 }
 

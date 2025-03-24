@@ -1,14 +1,14 @@
 BDEPEND=>=app-editors/emacs-26.1:*
-DEFINED_PHASES=compile configure install postinst postrm prepare setup test unpack
+DEFINED_PHASES=compile configure info install postinst postrm prepare setup test unpack
 DEPEND=>=app-emacs/dash-2.10.0
 DESCRIPTION=Conveniently define themes for GNU Emacs
 EAPI=8
 HOMEPAGE=https://github.com/jasonm23/autothemer
 INHERIT=elisp
-KEYWORDS=~amd64 ~x86
+KEYWORDS=~amd64 ~arm64 ~x86
 LICENSE=GPL-3+
 RDEPEND=>=app-emacs/dash-2.10.0 >=app-editors/emacs-26.1:*
 SLOT=0
 SRC_URI=https://dev.gentoo.org/~arsen/autothemer-0.2.18.tar.xz
-_eclasses_=elisp	fbefa95f5e9ab880a34bc69832b7c0d7	elisp-common	dc179f98b2b4d9a4473fd3bdc154bbb6
-_md5_=35d8f389ec25e33ddbaad8196110553c
+_eclasses_=elisp-common	4ee3453b022aae73f4d827a0f98920c2	elisp	8dfc7a00348fe9c91895014adc78a4a5
+_md5_=1d59da9b9f79595c7f231bfc0046a70e

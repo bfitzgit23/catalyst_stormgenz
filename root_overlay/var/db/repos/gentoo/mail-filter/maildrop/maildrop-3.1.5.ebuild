@@ -1,18 +1,20 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 inherit flag-o-matic autotools
 
 DESCRIPTION="Mail delivery agent/filter"
-[[ -z ${PV/?.?/}   ]] && SRC_URI="mirror://sourceforge/courier/${P}.tar.bz2"
-[[ -z ${PV/?.?.?/} ]] && SRC_URI="mirror://sourceforge/courier/${P}.tar.bz2"
+[[ -z ${PV/?.?/}   ]] && SRC_URI="https://downloads.sourceforge.net/courier/${P}.tar.bz2"
+[[ -z ${PV/?.?.?/} ]] && SRC_URI="https://downloads.sourceforge.net/courier/${P}.tar.bz2"
 [[ -z ${SRC_URI}   ]] && SRC_URI="https://www.courier-mta.org/beta/${PN}/${P%%_pre}.tar.bz2"
 HOMEPAGE="https://www.courier-mta.org/maildrop/"
 
+S=${WORKDIR}/${P%%_pre}
+
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc ~ppc64 ~s390 ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~s390 ~sparc ~x86"
 IUSE="berkdb debug dovecot gdbm ldap mysql postgres static-libs authlib +tools trashquota"
 
 CDEPEND="!mail-mta/courier
@@ -45,8 +47,6 @@ REQUIRED_USE="
 	mysql? ( authlib )
 	postgres? ( authlib )
 	ldap? ( authlib )"
-
-S=${WORKDIR}/${P%%_pre}
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-3.1.1-testsuite.patch

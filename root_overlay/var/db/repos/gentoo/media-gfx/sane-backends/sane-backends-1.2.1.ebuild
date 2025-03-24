@@ -1,12 +1,20 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 # python-any-r1 required for a script in backends/pixma/scripts/
 inherit autotools flag-o-matic multilib-minimal optfeature python-any-r1 systemd toolchain-funcs udev
+
+DESCRIPTION="Scanner Access Now Easy - Backends"
+HOMEPAGE="http://www.sane-project.org/"
+SRC_URI="https://gitlab.com/sane-project/backends/uploads/110fc43336d0fb5e514f1fdc7360dd87/${P}.tar.gz"
+
+LICENSE="GPL-2 public-domain"
+SLOT="0"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux"
 
 # gphoto and v4l are handled by their usual USE flags.
 # The pint backend was disabled because I could not get it to compile.
@@ -122,14 +130,6 @@ REQUIRED_USE="
 	sane_backends_mustek_usb2? ( threads )
 "
 
-DESCRIPTION="Scanner Access Now Easy - Backends"
-HOMEPAGE="http://www.sane-project.org/"
-SRC_URI="https://gitlab.com/sane-project/backends/uploads/110fc43336d0fb5e514f1fdc7360dd87/${P}.tar.gz"
-
-LICENSE="GPL-2 public-domain"
-SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux"
-
 # For pixma: see https://gitlab.com/sane-project/backends/-/releases/1.0.28#build
 RDEPEND="
 	acct-user/saned
@@ -164,14 +164,12 @@ RDEPEND="
 	xinetd? ( sys-apps/xinetd )
 	zeroconf? ( >=net-dns/avahi-0.6.31-r2[${MULTILIB_USEDEP}] )
 "
-DEPEND="
-	${RDEPEND}
+DEPEND="${RDEPEND}
 	dev-libs/libxml2
 	v4l? ( sys-kernel/linux-headers )
 "
-BDEPEND="
-	${PYTHON_DEPS}
-	sys-devel/autoconf-archive
+BDEPEND="${PYTHON_DEPS}
+	dev-build/autoconf-archive
 	sys-devel/gettext
 	virtual/pkgconfig
 "
@@ -190,21 +188,7 @@ MULTILIB_CHOST_TOOLS=(
 src_prepare() {
 	default
 
-	# Patch out the git reference so we can run eautoreconf
-	sed \
-		-e "s/m4_esyscmd_s(\[git describe --dirty\])/${PV}/" \
-		-e '/^AM_MAINTAINER_MODE/d' \
-		-i configure.ac || die
 	eautoreconf
-
-	# Fix for "make check".  Upstream sometimes forgets to update this.
-	local ver=$(./configure --version | awk '{print $NF; exit 0}')
-	sed -i \
-		-e "/by sane-desc 3.5 from sane-backends/s:sane-backends .*:sane-backends ${ver}:" \
-		testsuite/tools/data/html* || die
-
-	# don't bleed user LDFLAGS into pkgconfig files
-	sed 's|@LDFLAGS@ ||' -i tools/*.pc.in || die
 
 	# Needed for udev rules generation/installation
 	multilib_copy_sources

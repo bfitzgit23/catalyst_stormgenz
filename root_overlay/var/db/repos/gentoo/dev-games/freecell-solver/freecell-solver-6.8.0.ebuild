@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..13} )
 inherit cmake python-single-r1
 
 DESCRIPTION="C library for automatically solving Freecell and some other solitaire variants"
@@ -20,7 +20,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 RDEPEND="${PYTHON_DEPS}
 	dev-libs/rinutils
 	$(python_gen_cond_dep '
-		dev-python/pysol_cards[${PYTHON_USEDEP}]
+		dev-python/pysol-cards[${PYTHON_USEDEP}]
 		dev-python/random2[${PYTHON_USEDEP}]
 		dev-python/six[${PYTHON_USEDEP}]
 	')

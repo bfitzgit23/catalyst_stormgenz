@@ -1,8 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-PYTHON_COMPAT=( python3_{9..11} )
+
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit cmake python-r1 virtualx
 
@@ -15,16 +16,16 @@ LICENSE="BSD"
 KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 
 IUSE="+client doc server test +zeromq"
-RESTRICT="!test? ( test )"
-
 REQUIRED_USE="
 	server? ( client )
 	test? ( server )
 	zeromq? ( ${PYTHON_REQUIRED_USE} )
 "
+# Some tests still fail
+RESTRICT="test !test? ( test )"
 
 BDEPEND="
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 "
 RDEPEND="
 	dev-qt/qtcore:5
@@ -38,9 +39,6 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 
-# Some tests still fail
-RESTRICT="test"
-
 src_configure() {
 	configuration() {
 		local mycmakeargs=(
@@ -51,7 +49,7 @@ src_configure() {
 			-DENABLE_TESTING=$(usex test)
 			-DUSE_ZERO_MQ=$(usex zeromq)
 			-DINSTALL_LIBRARY_DIR=$(get_libdir)
-			)
+		)
 		use zeromq && \
 			mycmakeargs+=( "-DZeroMQ_ROOT_DIR=\"${EPREFIX}/usr\"" )
 

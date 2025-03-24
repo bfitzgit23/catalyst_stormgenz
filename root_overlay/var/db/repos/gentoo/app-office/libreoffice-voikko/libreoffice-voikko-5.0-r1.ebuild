@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -12,7 +12,7 @@ SRC_URI="https://www.puimula.org/voikko-sources/${PN}/${P}.tar.gz
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="amd64 x86"
+KEYWORDS="amd64 ~x86"
 
 DEPEND="|| (
 		app-office/libreoffice[odk]
@@ -23,7 +23,7 @@ RDEPEND="${DEPEND}
 	dev-libs/libvoikko"
 BDEPEND="verify-sig? ( sec-keys/openpgp-keys-voikko )"
 
-VERIFY_SIG_OPENPGP_KEY_PATH=${BROOT}/usr/share/openpgp-keys/voikko.asc
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/voikko.asc
 
 src_compile() {
 	emake oxt

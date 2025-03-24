@@ -1,4 +1,4 @@
-# Copyright 2004-2023 Gentoo Authors
+# Copyright 2004-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: java-pkg-simple.eclass
@@ -6,7 +6,7 @@
 # java@gentoo.org
 # @AUTHOR:
 # Java maintainers <java@gentoo.org>
-# @SUPPORTED_EAPIS: 6 7 8
+# @SUPPORTED_EAPIS: 8
 # @BLURB: Eclass for packaging Java software with ease.
 # @DESCRIPTION:
 # This class is intended to build pure Java packages from Java sources
@@ -17,8 +17,7 @@
 # directory before calling the src_compile function of this eclass.
 
 case ${EAPI} in
-	6) inherit eqawarn ;;
-	7|8) ;;
+	8) ;;
 	*) die "${ECLASS}: EAPI ${EAPI:-0} not supported" ;;
 esac
 
@@ -27,8 +26,12 @@ _JAVA_PKG_SIMPLE_ECLASS=1
 
 inherit java-utils-2
 
-if ! has java-pkg-2 ${INHERITED}; then
-	eerror "java-pkg-simple eclass can only be inherited AFTER java-pkg-2"
+if has java-pkg-2 ${INHERITED}; then
+	JAVA_PKG_OPT=0
+elif has java-pkg-opt-2 ${INHERITED}; then
+	JAVA_PKG_OPT=1
+else
+	eerror "java-pkg-simple eclass can only be inherited AFTER java-pkg-2 or java-pkg-opt-2"
 fi
 
 # We are only interested in finding all java source files, wherever they may be.
@@ -47,10 +50,16 @@ if has test ${JAVA_PKG_IUSE}; then
 				test_deps+=" amd64? ( dev-util/pkgdiff
 					dev-util/japi-compliance-checker )";;
 			testng)
-				test_deps+=" dev-java/testng:0";;
+				[[ ${PN} != testng ]] && \
+					test_deps+=" dev-java/testng:0";;
 		esac
 	done
-	[[ ${test_deps} ]] && DEPEND="test? ( ${test_deps} )"
+	if [[ ${JAVA_PKG_OPT} == 1 ]]; then
+		[[ ${test_deps} ]] && DEPEND="test? ( ${JAVA_PKG_OPT_USE}? ( ${test_deps} ) )"
+	else
+		[[ ${test_deps} ]] && DEPEND="test? ( ${test_deps} )"
+	fi
+
 	unset test_deps
 fi
 
@@ -162,7 +171,11 @@ fi
 # If ${JAVA_MAIN_CLASS} is set, we will create a launcher to
 # execute the jar, and ${JAVA_LAUNCHER_FILENAME} will be the
 # name of the script.
-: "${JAVA_LAUNCHER_FILENAME:=${PN}-${SLOT}}"
+if [[ ${SLOT} = 0 ]]; then
+	: "${JAVA_LAUNCHER_FILENAME:=${PN}}"
+else
+	: "${JAVA_LAUNCHER_FILENAME:=${PN}-${SLOT}}"
+fi
 
 # @ECLASS_VARIABLE: JAVA_TESTING_FRAMEWORKS
 # @DEFAULT_UNSET
@@ -343,6 +356,7 @@ java-pkg-simple_prepend_resources() {
 # If USE FLAG 'binary' exists and is set, it will just copy
 # ${JAVA_BINJAR_FILENAME} to ${S} and skip the rest of src_compile.
 java-pkg-simple_src_compile() {
+	[[ ${JAVA_PKG_OPT} == 1 ]] && ! use ${JAVA_PKG_OPT_USE} && return
 	local sources=sources.lst classes=target/classes apidoc=target/api moduleinfo
 
 	# do not compile if we decide to install binary jar
@@ -363,12 +377,13 @@ java-pkg-simple_src_compile() {
 	# gather sources
 	# if target < 9, we need to compile module-info.java separately
 	# as this feature is not supported before Java 9
-	if [[ java-pkg_get-target -lt 9 ]]; then
+	local target="$(java-pkg_get-target)"
+	if [[ ${target#1.} -lt 9 ]]; then
 		find "${JAVA_SRC_DIR[@]}" -name \*.java ! -name module-info.java > ${sources}
-		moduleinfo=$(find "${JAVA_SRC_DIR[@]}" -name module-info.java)
 	else
 		find "${JAVA_SRC_DIR[@]}" -name \*.java > ${sources}
 	fi
+	moduleinfo=$(find "${JAVA_SRC_DIR[@]}" -name module-info.java)
 
 	# create the target directory
 	mkdir -p ${classes} || die "Could not create target directory"
@@ -378,7 +393,7 @@ java-pkg-simple_src_compile() {
 	java-pkg-simple_getclasspath
 	java-pkg-simple_prepend_resources ${classes} "${JAVA_RESOURCE_DIRS[@]}"
 
-	if [[ -n ${moduleinfo} ]] || [[ java-pkg_get-target -lt 9 ]]; then
+	if [[ -z ${moduleinfo} ]] || [[ ${target#1.} -lt 9 ]]; then
 		ejavac -d ${classes} -encoding ${JAVA_ENCODING}\
 			${classpath:+-classpath ${classpath}} ${JAVAC_ARGS} @${sources}
 	else
@@ -388,7 +403,7 @@ java-pkg-simple_src_compile() {
 	fi
 
 	# handle module-info.java separately as it needs at least JDK 9
-	if [[ -n ${moduleinfo} ]]; then
+	if [[ -n ${moduleinfo} ]] && [[ ${target#1.} -lt 9 ]]; then
 		if java-pkg_is-vm-version-ge "9" ; then
 			local tmp_source=${JAVA_PKG_WANT_SOURCE} tmp_target=${JAVA_PKG_WANT_TARGET}
 
@@ -408,11 +423,22 @@ java-pkg-simple_src_compile() {
 
 	# javadoc
 	if has doc ${JAVA_PKG_IUSE} && use doc; then
-		mkdir -p ${apidoc}
-		ejavadoc -d ${apidoc} \
-			-encoding ${JAVA_ENCODING} -docencoding UTF-8 -charset UTF-8 \
-			${classpath:+-classpath ${classpath}} ${JAVADOC_ARGS:- -quiet} \
-			@${sources} || die "javadoc failed"
+		if [[ ${JAVADOC_SRC_DIRS} ]]; then
+			einfo "JAVADOC_SRC_DIRS exists, you need to call ejavadoc separately"
+		else
+			mkdir -p ${apidoc}
+			if [[ -z ${moduleinfo} ]] || [[ ${target#1.} -lt 9 ]]; then
+				ejavadoc -d ${apidoc} \
+					-encoding ${JAVA_ENCODING} -docencoding UTF-8 -charset UTF-8 \
+					${classpath:+-classpath ${classpath}} ${JAVADOC_ARGS:- -quiet} \
+					@${sources} || die "javadoc failed"
+			else
+				ejavadoc -d ${apidoc} \
+					-encoding ${JAVA_ENCODING} -docencoding UTF-8 -charset UTF-8 \
+					${classpath:+--module-path ${classpath}} ${JAVADOC_ARGS:- -quiet} \
+					@${sources} || die "javadoc failed"
+			fi
+		fi
 	fi
 
 	# package
@@ -445,6 +471,7 @@ java-pkg-simple_src_compile() {
 # ${JAVA_JAR_FILENAME}. It will also install a launcher if
 # ${JAVA_MAIN_CLASS} is set. Also invokes einstalldocs.
 java-pkg-simple_src_install() {
+	[[ ${JAVA_PKG_OPT} == 1 ]] && ! use ${JAVA_PKG_OPT_USE} && return
 	local sources=sources.lst classes=target/classes apidoc=target/api
 
 	# install the jar file that we need
@@ -481,9 +508,13 @@ java-pkg-simple_src_install() {
 # @FUNCTION: java-pkg-simple_src_test
 # @DESCRIPTION:
 # src_test for simple single java jar file.
-# It will perform test with frameworks that are defined in
-# ${JAVA_TESTING_FRAMEWORKS}.
+# It will compile test classes from test sources using ejavac and perform tests
+# with frameworks that are defined in ${JAVA_TESTING_FRAMEWORKS}.
+# test-classes compiled with alternative compilers like groovyc need to be placed
+# in the "generated-test" directory as content of this directory is preserved,
+# whereas content of target/test-classes is removed.
 java-pkg-simple_src_test() {
+	[[ ${JAVA_PKG_OPT} == 1 ]] && ! use ${JAVA_PKG_OPT_USE} && return
 	local test_sources=test_sources.lst classes=target/test-classes moduleinfo
 	local tests_to_run classpath
 
@@ -497,8 +528,17 @@ java-pkg-simple_src_test() {
 		return
 	fi
 
+	# https://bugs.gentoo.org/906311
+	# This will remove target/test-classes. Do not put any test-classes there manually.
+	rm -rf ${classes} || die
+
 	# create the target directory
 	mkdir -p ${classes} || die "Could not create target directory for testing"
+
+	# generated test classes should get compiled into "generated-test" directory
+	if [[ -d generated-test ]]; then
+		cp -r generated-test/* "${classes}" || die "cannot copy generated test classes"
+	fi
 
 	# get classpath
 	classpath="${classes}:${JAVA_JAR_FILENAME}"
@@ -508,17 +548,17 @@ java-pkg-simple_src_test() {
 	# gathering sources for testing
 	# if target < 9, we need to compile module-info.java separately
 	# as this feature is not supported before Java 9
-	if [[ java-pkg_get-target -lt 9 ]]; then
+	local target="$(java-pkg_get-target)"
+	if [[ ${target#1.} -lt 9 ]]; then
 		find "${JAVA_TEST_SRC_DIR[@]}" -name \*.java ! -name module-info.java > ${test_sources}
-		moduleinfo=$(find "${JAVA_TEST_SRC_DIR[@]}" -name module-info.java)
 	else
 		find "${JAVA_TEST_SRC_DIR[@]}" -name \*.java > ${test_sources}
 	fi
-
+	moduleinfo=$(find "${JAVA_TEST_SRC_DIR[@]}" -name module-info.java)
 
 	# compile
 	if [[ -s ${test_sources} ]]; then
-		if [[ -n ${moduleinfo} ]] || [[ java-pkg_get-target -lt 9 ]]; then
+		if [[ -z ${moduleinfo} ]] || [[ ${target#1.} -lt 9 ]]; then
 			ejavac -d ${classes} -encoding ${JAVA_ENCODING}\
 				${classpath:+-classpath ${classpath}} ${JAVAC_ARGS} @${test_sources}
 		else
@@ -529,7 +569,7 @@ java-pkg-simple_src_test() {
 	fi
 
 	# handle module-info.java separately as it needs at least JDK 9
-	if [[ -n ${moduleinfo} ]]; then
+	if [[ -n ${moduleinfo} ]] && [[ ${target#1.} -lt 9 ]]; then
 		if java-pkg_is-vm-version-ge "9" ; then
 			local tmp_source=${JAVA_PKG_WANT_SOURCE} tmp_target=${JAVA_PKG_WANT_TARGET}
 
@@ -551,21 +591,19 @@ java-pkg-simple_src_test() {
 	if [[ -n ${JAVA_TEST_RUN_ONLY} ]]; then
 		tests_to_run="${JAVA_TEST_RUN_ONLY[@]}"
 	else
-		pushd "${JAVA_TEST_SRC_DIR}" > /dev/null || die
-			tests_to_run=$(find * -type f\
-				\( -name "*Test.java"\
-				-o -name "Test*.java"\
-				-o -name "*Tests.java"\
-				-o -name "*TestCase.java" \)\
-				! -name "*Abstract*"\
-				! -name "*BaseTest*"\
-				! -name "*TestTypes*"\
-				! -name "*TestUtils*"\
-				! -name "*\$*")
-			tests_to_run=${tests_to_run//"${classes}"\/}
-			tests_to_run=${tests_to_run//.java}
-			tests_to_run=${tests_to_run//\//.}
-		popd > /dev/null || die
+		tests_to_run=$(find "${classes}" -type f\
+			\( -name "*Test.class"\
+			-o -name "Test*.class"\
+			-o -name "*Tests.class"\
+			-o -name "*TestCase.class" \)\
+			! -name "*Abstract*"\
+			! -name "*BaseTest*"\
+			! -name "*TestTypes*"\
+			! -name "*TestUtils*"\
+			! -name "*\$*")
+		tests_to_run=${tests_to_run//"${classes}"\/}
+		tests_to_run=${tests_to_run//.class}
+		tests_to_run=${tests_to_run//\//.}
 
 		# exclude extra test classes, usually corner cases
 		# that the code above cannot handle

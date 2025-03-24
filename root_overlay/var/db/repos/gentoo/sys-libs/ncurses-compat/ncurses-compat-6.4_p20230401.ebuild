@@ -7,7 +7,7 @@
 
 EAPI=8
 
-VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}"/usr/share/openpgp-keys/thomasdickey.asc
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/thomasdickey.asc
 inherit flag-o-matic toolchain-funcs multilib multilib-minimal verify-sig
 
 MY_PV="${PV:0:3}"
@@ -16,7 +16,6 @@ MY_PN="${PN/-compat}"
 
 DESCRIPTION="Console display library (ABI version 5)"
 HOMEPAGE="https://www.gnu.org/software/ncurses/ https://invisible-island.net/ncurses/"
-SRC_URI="mirror://gnu/ncurses/${MY_P}.tar.gz"
 
 # Keep invisible-mirror.net here as some users reported 403 forbidden with invisible-island.net
 SRC_URI="
@@ -96,7 +95,7 @@ SRC_URI+=" https://dev.gentoo.org/~${GENTOO_PATCH_DEV}/distfiles/${CATEGORY}/${P
 LICENSE="MIT"
 # The subslot reflects the SONAME.
 SLOT="5/5"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86"
 IUSE="gpm +stack-realign tinfo unicode"
 
 DEPEND="gpm? ( sys-libs/gpm[${MULTILIB_USEDEP}] )"

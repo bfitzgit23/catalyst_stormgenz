@@ -13,7 +13,7 @@ LICENSE="ZLIB"
 SLOT="0"
 
 src_compile() {
-	emake CC="$(tc-getCC)" AR="$(tc-getAR)" PREFIX="${EPREFIX}/usr"
+	emake CC="$(tc-getCC)" AR="$(tc-getAR)" PREFIX="${EPREFIX}/usr" -j1
 }
 
 src_install() {

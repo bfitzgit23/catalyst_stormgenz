@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..11} )
 
 inherit cmake distutils-r1
 
@@ -11,7 +11,7 @@ MY_PN="${PN,,}"
 
 DESCRIPTION="C++ library for converting geographic coordinate systems"
 HOMEPAGE="https://sourceforge.net/projects/geographiclib/"
-SRC_URI="mirror://sourceforge/${MY_PN}/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/${MY_PN}/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0/19"
@@ -23,7 +23,7 @@ RDEPEND="python? ( ${PYTHON_DEPS} )"
 DEPEND="${RDEPEND}"
 BDEPEND="
 	doc? (
-		>=app-doc/doxygen-1.8.7
+		>=app-text/doxygen-1.8.7
 		>=dev-lang/perl-5.26.1-r1
 		>=dev-python/sphinx-1.6.3-r2
 		>=sys-apps/util-linux-2.31

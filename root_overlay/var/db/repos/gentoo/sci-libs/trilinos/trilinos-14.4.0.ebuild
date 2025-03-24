@@ -1,10 +1,10 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 CMAKE_MAKEFILE_GENERATOR=emake
-inherit cmake toolchain-funcs
+inherit cmake flag-o-matic toolchain-funcs
 
 DESCRIPTION="Scientific library collection for large scale problems"
 HOMEPAGE="http://trilinos.sandia.gov/"
@@ -12,9 +12,11 @@ MY_PV="${PV//\./-}"
 PATCHSET="r0"
 SRC_URI="https://github.com/${PN}/Trilinos/archive/${PN}-release-${MY_PV}.tar.gz -> ${P}.tar.gz"
 
-KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
+S="${WORKDIR}/Trilinos-${PN}-release-${MY_PV}"
+
 LICENSE="BSD LGPL-2.1"
 SLOT="0"
+KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 
 IUSE="
 	adolc all-packages arprec clp cuda eigen glpk gtest hdf5 hwloc hypre
@@ -62,8 +64,6 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
-S="${WORKDIR}/Trilinos-${PN}-release-${MY_PV}"
-
 PATCHES=(
 )
 
@@ -94,18 +94,21 @@ trilinos_conf() {
 
 #
 # The following packages are currently disabled:
-#  - Adelus/Zadelus due to underlinkage.
-#  - Moertel due to underlinkage
 #  - SEACAS is incompatible with netcdf, see
 #    https://github.com/trilinos/Trilinos/tree/master/packages/seacas#netcdf
 #
 
 src_configure() {
+	# Trilinos is a massive C++ project. Fixing all of the lto warnings and
+	# making safe for lto compilation/linking will be a massive
+	# undertaking. Thus, simply filter lto flags. bug #862987
+	filter-lto
+
 	local mycmakeargs=(
 		-DBUILD_SHARED_LIBS=ON
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}"
+		-DCMAKE_SKIP_RPATH=ON
 		-DCMAKE_SKIP_INSTALL_RPATH=ON
-		-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF
 		-DTrilinos_INSTALL_INCLUDE_DIR="${EPREFIX}/usr/include/trilinos"
 		-DTrilinos_INSTALL_LIB_DIR="${EPREFIX}/usr/$(get_libdir)/trilinos"
 		-DTrilinos_ENABLE_ALL_PACKAGES="$(usex all-packages)"

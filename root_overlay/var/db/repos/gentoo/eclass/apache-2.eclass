@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: apache-2.eclass
@@ -6,7 +6,7 @@
 # apache-bugs@gentoo.org
 # @AUTHOR:
 # polynomial-c@gentoo.org
-# @SUPPORTED_EAPIS: 7
+# @SUPPORTED_EAPIS: 7 8
 # @BLURB: Provides a common set of functions for apache-2.x ebuilds
 # @DESCRIPTION:
 # This eclass handles apache-2.x ebuild functions such as LoadModule generation
@@ -19,7 +19,7 @@ inherit autotools flag-o-matic lua-single multilib ssl-cert toolchain-funcs
 	&& die "Do not use this eclass with anything else than www-servers/apache ebuilds!"
 
 case ${EAPI} in
-	7) ;;
+	7|8) ;;
 	*) die "${ECLASS}: EAPI ${EAPI:-0} not supported" ;;
 esac
 
@@ -88,7 +88,7 @@ SRC_URI="mirror://apache/httpd/httpd-${PV}.tar.bz2
 # built-in modules
 
 IUSE_MPMS="${IUSE_MPMS_FORK} ${IUSE_MPMS_THREAD}"
-IUSE="${IUSE} debug doc gdbm ldap selinux ssl static suexec +suexec-caps suexec-syslog split-usr threads"
+IUSE="${IUSE} debug doc gdbm ldap selinux ssl static suexec +suexec-caps suexec-syslog threads"
 
 for module in ${IUSE_MODULES} ; do
 	case ${module} in
@@ -132,10 +132,7 @@ _apache2_set_mpms() {
 _apache2_set_mpms
 unset -f _apache2_set_mpms
 
-NGHTTP2_VERSION=1.2.1
-if ver_test ${PV} -ge 2.4.55 ; then
-	NGHTTP2_VERSION=1.50.0
-fi
+NGHTTP2_VERSION=1.50.0
 
 # Dependencies
 RDEPEND="
@@ -162,7 +159,6 @@ RDEPEND="
 	apache2_modules_session_crypto? (
 		dev-libs/apr-util[openssl]
 	)
-	apache2_modules_tls? ( net-libs/rustls-ffi:= )
 	gdbm? ( sys-libs/gdbm:= )
 	ldap? ( net-nds/openldap:= )
 	selinux? ( sec-policy/selinux-apache )
@@ -413,26 +409,6 @@ generate_load_module() {
 		"${GENTOO_PATCHDIR}"/conf/httpd.conf
 }
 
-# @FUNCTION: check_upgrade
-# @DESCRIPTION:
-# This internal function checks if the previous configuration file for built-in
-# modules exists in ROOT and prevents upgrade in this case. Users are supposed
-# to convert this file to the new APACHE2_MODULES USE_EXPAND variable and remove
-# it afterwards.
-check_upgrade() {
-	if [[ -e "${EROOT}"etc/apache2/apache2-builtin-mods ]]; then
-		eerror "The previous configuration file for built-in modules"
-		eerror "(${EROOT}etc/apache2/apache2-builtin-mods) exists on your"
-		eerror "system."
-		eerror
-		eerror "Please read https://wiki.gentoo.org/wiki/Project:Apache/Upgrading"
-		eerror "for detailed information how to convert this file to the new"
-		eerror "APACHE2_MODULES USE_EXPAND variable."
-		eerror
-		die "upgrade not possible with existing ${ROOT}etc/apache2/apache2-builtin-mods"
-	fi
-}
-
 # ==============================================================================
 # EXPORTED FUNCTIONS
 # ==============================================================================
@@ -443,8 +419,6 @@ check_upgrade() {
 # creates the apache user and group and informs about CONFIG_SYSVIPC being
 # needed (we don't depend on kernel sources and therefore cannot check).
 apache-2_pkg_setup() {
-	check_upgrade
-
 	setup_mpm
 	setup_modules
 
@@ -633,9 +607,6 @@ apache-2_src_install() {
 	else
 		dosym /etc/init.d/apache2 /usr/sbin/apache2ctl
 	fi
-
-	# provide legacy symlink for apxs, bug 177697
-	dosym apxs /usr/sbin/apxs2
 
 	# install some documentation
 	dodoc ABOUT_APACHE CHANGES LAYOUT README README.platforms VERSIONING

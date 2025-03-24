@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -11,7 +11,7 @@ SRC_URI="https://github.com/tstack/${PN}/archive/refs/tags/v${PV}.tar.gz -> ${P}
 
 LICENSE="BSD-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="pcap test"
 RESTRICT="!test? ( test )"
 
@@ -36,6 +36,7 @@ DOCS=( AUTHORS NEWS.md README )
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-0.11.0-disable-tests.patch
+	"${FILESDIR}"/${PN}-0.11.2-gcc15.patch
 )
 
 src_prepare() {

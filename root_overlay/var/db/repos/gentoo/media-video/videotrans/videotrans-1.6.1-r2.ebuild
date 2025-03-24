@@ -1,11 +1,11 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DESCRIPTION="A package to convert movies to DVD format and to build DVDs with"
 HOMEPAGE="http://videotrans.sourceforge.net/"
-SRC_URI="mirror://sourceforge/videotrans/${P}.tar.bz2"
+SRC_URI="https://downloads.sourceforge.net/videotrans/${P}.tar.bz2"
 
 LICENSE="BSD"
 SLOT="0"
@@ -22,7 +22,7 @@ DEPEND="
 RDEPEND="${DEPEND}
 	www-client/lynx
 	app-shells/bash
-	sys-devel/bc
+	app-alternatives/bc
 "
 
 DOCS=( aspects.txt CHANGES THANKS TODO )

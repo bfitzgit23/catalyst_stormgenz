@@ -1,11 +1,11 @@
-# Copyright 2021-2024 Gentoo Authors
+# Copyright 2021-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 inherit desktop xdg-utils savedconfig toolchain-funcs linux-info shell-completion
 
-ZSH_COMP_COMMIT="f7d1efe3495949e2e88fdfef37aed5a40400acea"
+ZSH_COMP_COMMIT="24384847326ad44ac98b7ee7e6fbfa02548ca9c0"
 ZSH_COMP_URI="https://codeberg.org/nsxiv/nsxiv-extra/raw/commit/${ZSH_COMP_COMMIT}/completion/zsh/_nsxiv"
 ZSH_COMP="${PN}-${ZSH_COMP_COMMIT}.comp.zsh"
 if [[ ${PV} == "9999" ]] ; then
@@ -55,9 +55,8 @@ src_configure() {
 }
 
 src_compile() {
-	local dbg=""
-	use debug && dbg="-UNDEBUG -DDEBUG"
-	emake CC="$(tc-getCC)" CFLAGS="${CFLAGS} ${dbg}" \
+	emake CC="$(tc-getCC)" CFLAGS="${CFLAGS}" \
+		CPPFLAGS="${CPPFLAGS} $(usev debug "-UNDEBUG -DDEBUG")" \
 		OPT_DEP_DEFAULT=0 \
 		HAVE_INOTIFY="$(usex inotify 1 0)" \
 		HAVE_LIBFONTS="$(usex statusbar 1 0)" \

@@ -1,14 +1,14 @@
-BDEPEND=sys-devel/gnuconfig >=app-portage/elt-patches-20170815 || ( >=sys-devel/automake-1.16.5:1.16 ) >=sys-devel/autoconf-2.71-r5 >=sys-devel/libtool-2.4.7
+BDEPEND=sys-devel/gnuconfig >=app-portage/elt-patches-20250306 || ( >=dev-build/automake-1.17-r1:1.17 >=dev-build/automake-1.16.5:1.16 ) || ( >=dev-build/autoconf-2.72-r1:2.72 ) >=dev-build/libtool-2.4.7-r3
 DEFINED_PHASES=configure prepare
-DEPEND=media-libs/imlib2[X] x11-libs/libX11 x11-libs/libXext media-fonts/corefonts >=media-libs/freetype-2
+DEPEND=media-libs/imlib2[X,text(+)] x11-libs/libX11 x11-libs/libXext media-fonts/corefonts >=media-libs/freetype-2
 DESCRIPTION=a dockapp for monitoring disk activities with fancy visuals
 EAPI=8
 HOMEPAGE=https://www.dockapps.net/wmhdplop
 INHERIT=autotools
 KEYWORDS=~amd64 ~ppc ~x86
 LICENSE=GPL-2
-RDEPEND=media-libs/imlib2[X] x11-libs/libX11 x11-libs/libXext media-fonts/corefonts >=media-libs/freetype-2
+RDEPEND=media-libs/imlib2[X,text(+)] x11-libs/libX11 x11-libs/libXext media-fonts/corefonts >=media-libs/freetype-2
 SLOT=0
 SRC_URI=https://www.dockapps.net/download/wmhdplop-0.9.12.tar.gz
-_eclasses_=autotools	6ae9a4347149b19a112caa1182d03bde	gnuconfig	b6b3e92f8b8c996400074b5f61a59256	libtool	9d3a9a889a6fa62ae794f817c156491b	multilib	c19072c3cd7ac5cb21de013f7e9832e0	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=5dae584cac3ccf8f4b819b53c59affe6
+_eclasses_=gnuconfig	ddeb9f8caff1b5f71a09c75b7534df79	toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	libtool	c81bd096be5f4c82f4e8f156ef112402	autotools	f20ecf7ab0a7c34e83238b3ed4aaf6d6
+_md5_=42dd0500c7c1f98dc0d216e8ec76c050

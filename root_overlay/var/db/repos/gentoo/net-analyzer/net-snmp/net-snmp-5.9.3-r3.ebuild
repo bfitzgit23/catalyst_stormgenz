@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -6,10 +6,10 @@ EAPI=8
 DISTUTILS_OPTIONAL=yes
 DISTUTILS_SINGLE_IMPL=yes
 GENTOO_DEPEND_ON_PERL=no
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 WANT_AUTOMAKE=none
 
-inherit autotools distutils-r1 perl-module systemd
+inherit autotools distutils-r1 libtool perl-module systemd
 
 DESCRIPTION="Software for generating and retrieving SNMP data"
 HOMEPAGE="https://www.net-snmp.org/"
@@ -18,9 +18,9 @@ if [[ ${PV} == 9999 ]] ; then
 	inherit git-r3
 else
 	# https://github.com/net-snmp/net-snmp/archive/refs/tags/v${PV}.tar.gz -> ${P}.tar.gz
-	SRC_URI="mirror://sourceforge/${PN}/${PV}/${P}.tar.gz"
+	SRC_URI="https://downloads.sourceforge.net/${PN}/${PV}/${P}.tar.gz"
 
-	KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ~mips ppc ppc64 ~riscv ~s390 sparc x86"
+	KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv ~s390 sparc x86"
 fi
 
 SRC_URI+=" https://dev.gentoo.org/~jsmolic/distfiles/${PN}-5.7.3-patches-3.tar.xz"
@@ -65,10 +65,10 @@ COMMON_DEPEND="
 	tcpd? ( >=sys-apps/tcp-wrappers-7.6 )
 	zlib? ( >=sys-libs/zlib-1.1.4 )
 "
-BDEPEND="doc? ( app-doc/doxygen )"
+BDEPEND="doc? ( app-text/doxygen )"
 DEPEND="
 	${COMMON_DEPEND}
-	valgrind? ( dev-util/valgrind )
+	valgrind? ( dev-debug/valgrind )
 "
 RDEPEND="
 	${COMMON_DEPEND}
@@ -122,6 +122,7 @@ src_prepare() {
 	default
 
 	eautoconf
+	elibtoolize
 }
 
 src_configure() {

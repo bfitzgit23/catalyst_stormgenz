@@ -49,7 +49,7 @@ BDEPEND="
 # this ebuild already unconditionally pulls in media-libs/alsa-lib.
 COMMON_DEPEND="
 	media-libs/alsa-lib
-	media-libs/libsdl2[X,alsa,opengl?,sound,threads,video]
+	media-libs/libsdl2[X,alsa,opengl?,sound,threads(+),video]
 	media-libs/sdl2-net
 	net-libs/libpcap
 	sys-libs/zlib
@@ -151,6 +151,7 @@ src_compile() {
 }
 
 src_test() {
+	xdg_environment_reset # Tests may create config files in XDG_CONFIG_HOME
 	set -- src/dosbox-x -tests
 	echo "${@}" >&2
 	"${@}" || die "Unit tests failed"

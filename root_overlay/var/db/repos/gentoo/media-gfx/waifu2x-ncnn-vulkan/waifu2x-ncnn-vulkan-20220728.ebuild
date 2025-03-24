@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -11,19 +11,24 @@ SRC_URI="https://github.com/nihui/waifu2x-ncnn-vulkan/archive/${PV}.tar.gz -> ${
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 ~x86"
 
 RDEPEND="
 	dev-libs/ncnn:=[vulkan]
 	media-libs/libwebp:=
-	media-libs/vulkan-loader"
+	media-libs/vulkan-loader
+"
 DEPEND="
 	${RDEPEND}
+	dev-util/vulkan-headers
+"
+BDEPEND="
 	dev-util/glslang
-	dev-util/vulkan-headers"
+"
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-20210521-no-lto.patch
+	"${FILESDIR}"/${PN}-20220728-no-glslang-libs.patch
 )
 
 src_prepare() {
@@ -37,7 +42,6 @@ src_prepare() {
 
 src_configure() {
 	local mycmakeargs=(
-		-DGLSLANG_TARGET_DIR="${ESYSROOT}"/usr/$(get_libdir)/cmake
 		-DUSE_SYSTEM_NCNN=ON
 		-DUSE_SYSTEM_WEBP=ON
 	)

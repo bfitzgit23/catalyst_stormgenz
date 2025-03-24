@@ -1,15 +1,15 @@
-DEFINED_PHASES=compile install postinst postrm setup
+DEFINED_PHASES=compile install postinst postrm prepare setup
 DEPEND=|| ( >=app-editors/vim-7.3 >=app-editors/gvim-7.3 )
-DESCRIPTION=A comprehensive set of tools to view, edit and compile LaTeX documents
-EAPI=7
-HOMEPAGE=http://vim-latex.sourceforge.net/
+DESCRIPTION=Comprehensive set of tools to view, edit and compile LaTeX documents
+EAPI=8
+HOMEPAGE=https://vim-latex.sourceforge.net/
 INHERIT=vim-plugin python-single-r1
-IUSE=+python_single_target_python3_10
-KEYWORDS=~alpha amd64 ~ia64 ppc ppc64 ~riscv ~sparc x86 ~amd64-linux ~x86-linux ~ppc-macos
+IUSE=python_single_target_python3_10 python_single_target_python3_11 python_single_target_python3_12
+KEYWORDS=~alpha amd64 ppc ppc64 ~riscv ~sparc x86 ~amd64-linux ~x86-linux ~ppc-macos
 LICENSE=vim
-RDEPEND=python_single_target_python3_10? ( dev-lang/python:3.10 ) || ( app-editors/vim[python,python_single_target_python3_10(-)?] app-editors/gvim[python,python_single_target_python3_10(-)?] ) virtual/latex-base !app-vim/vimtex || ( >=app-editors/vim-7.3 >=app-editors/gvim-7.3 )
-REQUIRED_USE=^^ ( python_single_target_python3_10 )
+RDEPEND=python_single_target_python3_10? ( dev-lang/python:3.10 ) python_single_target_python3_11? ( dev-lang/python:3.11 ) python_single_target_python3_12? ( dev-lang/python:3.12 ) || ( app-editors/vim[python,python_single_target_python3_10(-)?,python_single_target_python3_11(-)?,python_single_target_python3_12(-)?] app-editors/gvim[python,python_single_target_python3_10(-)?,python_single_target_python3_11(-)?,python_single_target_python3_12(-)?] ) virtual/latex-base !app-vim/vimtex || ( >=app-editors/vim-7.3 >=app-editors/gvim-7.3 )
+REQUIRED_USE=^^ ( python_single_target_python3_10 python_single_target_python3_11 python_single_target_python3_12 )
 SLOT=0
-SRC_URI=mirror://sourceforge/vim-latex/vim-latex-1.10.0.tar.gz
-_eclasses_=eapi8-dosym	5ac4857ad078256d939c44f7c64197a9	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	python-single-r1	75118e916668a74c660a13b0ecb22562	python-utils-r1	59e60e9c5cbd3f214d7f1002e798b387	toolchain-funcs	862d337d98edb576796827be2c6b11ca	vim-doc	f088862726f2bc672c57b1063b81ec52	vim-plugin	92ea4186891b666b0970fa1d713d64fa
-_md5_=4e4cfaf2d61f541647826d97a4b7c925
+SRC_URI=https://downloads.sourceforge.net/vim-latex/vim-latex-1.10.0.tar.gz
+_eclasses_=vim-doc	bea02829eae182f569e6e9a5dc2fe08f	vim-plugin	4acc7611306b8fdbeac907d572ccac21	multiprocessing	1e32df7deee68372153dca65f4a7c21f	toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	python-utils-r1	b7726144f5af59e186d66746d0f513e5	python-single-r1	47d8ac9be330c9366112b78fd4f8ce57
+_md5_=2de8680f8a787f82167f65402ba2ea07

@@ -1,20 +1,20 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{9..12} )
 
 inherit distutils-r1 optfeature xdg
 
 DESCRIPTION="Console XMPP client that looks like most famous IRC clients"
-HOMEPAGE="https://poez.io/"
+HOMEPAGE="https://poez.io/ https://codeberg.org/poezio/poezio"
 LICENSE="GPL-3+"
 SLOT="0"
 
 if [[ "${PV}" == "9999" ]]; then
-	EGIT_REPO_URI="https://lab.louiz.org/${PN}/${PN}.git"
+	EGIT_REPO_URI="https://lab.louiz.org/${PN}/${PN}.git https://github.com/poezio/poezio.git"
 	inherit git-r3
 
 	# We build the html documentation using sphinx.

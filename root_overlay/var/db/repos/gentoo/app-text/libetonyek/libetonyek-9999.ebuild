@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-MDDS_VER="2.1"
+MDDS_VER="3.0"
 
 if [[ ${PV} == *9999* ]]; then
 	EGIT_REPO_URI="https://anongit.freedesktop.org/git/libreoffice/libetonyek.git"
@@ -18,7 +18,7 @@ HOMEPAGE="https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
 
 LICENSE="|| ( GPL-2+ LGPL-2.1 MPL-1.1 )"
 SLOT="0"
-IUSE="doc static-libs test"
+IUSE="doc test"
 RESTRICT="!test? ( test )"
 
 RDEPEND="
@@ -31,17 +31,17 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	dev-libs/boost
 	media-libs/glm
-	sys-devel/libtool
+	dev-build/libtool
 	test? ( dev-util/cppunit )
 "
 BDEPEND="
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 "
 
 src_prepare() {
 	default
-	[[ -d m4 ]] || mkdir "m4"
+	[[ -d m4 ]] || mkdir "m4" || die
 	[[ ${PV} == *9999* ]] && eautoreconf
 }
 
@@ -50,7 +50,6 @@ src_configure() {
 		--disable-werror
 		--with-mdds="${MDDS_VER}"
 		$(use_with doc docs)
-		$(use_enable static-libs static)
 		$(use_enable test tests)
 	)
 	econf "${myeconfargs[@]}"
@@ -58,5 +57,5 @@ src_configure() {
 
 src_install() {
 	default
-	find "${D}" -name '*.la' -type f -delete || die
+	find "${ED}" -name '*.la' -type f -delete || die
 }

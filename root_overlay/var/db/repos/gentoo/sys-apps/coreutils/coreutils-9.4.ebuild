@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -10,7 +10,7 @@ EAPI=8
 # Also recommend subscribing to the coreutils and bug-coreutils MLs.
 
 PYTHON_COMPAT=( python3_{10..11} )
-VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}"/usr/share/openpgp-keys/coreutils.asc
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/coreutils.asc
 inherit flag-o-matic python-any-r1 toolchain-funcs verify-sig
 
 MY_PATCH="${PN}-9.4-patches"
@@ -33,7 +33,7 @@ else
 		verify-sig? ( mirror://gnu/${PN}/${P}.tar.xz.sig )
 	"
 
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~x86-linux"
+	KEYWORDS="~alpha amd64 arm arm64 hppa ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~x86-linux"
 fi
 
 SRC_URI+=" !vanilla? ( https://dev.gentoo.org/~sam/distfiles/${CATEGORY}/${PN}/${MY_PATCH}.tar.xz )"
@@ -63,9 +63,9 @@ BDEPEND="
 	app-arch/xz-utils
 	dev-lang/perl
 	test? (
+		dev-debug/strace
 		dev-lang/perl
 		dev-perl/Expect
-		dev-util/strace
 		${PYTHON_DEPS}
 	)
 	verify-sig? ( sec-keys/openpgp-keys-coreutils )
@@ -76,14 +76,19 @@ RDEPEND+="
 		!sys-apps/util-linux[kill]
 		!sys-process/procps[kill]
 	)
-	!app-misc/realpath
 	!<sys-apps/util-linux-2.13
 	!<sys-apps/sandbox-2.10-r4
 	!sys-apps/stat
 	!net-mail/base64
 	!sys-apps/mktemp
 	!<app-forensics/tct-1.18-r1
-	!<net-fs/netatalk-2.0.3-r4"
+	!<net-fs/netatalk-2.0.3-r4
+"
+
+QA_CONFIG_IMPL_DECL_SKIP=(
+	# gnulib FPs (bug #898370)
+	unreachable MIN alignof static_assert
+)
 
 pkg_setup() {
 	if use test ; then
@@ -187,15 +192,6 @@ src_configure() {
 }
 
 src_test() {
-	# Known to fail with FEATURES=usersandbox (bug #439574):
-	#   -  tests/du/long-from-unreadable.sh} (bug #413621)
-	#   -  tests/rm/deep-2.sh (bug #413621)
-	#   -  tests/dd/no-allocate.sh (bug #629660)
-	if has usersandbox ${FEATURES} ; then
-		ewarn "You are emerging ${P} with 'usersandbox' enabled." \
-			"Expect some test failures or emerge with 'FEATURES=-usersandbox'!"
-	fi
-
 	# Non-root tests will fail if the full path isn't
 	# accessible to non-root users
 	chmod -R go-w "${WORKDIR}" || die
@@ -220,10 +216,47 @@ src_test() {
 	mkwrap mount umount
 
 	addwrite /dev/full
-	#export RUN_EXPENSIVE_TESTS="yes"
-	#export COREUTILS_GROUPS="portage wheel"
-	env PATH="${T}/mount-wrappers:${PATH}" gl_public_submodule_commit= \
-		emake -k check VERBOSE=yes
+
+	#local -x RUN_EXPENSIVE_TESTS="yes"
+	#local -x COREUTILS_GROUPS="portage wheel"
+	local -x PATH="${T}/mount-wrappers:${PATH}"
+	local -x gl_public_submodule_commit=
+
+	local xfail_tests=(
+		# bug #629660
+		#tests/dd/no-allocate.sh
+
+		# bug #675802
+		tests/env/env-S
+		tests/env/env-S.pl
+
+		# bug #413621 and bug #548250
+		tests/du/long-from-unreadable.sh
+		tests/ls/removed-directory
+		tests/ls/removed-directory.sh
+		tests/ls/stat-free-symlinks
+		tests/ls/stat-free-symlinks.sh
+		tests/rm/deep-2
+		tests/rm/deep-2.sh
+
+		# We have a patch which fixes this (bug #259876)
+		#tests/touch/not-owner
+		#tests/touch/not-owner.sh
+	)
+
+	# This test is flaky (bug #910640).
+	cat > tests/tty/tty-eof.pl <<-EOF || die
+	#!/usr/bin/perl
+	exit 77;
+	EOF
+
+	# We set DISABLE_HARD_ERRORS because some of the tests hard error-out
+	# because of sandbox. They're skipped above but DISABLE_HARD_ERRORS is needed
+	# to downgrade them to FAIL.
+	emake -k check \
+		VERBOSE=yes \
+		DISABLE_HARD_ERRORS=yes \
+		XFAIL_TESTS="${xfail_tests[*]}"
 }
 
 src_install() {

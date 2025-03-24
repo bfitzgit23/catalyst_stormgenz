@@ -1,4 +1,4 @@
-BDEPEND=>=dev-util/meson-0.62.2 >=dev-util/ninja-1.8.2 dev-util/meson-format-array
+BDEPEND=>=dev-build/meson-1.2.3 app-alternatives/ninja dev-build/meson-format-array
 DEFINED_PHASES=compile configure install test
 DEPEND=test? ( dev-cpp/gtest )
 DESCRIPTION=A platform independent standalone library that plays Lottie Animations
@@ -6,10 +6,10 @@ EAPI=7
 HOMEPAGE=https://www.tizen.org/ https://github.com/Samsung/rlottie
 INHERIT=meson
 IUSE=debug test
-KEYWORDS=amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~ppc ~ppc64 ~riscv ~sparc x86
+KEYWORDS=amd64 ~arm ~arm64 ~hppa ~loong ~ppc ~ppc64 ~riscv ~sparc x86
 LICENSE=BSD FTL JSON MIT
 RESTRICT=!test? ( test )
 SLOT=0/0.2
 SRC_URI=https://github.com/Samsung/rlottie/archive/7c5b40cbb87422e5a74691d4d9907948c8c0d479.tar.gz -> rlottie-0.2_p20210405.tar.gz
-_eclasses_=eapi8-dosym	5ac4857ad078256d939c44f7c64197a9	meson	08b7183c3f4811568ee93eb0f79a89fe	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	python-utils-r1	59e60e9c5cbd3f214d7f1002e798b387	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=1966334f4c40b5de2306ed70d03bf619
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	multiprocessing	1e32df7deee68372153dca65f4a7c21f	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	eapi8-dosym	5ac4857ad078256d939c44f7c64197a9	python-utils-r1	b7726144f5af59e186d66746d0f513e5	meson	99466844dd8d4fcfb07578a76f5a9922
+_md5_=c50b8dce1d318db316c0256daaff6361

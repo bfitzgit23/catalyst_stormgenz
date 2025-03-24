@@ -1,9 +1,9 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}"/usr/share/openpgp-keys/alexbarton.asc
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/alexbarton.asc
 inherit tmpfiles systemd verify-sig
 
 DESCRIPTION="An IRC server written from scratch"
@@ -39,7 +39,7 @@ BDEPEND="
 		dev-tcltk/expect
 		net-misc/netkit-telnetd
 	)
-	verify-sig? ( sec-keys/openpgp-keys-alexbarton )
+	verify-sig? ( >=sec-keys/openpgp-keys-alexbarton-20241211 )
 "
 
 PATCHES=(

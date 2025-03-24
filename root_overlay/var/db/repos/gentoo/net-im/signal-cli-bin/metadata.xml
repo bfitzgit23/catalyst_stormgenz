@@ -10,6 +10,9 @@
 		<name>Proxy Maintainers</name>
 	</maintainer>
 	<upstream>
+		<bugs-to>https://github.com/AsamK/signal-cli/issues</bugs-to>
+		<changelog>https://github.com/AsamK/signal-cli/releases</changelog>
+		<doc>https://github.com/AsamK/signal-cli/wiki</doc>
 		<remote-id type="github">AsamK/signal-cli</remote-id>
 	</upstream>
 </pkgmetadata>

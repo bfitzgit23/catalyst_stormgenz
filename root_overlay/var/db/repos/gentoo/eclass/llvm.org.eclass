@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Gentoo Authors
+# Copyright 2019-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: llvm.org.eclass
@@ -57,7 +57,7 @@ LLVM_VERSION=$(ver_cut 1-3)
 # @DESCRIPTION:
 # The major version of current LLVM trunk.  Used to determine
 # the correct branch to use.
-_LLVM_MAIN_MAJOR=18
+_LLVM_MAIN_MAJOR=21
 
 # @ECLASS_VARIABLE: _LLVM_SOURCE_TYPE
 # @INTERNAL
@@ -72,11 +72,14 @@ if [[ -z ${_LLVM_SOURCE_TYPE+1} ]]; then
 			_LLVM_SOURCE_TYPE=snapshot
 
 			case ${PV} in
-				18.0.0_pre20230829)
-					EGIT_COMMIT=f6259d9b9a546dbfa5bc2f29313c6edd6c701177
+				21.0.0_pre20250317)
+					EGIT_COMMIT=1c3a9a853ce68c3c539e7cab21380b9d8b18f426
 					;;
-				18.0.0_pre20230825)
-					EGIT_COMMIT=e3373c6c83d3855adb78f1952a3bf0398baf359e
+				21.0.0_pre20250311)
+					EGIT_COMMIT=cb7298f66d62a3548fcf3bd230304067ecf30d17
+					;;
+				21.0.0_pre20250301)
+					EGIT_COMMIT=7e8a06cfa4a2951b8ee77e19e34926e6e535b4d1
 					;;
 				*)
 					die "Unknown snapshot: ${PV}"
@@ -140,7 +143,7 @@ fi
 #   and REQUIRED_USE will be added but no dependencies.
 #
 # - llvm - this package uses targets from LLVM.  RDEPEND+DEPEND
-#   on matching sys-devel/llvm versions with requested flags will
+#   on matching llvm-core/llvm versions with requested flags will
 #   be added.
 #
 # Note that you still need to pass enabled targets to the build system,
@@ -185,14 +188,26 @@ case ${LLVM_MAJOR} in
 		)
 		;;
 	*)
-		ALL_LLVM_EXPERIMENTAL_TARGETS=(
-			ARC CSKY DirectX M68k SPIRV Xtensa
-		)
-		ALL_LLVM_PRODUCTION_TARGETS=(
-			AArch64 AMDGPU ARM AVR BPF Hexagon Lanai LoongArch Mips
-			MSP430 NVPTX PowerPC RISCV Sparc SystemZ VE WebAssembly X86
-			XCore
-		)
+		# TODO: limit to < 20 when we remove old snapshots
+		if ver_test ${PV} -lt 20.0.0_pre20250122; then
+			ALL_LLVM_EXPERIMENTAL_TARGETS=(
+				ARC CSKY DirectX M68k SPIRV Xtensa
+			)
+			ALL_LLVM_PRODUCTION_TARGETS=(
+				AArch64 AMDGPU ARM AVR BPF Hexagon Lanai LoongArch Mips
+				MSP430 NVPTX PowerPC RISCV Sparc SystemZ VE WebAssembly X86
+				XCore
+			)
+		else
+			ALL_LLVM_EXPERIMENTAL_TARGETS=(
+				ARC CSKY DirectX M68k Xtensa
+			)
+			ALL_LLVM_PRODUCTION_TARGETS=(
+				AArch64 AMDGPU ARM AVR BPF Hexagon Lanai LoongArch Mips
+				MSP430 NVPTX PowerPC RISCV Sparc SPIRV SystemZ VE
+				WebAssembly X86 XCore
+			)
+		fi
 		;;
 esac
 
@@ -205,10 +220,14 @@ ALL_LLVM_TARGET_FLAGS=(
 # @OUTPUT_VARIABLE
 # @DESCRIPTION:
 # The current ABI version of LLVM dylib, in a form suitable for use
-# as a subslot.  This is equal to LLVM_MAJOR for releases, and to PV
-# for the main branch.
-LLVM_SOABI=${LLVM_MAJOR}
-[[ ${LLVM_MAJOR} == ${_LLVM_MAIN_MAJOR} ]] && LLVM_SOABI=${PV}
+# as a subslot.
+if [[ ${LLVM_MAJOR} == ${_LLVM_MAIN_MAJOR} ]]; then
+	LLVM_SOABI=${PV}
+elif ver_test ${PV} -ge 18.1.0_rc3; then
+	LLVM_SOABI=$(ver_cut 1-2)
+else
+	LLVM_SOABI=${LLVM_MAJOR}
+fi
 
 # == global scope logic ==
 
@@ -234,18 +253,27 @@ llvm.org_set_globals() {
 				EGIT_BRANCH="release/${LLVM_MAJOR}.x"
 			;;
 		tar)
-			SRC_URI+="
-				https://github.com/llvm/llvm-project/releases/download/llvmorg-${PV/_/-}/llvm-project-${PV/_/}.src.tar.xz
-				verify-sig? (
-					https://github.com/llvm/llvm-project/releases/download/llvmorg-${PV/_/-}/llvm-project-${PV/_/}.src.tar.xz.sig
-				)
-			"
+			if [[ ${LLVM_MAJOR} -ge 19 ]]; then
+				SRC_URI+="
+					https://github.com/llvm/llvm-project/releases/download/llvmorg-${PV/_/-}/llvm-project-${PV/_/-}.src.tar.xz
+					verify-sig? (
+						https://github.com/llvm/llvm-project/releases/download/llvmorg-${PV/_/-}/llvm-project-${PV/_/-}.src.tar.xz.sig
+					)
+				"
+			else
+				SRC_URI+="
+					https://github.com/llvm/llvm-project/releases/download/llvmorg-${PV/_/-}/llvm-project-${PV/_/}.src.tar.xz
+					verify-sig? (
+						https://github.com/llvm/llvm-project/releases/download/llvmorg-${PV/_/-}/llvm-project-${PV/_/}.src.tar.xz.sig
+					)
+				"
+			fi
 			BDEPEND+="
 				verify-sig? (
-					>=sec-keys/openpgp-keys-llvm-16.0.4
+					>=sec-keys/openpgp-keys-llvm-18.1.6
 				)
 			"
-			VERIFY_SIG_OPENPGP_KEY_PATH=${BROOT}/usr/share/openpgp-keys/llvm.asc
+			VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/llvm.asc
 			;;
 		snapshot)
 			SRC_URI+="
@@ -265,19 +293,41 @@ llvm.org_set_globals() {
 	fi
 
 	if [[ ${LLVM_MANPAGES} ]]; then
-		# use pregenerated tarball if available
-		local manpage_dist=$(llvm_manpage_get_dist)
-		if [[ -n ${manpage_dist} ]]; then
-			IUSE+=" doc"
+		# @ECLASS_VARIABLE: LLVM_MANPAGE_DIST
+		# @OUTPUT_VARIABLE
+		# @DESCRIPTION:
+		# The filename of the prebuilt manpage tarball for this version.
+		LLVM_MANPAGE_DIST=
+		if [[ ${_LLVM_SOURCE_TYPE} == tar && ${PV} != *_rc* ]]; then
+			case ${PV} in
+				14*|15*|16.0.[0-3])
+					LLVM_MANPAGE_DIST="llvm-${PV}-manpages.tar.bz2"
+					;;
+				16*)
+					LLVM_MANPAGE_DIST="llvm-16.0.4-manpages.tar.bz2"
+					;;
+				17*)
+					LLVM_MANPAGE_DIST="llvm-17.0.1-manpages.tar.bz2"
+					;;
+				18*)
+					LLVM_MANPAGE_DIST="llvm-18.1.0-manpages.tar.bz2"
+					;;
+				19*)
+					LLVM_MANPAGE_DIST="llvm-19.1.0-manpages.tar.bz2"
+					;;
+				20*)
+					LLVM_MANPAGE_DIST="llvm-20.1.0-manpages.tar.xz"
+					;;
+			esac
+		fi
+
+		IUSE+=" doc"
+		if [[ -n ${LLVM_MANPAGE_DIST} ]]; then
 			SRC_URI+="
 				!doc? (
-					https://dev.gentoo.org/~mgorny/dist/llvm/${manpage_dist}
+					https://dev.gentoo.org/~mgorny/dist/llvm/${LLVM_MANPAGE_DIST}
 				)
 			"
-		else
-			IUSE+=" +doc"
-			# NB: this is not always the correct dep but it does no harm
-			BDEPEND+=" dev-python/sphinx"
 		fi
 	fi
 
@@ -298,7 +348,7 @@ llvm.org_set_globals() {
 			local dep=
 			for x in "${ALL_LLVM_TARGET_FLAGS[@]}"; do
 				dep+="
-					${x}? ( ~sys-devel/llvm-${PV}[${x}] )"
+					${x}? ( ~llvm-core/llvm-${PV}[${x}] )"
 			done
 			RDEPEND+=" ${dep}"
 			DEPEND+=" ${dep}"
@@ -336,7 +386,11 @@ llvm.org_src_unpack() {
 			git-r3_checkout '' . '' "${components[@]}"
 			;;
 		tar)
-			archive=llvm-project-${PV/_/}.src.tar.xz
+			if [[ ${LLVM_MAJOR} -ge 19 ]]; then
+				archive=llvm-project-${PV/_/-}.src.tar.xz
+			else
+				archive=llvm-project-${PV/_/}.src.tar.xz
+			fi
 			if use verify-sig; then
 				verify-sig_verify_detached \
 					"${DISTDIR}/${archive}" "${DISTDIR}/${archive}.sig"
@@ -378,7 +432,7 @@ llvm.org_src_unpack() {
 		local IFS='|'
 		grep -E -r -L "^Gentoo-Component:.*(${components[*]})" \
 			"${WORKDIR}/llvm-gentoo-patchset-${LLVM_PATCHSET}" |
-			xargs rm
+			xargs -r rm
 		local status=( "${PIPESTATUS[@]}" )
 		[[ ${status[1]} -ne 0 ]] && die "rm failed"
 		[[ ${status[0]} -ne 0 ]] &&
@@ -433,29 +487,12 @@ get_lit_flags() {
 	echo "-vv;-j;${LIT_JOBS:-$(makeopts_jobs)}"
 }
 
-# @FUNCTION: llvm_manpage_get_dist
-# @DESCRIPTION:
-# Output the filename of the manpage dist for this version,
-# if available.  Otherwise returns without output.
-llvm_manpage_get_dist() {
-	if [[ ${_LLVM_SOURCE_TYPE} == tar && ${PV} != *_rc* ]]; then
-		case ${PV} in
-			14*|15*|16.0.[0-3])
-				echo "llvm-${PV}-manpages.tar.bz2"
-				;;
-			16*)
-				echo "llvm-16.0.4-manpages.tar.bz2"
-				;;
-		esac
-	fi
-}
-
 # @FUNCTION: llvm_are_manpages_built
 # @DESCRIPTION:
 # Return true (0) if manpages are going to be built from source,
 # false (1) if preinstalled manpages will be used.
 llvm_are_manpages_built() {
-	use doc || [[ -z $(llvm_manpage_get_dist) ]]
+	use doc || [[ -z ${LLVM_MANPAGE_DIST} ]]
 }
 
 # @FUNCTION: llvm_install_manpages

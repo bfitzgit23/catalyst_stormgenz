@@ -1,12 +1,12 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DISTUTILS_OPTIONAL=1
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..11} )
-VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}"/usr/share/openpgp-keys/netfilter.org.asc
+PYTHON_COMPAT=( python3_{10..13} )
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/netfilter.org.asc
 inherit edo linux-info distutils-r1 systemd verify-sig
 
 DESCRIPTION="Linux kernel firewall, NAT and packet mangling tools"
@@ -15,11 +15,13 @@ HOMEPAGE="https://netfilter.org/projects/nftables/"
 if [[ ${PV} =~ ^[9]{4,}$ ]]; then
 	inherit autotools git-r3
 	EGIT_REPO_URI="https://git.netfilter.org/${PN}"
-	BDEPEND="sys-devel/bison"
+	BDEPEND="app-alternatives/yacc"
 else
-	SRC_URI="https://netfilter.org/projects/nftables/files/${P}.tar.xz
-		verify-sig? ( https://netfilter.org/projects/nftables/files/${P}.tar.xz.sig )"
-	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86"
+	SRC_URI="
+		https://netfilter.org/projects/nftables/files/${P}.tar.xz
+		verify-sig? ( https://netfilter.org/projects/nftables/files/${P}.tar.xz.sig )
+	"
+	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~loong ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86"
 	BDEPEND="verify-sig? ( sec-keys/openpgp-keys-netfilter )"
 fi
 
@@ -31,7 +33,7 @@ RESTRICT="!test? ( test )"
 
 RDEPEND="
 	>=net-libs/libmnl-1.0.4:=
-	>=net-libs/libnftnl-1.2.6:=
+	>=net-libs/libnftnl-1.2.8:=
 	gmp? ( dev-libs/gmp:= )
 	json? ( dev-libs/jansson:= )
 	python? ( ${PYTHON_DEPS} )
@@ -40,7 +42,7 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 BDEPEND+="
-	sys-devel/flex
+	app-alternatives/lex
 	virtual/pkgconfig
 	doc? (
 		app-text/asciidoc
@@ -70,9 +72,6 @@ src_prepare() {
 
 src_configure() {
 	local myeconfargs=(
-		# We handle python separately
-		--disable-python
-		--disable-static
 		--sbindir="${EPREFIX}"/sbin
 		$(use_enable debug)
 		$(use_enable doc man-doc)
@@ -83,6 +82,7 @@ src_configure() {
 		$(use_enable static-libs static)
 		$(use_with xtables)
 	)
+
 	econf "${myeconfargs[@]}"
 
 	if use python; then
@@ -111,10 +111,19 @@ src_test() {
 		ewarn "Skipping shell tests (requires root)"
 	fi
 
-	# Need to rig up Python eclass if using this, but it doesn't seem to work
-	# for me anyway.
-	#cd tests/py || die
-	#"${EPYTHON}" nft-test.py || die
+	if use python; then
+		pushd tests/py >/dev/null || die
+		distutils-r1_src_test
+		popd >/dev/null || die
+	fi
+}
+
+python_test() {
+	if [[ ${EUID} == 0 ]]; then
+		edo "${EPYTHON}" nft-test.py
+	else
+		ewarn "Skipping Python tests (requires root)"
+	fi
 }
 
 src_install() {
@@ -168,7 +177,9 @@ pkg_preinst() {
 		# will not always be printed in a way that constitutes a valid
 		# syntax for ntf(8). Ignore them.
 		return
-	elif set -- "${ED}"/usr/lib*/libnftables.so; ! LD_LIBRARY_PATH=${1%/*} "${ED}"/sbin/nft -c -f -- "${T}"/ruleset.nft; then
+	elif set -- "${ED}"/usr/lib*/libnftables.so;
+		! LD_LIBRARY_PATH=${1%/*} "${ED}"/sbin/nft -c -f -- "${T}"/ruleset.nft
+	then
 		eerror "Your currently loaded ruleset cannot be parsed by the newly built instance of"
 		eerror "nft. This probably means that there is a regression introduced by v${PV}."
 		eerror "(To make the ebuild fail instead of warning, set NFTABLES_ABORT_ON_RELOAD_FAILURE=1.)"

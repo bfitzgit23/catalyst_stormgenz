@@ -11,7 +11,7 @@ SRC_URI="https://download.librdf.org/source/${P}.tar.gz"
 
 LICENSE="Apache-2.0 GPL-2 LGPL-2.1"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ppc ppc64 ~riscv sparc x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ppc ppc64 ~riscv sparc x86 ~amd64-linux ~x86-linux"
 IUSE="berkdb iodbc mysql odbc postgres sqlite"
 
 RDEPEND="
@@ -56,6 +56,7 @@ src_configure() {
 
 	# FIXME: upstream doesn't test with --with-threads and testsuite fails
 	econf \
+		--cache-file="${S}"/config.cache \
 		$(use_with berkdb bdb) \
 		$(use_with mysql) \
 		$(use_with sqlite) \

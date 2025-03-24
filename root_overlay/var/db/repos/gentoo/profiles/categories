@@ -31,12 +31,15 @@ app-text
 app-vim
 app-xemacs
 dev-ada
+dev-build
 dev-cpp
 dev-db
+dev-debug
 dev-dotnet
 dev-embedded
 dev-erlang
 dev-games
+dev-gap
 dev-go
 dev-haskell
 dev-java
@@ -85,6 +88,8 @@ kde-apps
 kde-frameworks
 kde-misc
 kde-plasma
+llvm-core
+llvm-runtimes
 lxde-base
 lxqt-base
 mail-client
@@ -130,6 +135,7 @@ sci-geosciences
 sci-libs
 sci-mathematics
 sci-misc
+sci-ml
 sci-physics
 sci-visualization
 sec-keys

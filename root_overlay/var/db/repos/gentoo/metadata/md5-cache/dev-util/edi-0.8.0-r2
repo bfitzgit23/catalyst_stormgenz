@@ -1,6 +1,6 @@
-BDEPEND=virtual/libintl virtual/pkgconfig >=dev-util/meson-0.62.2 >=dev-util/ninja-1.8.2 dev-util/meson-format-array
+BDEPEND=virtual/libintl virtual/pkgconfig >=dev-build/meson-1.2.3 app-alternatives/ninja dev-build/meson-format-array
 DEFINED_PHASES=compile configure install postinst postrm preinst prepare setup test
-DEPEND=|| ( dev-libs/efl[X] dev-libs/efl[wayland] ) >=dev-libs/efl-1.22.0[eet] clang? ( dev-util/bear sys-devel/clang:= ) dev-libs/check !!sys-devel/llvm:0 dev-util/desktop-file-utils x11-misc/shared-mime-info
+DEPEND=|| ( dev-libs/efl[X] dev-libs/efl[wayland] ) >=dev-libs/efl-1.22.0[eet] clang? ( dev-util/bear llvm-core/clang:= ) dev-libs/check !!llvm-core/llvm:0 dev-util/desktop-file-utils x11-misc/shared-mime-info
 DESCRIPTION=An EFL-based IDE
 EAPI=7
 HOMEPAGE=https://www.enlightenment.org/about-edi https://phab.enlightenment.org/w/projects/edi/ https://github.com/Enlightenment/edi
@@ -8,8 +8,8 @@ INHERIT=llvm meson xdg
 IUSE=clang
 KEYWORDS=amd64 x86
 LICENSE=GPL-2 GPL-3 LGPL-2.1-with-linking-exception
-RDEPEND=|| ( dev-libs/efl[X] dev-libs/efl[wayland] ) >=dev-libs/efl-1.22.0[eet] clang? ( dev-util/bear sys-devel/clang:= )
+RDEPEND=|| ( dev-libs/efl[X] dev-libs/efl[wayland] ) >=dev-libs/efl-1.22.0[eet] clang? ( dev-util/bear llvm-core/clang:= )
 SLOT=0
 SRC_URI=https://github.com/Enlightenment/edi/archive/v0.8.0.tar.gz -> edi-0.8.0.tar.gz
-_eclasses_=eapi8-dosym	5ac4857ad078256d939c44f7c64197a9	llvm	976dc8267d6a5af8b259cb956b52d51f	meson	08b7183c3f4811568ee93eb0f79a89fe	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	python-utils-r1	59e60e9c5cbd3f214d7f1002e798b387	toolchain-funcs	862d337d98edb576796827be2c6b11ca	xdg	4a14c5c24f121e7da66e5aab4a168c6e	xdg-utils	baea6080dd821f5562d715887954c9d3
-_md5_=ddd3a97b6655584c83a5e39742243b5e
+_eclasses_=llvm-utils	846280a994c1843d9c21248c188bd147	llvm	df1cea363f19e80316ea702563b607be	toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	multiprocessing	1e32df7deee68372153dca65f4a7c21f	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	eapi8-dosym	5ac4857ad078256d939c44f7c64197a9	python-utils-r1	b7726144f5af59e186d66746d0f513e5	meson	99466844dd8d4fcfb07578a76f5a9922	xdg-utils	42869b3c8d86a70ef3cf75165a395e09	xdg	3ef49a87c52c8b77c476351195dfe575
+_md5_=09a1b01f8cc5fd04d63cce6b9e3d4399

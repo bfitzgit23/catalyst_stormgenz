@@ -1,35 +1,32 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-inherit cmake flag-o-matic
+inherit cmake
 
 DESCRIPTION="Image and video texturing library"
 HOMEPAGE="https://github.com/coin3d/simage/"
 
-if [[ ${PV} = *9999 ]]; then
+if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/coin3d/simage.git"
 else
 	SRC_URI="https://github.com/coin3d/simage/releases/download/v${PV}/${P}-src.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~sparc ~x86"
 	S="${WORKDIR}/${PN}"
 fi
 
 LICENSE="BSD-1"
 SLOT="0"
-IUSE="gif jpeg png qt5 sndfile test tiff vorbis zlib"
+IUSE="gif jpeg png qt6 sndfile test tiff vorbis zlib"
 RESTRICT="!test? ( test )"
 
 RDEPEND="
 	gif? ( media-libs/giflib:= )
 	jpeg? ( media-libs/libjpeg-turbo:= )
 	png? ( media-libs/libpng:= )
-	qt5? (
-		dev-qt/qtcore:5
-		dev-qt/qtgui:5
-	)
+	qt6? ( dev-qt/qtbase:6[gui] )
 	sndfile? (
 		media-libs/libsndfile
 		media-libs/flac:=
@@ -53,7 +50,7 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.8.1-0001-Gentoo-specific-remove-RELEASE-flag-from-pkg-config.patch
 )
 
-DOCS=(AUTHORS ChangeLog NEWS README)
+DOCS=( AUTHORS ChangeLog NEWS README )
 
 src_configure() {
 	local mycmakeargs=(
@@ -65,8 +62,9 @@ src_configure() {
 		-DSIMAGE_USE_GDIPLUS=OFF # Windows
 		-DSIMAGE_USE_CGIMAGE=OFF # OS X only
 		-DSIMAGE_USE_QUICKTIME=OFF # OS X only
-		-DSIMAGE_USE_QIMAGE=$(usex qt5)
-		-DSIMAGE_USE_QT5=$(usex qt5)
+		-DSIMAGE_USE_QIMAGE=$(usex qt6)
+		-DSIMAGE_USE_QT5=OFF
+		-DSIMAGE_USE_QT6=$(usex qt6)
 		-DSIMAGE_USE_CPACK=OFF
 		-DSIMAGE_USE_STATIC_LIBS=OFF
 		-DSIMAGE_LIBJASPER_SUPPORT=OFF

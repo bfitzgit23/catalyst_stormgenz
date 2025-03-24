@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,9 +7,7 @@ XORG_DRI=dri
 XORG_EAUTORECONF=yes
 inherit linux-info xorg-3 flag-o-matic
 
-if [[ ${PV} == 9999* ]]; then
-	SRC_URI=""
-else
+if [[ ${PV} != 9999* ]]; then
 	KEYWORDS="amd64 x86"
 	COMMIT_ID="b74b67f0f321875492968f7097b9d6e82a66d7df"
 	SRC_URI="https://gitlab.freedesktop.org/xorg/driver/xf86-video-intel/-/archive/${COMMIT_ID}/${P}.tar.bz2"
@@ -22,6 +20,7 @@ IUSE="debug +sna tools +udev uxa valgrind xvmc"
 
 REQUIRED_USE="
 	|| ( sna uxa )
+	uxa? ( dri )
 "
 RDEPEND="
 	x11-libs/libXext
@@ -53,7 +52,7 @@ RDEPEND="
 DEPEND="
 	${RDEPEND}
 	x11-base/xorg-proto
-	valgrind? ( dev-util/valgrind )
+	valgrind? ( dev-debug/valgrind )
 "
 
 pkg_setup() {
@@ -64,13 +63,15 @@ pkg_setup() {
 src_configure() {
 	# bug #582910
 	replace-flags -Os -O2
+	# Uses the 'flatten' attribute which explodes with LTO (bug #864379)
+	filter-lto
 
 	local XORG_CONFIGURE_OPTIONS=(
 		--disable-dri1
 		$(use_enable debug)
 		$(use_enable dri)
 		$(use_enable dri dri3)
-		$(usex dri "--with-default-dri=3")
+		$(usex dri "--with-default-dri=3" "")
 		$(use_enable sna)
 		$(use_enable tools)
 		$(use_enable udev)

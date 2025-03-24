@@ -14,7 +14,7 @@ SRC_URI="https://hackage.haskell.org/package/${P}/${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0/${PV}"
-KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
 
 RDEPEND=">=dev-lang/ghc-8.4.3:=
 "
@@ -22,8 +22,6 @@ DEPEND="${RDEPEND}
 	>=dev-haskell/cabal-2.2.0.1
 "
 
-src_prepare() {
-	default
-	cabal_chdeps \
-		'base                 >= 4.9  && < 4.17' 'base                 >= 4.9'
-}
+CABAL_CHDEPS=(
+	'base                 >= 4.9  && < 4.17' 'base                 >= 4.9'
+)

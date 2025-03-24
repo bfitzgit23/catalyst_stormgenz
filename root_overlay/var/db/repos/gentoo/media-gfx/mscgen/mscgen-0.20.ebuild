@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -9,7 +9,7 @@ DESCRIPTION="Message sequence chart generator"
 HOMEPAGE="https://www.mcternan.me.uk/mscgen/"
 SRC_URI="https://www.mcternan.me.uk/${PN}/software/${PN}-src-${PV}.tar.gz"
 
-KEYWORDS="amd64 arm ~arm64 ppc ppc64 x86 ~x64-solaris"
+KEYWORDS="amd64 arm arm64 ppc ppc64 ~riscv x86 ~x64-solaris"
 
 LICENSE="GPL-2+"
 SLOT="0"
@@ -21,8 +21,8 @@ RDEPEND="
 	png? ( media-libs/gd[png,truetype?] )"
 DEPEND="${RDEPEND}"
 BDEPEND="
-	sys-devel/bison
-	sys-devel/flex
+	app-alternatives/yacc
+	app-alternatives/lex
 	virtual/pkgconfig"
 
 # Workaround for bug #379279

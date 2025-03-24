@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -36,12 +36,15 @@ SRC_URI="
 	!truetype? ( ${FONT_URI} )
 "
 
-IUSE="cpu_flags_x86_avx cpu_flags_x86_avx2 cpu_flags_x86_fma3 cpu_flags_x86_fma4"
+IUSE="cpu_flags_x86_avx cpu_flags_x86_avx2"
+IUSE+=" cpu_flags_x86_fma3 cpu_flags_x86_fma4"
 IUSE+=" cpu_flags_x86_mmx cpu_flags_x86_mmxext"
 IUSE+=" cpu_flags_x86_sse cpu_flags_x86_sse2 cpu_flags_x86_sse3 cpu_flags_x86_ssse3 cpu_flags_x86_sse4_1"
 IUSE+=" cpu_flags_x86_sse4_2 cpu_flags_x86_xop"
 IUSE+=" cpu_flags_x86_3dnow cpu_flags_x86_3dnowext"
 
+IUSE+=" cpu_flags_arm_thumb cpu_flags_arm_neon cpu_flags_arm_vfp cpu_flags_arm_vfpv3"
+IUSE+=" cpu_flags_arm_iwmmxt"
 IUSE+=" cpu_flags_ppc_altivec"
 
 IUSE+=" a52 aalib +alsa aqua bidi bl bluray"
@@ -72,7 +75,7 @@ X_RDEPS="
 #   https://sourceforge.net/p/giflib/bugs/132/
 RDEPEND="
 	app-arch/bzip2
-	>=media-video/ffmpeg-4.0:=[vdpau?]
+	>=media-video/ffmpeg-5.1:=[vdpau?]
 	sys-libs/ncurses:=
 	sys-libs/zlib
 	a52? ( media-libs/a52dec )
@@ -121,7 +124,7 @@ RDEPEND="
 	opengl? ( virtual/opengl )
 	png? ( media-libs/libpng:= )
 	pnm? ( media-libs/netpbm )
-	pulseaudio? ( media-sound/pulseaudio )
+	pulseaudio? ( media-libs/libpulse )
 	rar? (
 		|| (
 			app-arch/unrar
@@ -145,12 +148,12 @@ RDEPEND="
 DEPEND="
 	${RDEPEND}
 	dga? ( x11-base/xorg-proto )
-	dvb? ( virtual/linuxtv-dvb-headers )
+	dvb? ( sys-kernel/linux-headers )
 	X? ( x11-base/xorg-proto )
 	xinerama? ( x11-base/xorg-proto )
 	xscreensaver? ( x11-base/xorg-proto )
 "
-ASM_DEP="dev-lang/yasm"
+ASM_DEP="dev-lang/nasm"
 BDEPEND="
 	virtual/pkgconfig
 	amd64? ( ${ASM_DEP} )
@@ -166,7 +169,7 @@ RDEPEND+="selinux? ( sec-policy/selinux-mplayer )"
 LICENSE="GPL-2"
 SLOT="0"
 if [[ ${PV} != *9999* ]]; then
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc ~ppc64 ~riscv ~sparc ~x86"
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ppc ~ppc64 ~riscv ~sparc ~x86"
 fi
 
 # faac codecs are nonfree
@@ -188,8 +191,13 @@ REQUIRED_USE="
 	vidix? ( X )
 	xinerama? ( X )
 	xscreensaver? ( X )
-	xv? ( X )"
+	xv? ( X )
+"
 RESTRICT="faac? ( bindist )"
+
+PATCHES=(
+	"${FILESDIR}"/${PN}-1.5_p20241125-c99.patch
+)
 
 pkg_setup() {
 	if [[ ${PV} == *9999* ]]; then
@@ -263,6 +271,11 @@ src_prepare() {
 }
 
 src_configure() {
+	# undefined reference to `sse_int32_map_factor' etc
+	# https://bugs.gentoo.org/650458
+	# https://trac.mplayerhq.hu/ticket/2408
+	use libass && use cpu_flags_x86_sse4_1 && filter-lto
+
 	local myconf=()
 	local uses i
 
@@ -292,7 +305,6 @@ src_configure() {
 		--disable-libnut
 		--disable-libopus
 		--disable-svga --disable-svgalib_helper
-		--disable-xvmc
 		$(use_enable network networking)
 		$(use_enable joystick)
 	)
@@ -461,15 +473,21 @@ src_configure() {
 	# Platform specific flags, hardcoded on amd64 (see below)
 	use cpudetection && myconf+=( --enable-runtime-cpudetection )
 
-	# TODO: refresh this list
-	uses="3dnow 3dnowext avx avx2 fma3 fma4 mmx mmxext sse sse2 sse3 ssse3 xop"
-	for i in ${uses}; do
+	local x86_uses="3dnow 3dnowext avx avx2 fma3 fma4 mmx mmxext sse sse2 sse3 ssse3 xop"
+	for i in ${x86_uses}; do
 		myconf+=( $(use_enable cpu_flags_x86_${i} ${i}) )
 	done
-	myconf+=( $(use_enable cpu_flags_x86_sse4_1 sse4) )
-	myconf+=( $(use_enable cpu_flags_x86_sse4_2 sse42) )
+	myconf+=(
+		$(use_enable cpu_flags_x86_sse4_1 sse4)
+		$(use_enable cpu_flags_x86_sse4_2 sse42)
+	)
 
 	myconf+=(
+		$(use_enable cpu_flags_arm_iwmmxt iwmmxt)
+		$(use_enable cpu_flags_arm_thumb thumb)
+		$(use_enable cpu_flags_arm_neon neon)
+		$(use_enable cpu_flags_arm_vfp armvfp)
+		$(use_enable cpu_flags_arm_vfpv3 vfpv3)
 		$(use_enable cpu_flags_ppc_altivec altivec)
 		$(use_enable shm)
 	)

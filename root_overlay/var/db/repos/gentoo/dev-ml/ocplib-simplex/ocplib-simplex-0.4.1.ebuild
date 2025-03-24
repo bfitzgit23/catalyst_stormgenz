@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,16 +11,12 @@ SRC_URI="https://github.com/OCamlPro-Iguernlala/${PN}/archive/v${PV}.tar.gz -> $
 
 LICENSE="LGPL-2.1-with-linking-exception"
 SLOT="0"
-KEYWORDS="~amd64"
+KEYWORDS="amd64 ~arm64"
 
 DOCS=( CHANGES.md README.md extra/simplex_invariants.txt extra/TODO.txt )
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-0.4-flags.patch
-)
-
-QA_FLAGS_IGNORED=(
-	/usr/lib64/ocaml/ocplib-simplex/ocplibSimplex.cmxs
 )
 
 src_prepare() {

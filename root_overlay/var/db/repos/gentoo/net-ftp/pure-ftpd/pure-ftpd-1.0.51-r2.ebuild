@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -15,7 +15,7 @@ else
 		ftp://ftp.pureftpd.org/pub/${PN}/releases/${P}.tar.bz2
 		http://download.pureftpd.org/pub/${PN}/releases/${P}.tar.bz2
 	"
-	KEYWORDS="~alpha amd64 arm ~arm64 ~hppa ~ia64 ppc ppc64 ~riscv sparc x86"
+	KEYWORDS="~alpha amd64 arm ~arm64 ~hppa ppc ppc64 ~riscv sparc x86"
 fi
 
 LICENSE="BSD GPL-2"
@@ -46,7 +46,12 @@ RDEPEND="
 	selinux? ( sec-policy/selinux-ftp )
 "
 
-BDEPEND="sys-devel/autoconf-archive"
+BDEPEND="dev-build/autoconf-archive"
+
+QA_CONFIG_IMPL_DECL_SKIP=(
+	# FP noise (bug #900068)
+	sendfile sendfilev
+)
 
 PATCHES=(
 	"${FILESDIR}/${PN}-1.0.28-pam.patch"

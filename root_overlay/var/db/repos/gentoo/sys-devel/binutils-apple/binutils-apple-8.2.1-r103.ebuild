@@ -1,4 +1,4 @@
-# Copyright 2020-2022 Gentoo Authors
+# Copyright 2020-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -17,13 +17,23 @@ KEYWORDS="~arm64-macos ~ppc-macos ~x64-macos"
 
 # xtools uses c++11 features, not available in gcc-apple, hence gcc/clang dep
 DEPEND="sys-devel/binutils-config
-	|| ( sys-devel/gcc:* sys-devel/clang:* )
+	|| ( sys-devel/gcc:* llvm-core/clang:* )
 	app-arch/xar
 	dev-libs/libyaml"
 RDEPEND="${DEPEND}"
 BDEPEND=""
 
 S="${WORKDIR}/darwin-xtools-gentoo-${PVR}"
+
+src_prepare() {
+	cmake_src_prepare
+	# kill forced libstd=libc++ usage, breaks with GCC-13 which has
+	# preliminary support for that
+	# check_cxx_compiler_flag(-stdlib=libc++ # XTOOLS_CXX_HAS_STDLIB_FLAG)
+	#
+	sed -i -e '/check_cxx_compiler_flag/s/XTOOLS_CXX_HAS_STDLIB_FLAG/NO_&/' \
+		cmake/config-ix.cmake || die
+}
 
 src_configure() {
 	CTARGET=${CTARGET:-${CHOST}}
@@ -102,6 +112,8 @@ src_install() {
 	doman ld64/doc/man/man*/* cctools/man/*.[135]
 	dodir "${DATAPATH}"
 	mv "${ED}"/usr/share/man "${ED}/${DATAPATH}/" || die
+
+	docompress "${DATAPATH}"/man
 
 	cd "${S}"
 	insinto /etc/env.d/binutils

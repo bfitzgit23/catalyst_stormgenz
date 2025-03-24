@@ -5,7 +5,7 @@ EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
 DISTUTILS_EXT=1
-PYTHON_COMPAT=( python3_{8..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 PYPI_PN="py${PN}"
 PYPI_NO_NORMALIZE=1
 
@@ -19,3 +19,9 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
 distutils_enable_tests pytest
+
+src_prepare() {
+	default
+
+	sed -i '/typedef char    bool/d' src/common.h || die
+}

@@ -1,4 +1,4 @@
-# Copyright 1999-2020 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,7 +11,7 @@ SRC_URI="mirror://nongnu/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~arm ppc x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 ~arm ppc ~ppc64 x86 ~amd64-linux ~x86-linux"
 IUSE="nls"
 
 BDEPEND="
@@ -28,7 +28,10 @@ DEPEND="${RDEPEND}"
 
 DOCS=( AUTHORS ChangeLog NEWS README TODO )
 
-PATCHES=( "${FILESDIR}"/${PN}-0.29.1-{locale,gettext}.patch )
+PATCHES=(
+	"${FILESDIR}"/${PN}-0.29.1-{locale,gettext}.patch
+	"${FILESDIR}"/${PN}-0.32.3-c23.patch
+)
 
 src_prepare() {
 	default

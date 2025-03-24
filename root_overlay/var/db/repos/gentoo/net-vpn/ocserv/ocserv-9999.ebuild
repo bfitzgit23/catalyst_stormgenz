@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Gentoo Authors
+# Copyright 2019-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -10,7 +10,7 @@ if [[ ${PV} == 9999 ]]; then
 	EGIT_REPO_URI="https://gitlab.com/openconnect/ocserv.git"
 else
 	inherit verify-sig
-	VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}/usr/share/openpgp-keys/ocserv.asc"
+	VERIFY_SIG_OPENPGP_KEY_PATH="/usr/share/openpgp-keys/ocserv.asc"
 	BDEPEND="verify-sig? ( sec-keys/openpgp-keys-ocserv )"
 	SRC_URI="https://www.infradead.org/ocserv/download/${P}.tar.xz
 		verify-sig? ( https://www.infradead.org/ocserv/download/${P}.tar.xz.sig )"
@@ -26,6 +26,7 @@ IUSE="geoip kerberos +lz4 otp pam radius +seccomp systemd tcpd test"
 RESTRICT="!test? ( test )"
 
 BDEPEND+="
+	net-misc/ipcalc
 	virtual/pkgconfig
 	test? (
 		net-libs/gnutls[tools(+)]
@@ -43,7 +44,6 @@ DEPEND="
 	dev-libs/pcl:0=
 	dev-libs/protobuf-c:0=
 	>=net-libs/gnutls-3.3.0:0=
-	net-libs/http-parser:0=
 	sys-libs/readline:0=
 	sys-libs/talloc:0=
 	virtual/libcrypt:=
@@ -69,19 +69,24 @@ src_prepare() {
 src_configure() {
 	local myconf=(
 		--without-root-tests
-		--without-nuttcp-tests
 
 		$(use_enable seccomp)
 		$(use_enable systemd)
 
 		$(use_with geoip)
 		$(use_with kerberos gssapi)
+		--without-llhttp
 		$(use_with lz4)
 		$(use_with otp liboath)
 		$(use_with radius)
 		$(use_with tcpd libwrap)
 	)
 	econf "${myconf[@]}"
+}
+
+src_test() {
+	addwrite /proc
+	default
 }
 
 src_install() {

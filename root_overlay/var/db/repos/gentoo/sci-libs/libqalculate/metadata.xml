@@ -5,13 +5,21 @@
     <email>sci@gentoo.org</email>
     <name>Gentoo Science Project</name>
   </maintainer>
+  <maintainer type="person" proxied="yes">
+    <email>csfore@posteo.net</email>
+    <name>Christopher Fore</name>
+  </maintainer>
+  <maintainer type="project" proxied="proxy">
+    <email>proxy-maint@gentoo.org</email>
+    <name>Proxy Maintainers</name>
+  </maintainer>
   <use>
     <flag name="hardened">
       Disable unsafe functions like 'command' and variables like 'uptime'.
     </flag>
   </use>
   <upstream>
-    <remote-id type="sourceforge">qalculate-0.9.7</remote-id>
+    <remote-id type="sourceforge">qalculate</remote-id>
     <remote-id type="github">Qalculate/libqalculate</remote-id>
   </upstream>
 </pkgmetadata>

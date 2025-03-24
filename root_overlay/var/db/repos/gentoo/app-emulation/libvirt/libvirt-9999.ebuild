@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -10,8 +10,8 @@ EAPI=8
 # app-emulation/libvirt
 # Please bump them together!
 
-PYTHON_COMPAT=( python3_{9..11} )
-VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}"/usr/share/openpgp-keys/libvirt.org.asc
+PYTHON_COMPAT=( python3_{10..13} )
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/libvirt.org.asc
 inherit meson linux-info python-any-r1 readme.gentoo-r1 tmpfiles verify-sig
 
 if [[ ${PV} = *9999* ]]; then
@@ -19,8 +19,8 @@ if [[ ${PV} = *9999* ]]; then
 	EGIT_REPO_URI="https://gitlab.com/libvirt/libvirt.git"
 	EGIT_BRANCH="master"
 else
-	SRC_URI="https://libvirt.org/sources/${P}.tar.xz
-		verify-sig? ( https://libvirt.org/sources/${P}.tar.xz.asc )"
+	SRC_URI="https://download.libvirt.org/${P}.tar.xz
+		verify-sig? ( https://download.libvirt.org/${P}.tar.xz.asc )"
 	KEYWORDS="~amd64 ~arm ~arm64 ~ppc64 ~x86"
 fi
 
@@ -30,9 +30,9 @@ LICENSE="LGPL-2.1"
 SLOT="0/${PV}"
 IUSE="
 	apparmor audit bash-completion +caps dtrace firewalld fuse glusterfs
-	iscsi iscsi-direct +libvirtd lvm libssh libssh2 lxc nfs nls numa openvz
-	parted pcap policykit +qemu rbd sasl selinux test +udev
-	virtualbox +virt-network wireshark-plugins xen zfs
+	iscsi iscsi-direct +libvirtd lvm libssh libssh2 lxc nbd nfs nls numa
+	openvz parted pcap policykit +qemu rbd sasl selinux test +udev
+	virtiofsd virtualbox +virt-network wireshark-plugins xen zfs
 "
 RESTRICT="!test? ( test )"
 
@@ -53,7 +53,6 @@ BDEPEND="
 	dev-perl/XML-XPath
 	dev-python/docutils
 	virtual/pkgconfig
-	net-libs/rpcsvc-proto
 	bash-completion? ( >=app-shells/bash-completion-2.0 )
 	verify-sig? ( sec-keys/openpgp-keys-libvirt )"
 
@@ -65,7 +64,7 @@ BDEPEND="
 RDEPEND="
 	acct-user/qemu
 	app-misc/scrub
-	>=dev-libs/glib-2.56.0
+	>=dev-libs/glib-2.66.0
 	dev-libs/libgcrypt
 	dev-libs/libnl:3
 	>=dev-libs/libxml2-2.9.1
@@ -81,7 +80,7 @@ RDEPEND="
 	apparmor? ( sys-libs/libapparmor )
 	audit? ( sys-process/audit )
 	caps? ( sys-libs/libcap-ng )
-	dtrace? ( dev-util/systemtap )
+	dtrace? ( dev-debug/systemtap )
 	firewalld? ( >=net-firewall/firewalld-0.6.3 )
 	fuse? ( sys-fs/fuse:= )
 	glusterfs? ( >=sys-cluster/glusterfs-3.4.1 )
@@ -91,6 +90,10 @@ RDEPEND="
 	libssh2? ( >=net-libs/libssh2-1.3 )
 	lvm? ( >=sys-fs/lvm2-2.02.48-r2[lvm] )
 	lxc? ( !sys-apps/systemd[cgroup-hybrid(-)] )
+	nbd? (
+		sys-block/nbdkit
+		sys-libs/libnbd
+	)
 	nfs? ( net-fs/nfs-utils )
 	numa? (
 		>sys-process/numactl-2.0.2
@@ -108,7 +111,7 @@ RDEPEND="
 	qemu? (
 		>=app-emulation/qemu-4.2
 		app-crypt/swtpm
-		>=dev-libs/yajl-2.0.3:=
+		dev-libs/json-c:=
 	)
 	rbd? ( sys-cluster/ceph )
 	sasl? ( >=dev-libs/cyrus-sasl-2.1.26 )
@@ -116,10 +119,15 @@ RDEPEND="
 	virt-network? (
 		net-dns/dnsmasq[dhcp,ipv6(+),script]
 		net-firewall/ebtables
-		>=net-firewall/iptables-1.4.10[ipv6(+)]
+		|| (
+			>=net-firewall/iptables-1.4.10[ipv6(+)]
+			net-firewall/nftables
+		)
 		net-misc/radvd
 		sys-apps/iproute2[-minimal]
 	)
+	virtiofsd? ( app-emulation/virtiofsd )
+	virtualbox? ( <app-emulation/virtualbox-7.1.0 )
 	wireshark-plugins? ( >=net-analyzer/wireshark-2.6.0:= )
 	xen? (
 		>=app-emulation/xen-4.9.0
@@ -135,6 +143,11 @@ DEPEND="
 	${BDEPEND}
 	${RDEPEND}
 	${PYTHON_DEPS}
+	test? (
+		$(python_gen_any_dep '
+			dev-python/pytest[${PYTHON_USEDEP}]
+		')
+	)
 "
 # The 'circular' dependency on dev-python/libvirt-python is because of
 # virt-qemu-qmp-proxy.
@@ -143,10 +156,16 @@ PDEPEND="
 "
 
 PATCHES=(
-	"${FILESDIR}"/${PN}-9.4.0-fix_paths_in_libvirt-guests_sh.patch
-	"${FILESDIR}"/${PN}-9.4.0-do-not-use-sysconfig.patch
-	"${FILESDIR}"/${PN}-9.6.0-fix-paths-for-apparmor.patch
+	"${FILESDIR}"/${PN}-11.0.0-Fix-paths-in-libvirt-guests.sh.in.patch
+	"${FILESDIR}"/${PN}-9.9.0-do-not-use-sysconfig.patch
+	"${FILESDIR}"/${PN}-10.7.0-fix-paths-for-apparmor.patch
 )
+
+python_check_deps() {
+	if use test; then
+		python_has_version -d "dev-python/pytest[${PYTHON_USEDEP}]"
+	fi
+}
 
 pkg_setup() {
 	# Check kernel configuration:
@@ -186,9 +205,6 @@ pkg_setup() {
 		~!GRKERNSEC_CHROOT_CHMOD
 		~!GRKERNSEC_CHROOT_CAPS"
 
-	kernel_is lt 4 7 && use lxc && CONFIG_CHECK+="
-		~DEVPTS_MULTIPLE_INSTANCES"
-
 	use virt-network && CONFIG_CHECK+="
 		~BRIDGE_EBT_MARK_T
 		~BRIDGE_NF_EBTABLES
@@ -196,23 +212,14 @@ pkg_setup() {
 		~NETFILTER_XT_CONNMARK
 		~NETFILTER_XT_MARK
 		~NETFILTER_XT_TARGET_CHECKSUM
+		~NETFILTER_XT_TARGET_MASQUERADE
+		~NET_ACT_CSUM
 		~IP_NF_FILTER
 		~IP_NF_MANGLE
 		~IP_NF_NAT
 		~IP6_NF_FILTER
 		~IP6_NF_MANGLE
 		~IP6_NF_NAT"
-
-	# This was renamed in kernel commit v5.2-rc1~133^2~174^2~6
-	if use virt-network ; then
-		if kernel_is -lt 5 2 ; then
-			CONFIG_CHECK+="
-			~IP_NF_TARGET_MASQUERADE"
-		else
-			CONFIG_CHECK+="
-			~NETFILTER_XT_TARGET_MASQUERADE"
-		fi
-	fi
 
 	# Bandwidth Limiting Support
 	use virt-network && CONFIG_CHECK+="
@@ -270,6 +277,7 @@ src_configure() {
 		$(meson_feature lvm storage_lvm)
 		$(meson_feature lvm storage_mpath)
 		$(meson_feature lxc driver_lxc)
+		$(meson_feature nbd nbdkit)
 		$(meson_feature nls)
 		$(meson_feature numa numactl)
 		$(meson_feature numa numad)
@@ -278,7 +286,7 @@ src_configure() {
 		$(meson_feature pcap libpcap)
 		$(meson_feature policykit polkit)
 		$(meson_feature qemu driver_qemu)
-		$(meson_feature qemu yajl)
+		$(meson_feature qemu json_c)
 		$(meson_feature rbd storage_rbd)
 		$(meson_feature sasl)
 		$(meson_feature selinux)
@@ -307,6 +315,16 @@ src_configure() {
 		-Drunstatedir="${EPREFIX}/run"
 		-Ddocdir="${EPREFIX}/usr/share/doc/${PF}"
 	)
+
+	# Workaround for bug #938302
+	if use dtrace && has_version "dev-debug/systemtap[-dtrace-symlink(+)]" ; then
+		local native_file="${T}"/meson.${CHOST}.ini.local
+		cat >> ${native_file} <<-EOF || die
+		[binaries]
+		dtrace='stap-dtrace'
+		EOF
+		emesonargs+=( --native-file "${native_file}" )
+	fi
 
 	meson_src_configure
 }

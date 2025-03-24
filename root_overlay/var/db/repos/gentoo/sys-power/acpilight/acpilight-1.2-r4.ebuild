@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_9 python3_10 python3_11 )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit python-single-r1 udev
 
@@ -11,13 +11,12 @@ MY_P="${PN}-v${PV}"
 
 DESCRIPTION="Replacement for xbacklight that uses the ACPI interface to set brightness"
 HOMEPAGE="https://gitlab.com/wavexx/acpilight/"
-SRC_URI="https://gitlab.com/wavexx/acpilight/-/archive/v${PV}/${MY_P}.tar.gz"
+SRC_URI="https://gitlab.com/wavexx/acpilight/-/archive/v${PV}/${MY_P}.tar.bz2"
+S="${WORKDIR}/${MY_P}"
+
 LICENSE="GPL-3+"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE=""
-
-S="${WORKDIR}/${MY_P}"
 
 RDEPEND="virtual/udev
 	acct-group/video

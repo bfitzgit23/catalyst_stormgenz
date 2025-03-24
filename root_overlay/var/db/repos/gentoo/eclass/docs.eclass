@@ -1,11 +1,11 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: docs.eclass
 # @MAINTAINER:
-# Andrew Ammerlaan <andrewammerlaan@gentoo.org>
+# Nowa Ammerlaan <nowa@gentoo.org>
 # @AUTHOR:
-# Author: Andrew Ammerlaan <andrewammerlaan@gentoo.org>
+# Author: Nowa Ammerlaan <nowa@gentoo.org>
 # Based on the work of: Michał Górny <mgorny@gentoo.org>
 # @SUPPORTED_EAPIS: 7 8
 # @BLURB: A simple eclass to build documentation.
@@ -357,7 +357,7 @@ mkdocs_compile() {
 doxygen_deps() {
 	debug-print-function ${FUNCNAME}
 
-	DOCS_DEPEND="app-doc/doxygen
+	DOCS_DEPEND="app-text/doxygen
 		${DOCS_DEPEND}"
 }
 

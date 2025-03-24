@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 PYTHON_REQ_USE="xml(+)"
 inherit gnome2 python-any-r1 virtualx
 
@@ -15,7 +15,7 @@ SRC_URI="https://telepathy.freedesktop.org/releases/${PN}/${P}.tar.bz2
 
 LICENSE="LGPL-2.1+"
 SLOT="0/3"
-KEYWORDS="~alpha amd64 ~arm arm64 ~ia64 ~ppc ~ppc64 ~riscv ~sparc x86 ~x86-linux"
+KEYWORDS="~alpha amd64 ~arm arm64 ~ppc ~ppc64 ~riscv ~sparc x86 ~x86-linux"
 IUSE="+introspection"
 
 RDEPEND="
@@ -32,7 +32,7 @@ DEPEND="${RDEPEND}"
 BDEPEND="
 	${PYTHON_DEPS}
 	dev-util/glib-utils
-	>=dev-util/gtk-doc-am-1.10
+	>=dev-build/gtk-doc-am-1.10
 	>=dev-util/intltool-0.35
 	virtual/pkgconfig
 "

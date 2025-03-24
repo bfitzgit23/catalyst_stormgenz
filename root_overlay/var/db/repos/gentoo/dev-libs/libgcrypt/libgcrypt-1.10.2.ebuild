@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}"/usr/share/openpgp-keys/gnupg.asc
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/gnupg.asc
 inherit autotools flag-o-matic linux-info multilib-minimal toolchain-funcs verify-sig
 
 DESCRIPTION="General purpose crypto library based on the code used in GnuPG"
@@ -11,9 +11,9 @@ HOMEPAGE="https://www.gnupg.org/"
 SRC_URI="mirror://gnupg/${PN}/${P}.tar.bz2"
 SRC_URI+=" verify-sig? ( mirror://gnupg/${PN}/${P}.tar.bz2.sig )"
 
-LICENSE="LGPL-2.1 MIT"
+LICENSE="LGPL-2.1+ GPL-2+ MIT"
 SLOT="0/20" # subslot = soname major version
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux ~arm64-macos ~ppc-macos ~x64-macos ~x64-solaris"
+KEYWORDS="~alpha amd64 arm arm64 hppa ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux ~arm64-macos ~ppc-macos ~x64-macos ~x64-solaris"
 IUSE="+asm cpu_flags_arm_neon cpu_flags_arm_aes cpu_flags_arm_sha1 cpu_flags_arm_sha2 cpu_flags_ppc_altivec cpu_flags_ppc_vsx2 cpu_flags_ppc_vsx3 cpu_flags_x86_aes cpu_flags_x86_avx cpu_flags_x86_avx2 cpu_flags_x86_padlock cpu_flags_x86_sha cpu_flags_x86_sse4_1 doc +getentropy static-libs"
 
 # Build system only has --disable-arm-crypto-support right now
@@ -78,6 +78,14 @@ src_prepare() {
 	eautoreconf
 }
 
+src_configure() {
+	# Sensitive to optimisation; parts of the codebase are built with
+	# -O0 already. Don't risk it with UB.
+	strip-flags
+
+	multilib-minimal_src_configure
+}
+
 multilib_src_configure() {
 	if [[ ${CHOST} == *86*-solaris* ]] ; then
 		# ASM code uses GNU ELF syntax, divide in particular, we need to
@@ -95,15 +103,6 @@ multilib_src_configure() {
 		use cpu_flags_ppc_vsx2 || local -x gcry_cv_gcc_inline_asm_ppc_altivec=no
 		# power9 vector extension, aka arch 3.00 ISA
 		use cpu_flags_ppc_vsx3 || local -x gcry_cv_gcc_inline_asm_ppc_arch_3_00=no
-	fi
-
-	# Workaround for GCC < 11.3 bug
-	# https://git.gnupg.org/cgi-bin/gitweb.cgi?p=libgcrypt.git;a=commitdiff;h=0b399721ce9709ae25f9d2050360c5ab2115ae29
-	# https://dev.gnupg.org/T5581
-	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102124
-	if use arm64 && tc-is-gcc && (($(gcc-major-version) == 11)) &&
-		(($(gcc-minor-version) <= 2)) && (($(gcc-micro-version) == 0)) ; then
-		append-flags -fno-tree-loop-vectorize
 	fi
 
 	# ideally we want !tc-ld-is-bfd for best future-proofing, but it needs
@@ -134,9 +133,6 @@ multilib_src_configure() {
 		# after libgcrypt drops them (bug #468616)
 		--without-capabilities
 
-		# http://trac.videolan.org/vlc/ticket/620
-		$([[ ${CHOST} == *86*-darwin* ]] && echo "--disable-asm")
-
 		$(use asm || echo "--disable-asm")
 
 		GPG_ERROR_CONFIG="${ESYSROOT}/usr/bin/${CHOST}-gpg-error-config"
@@ -156,6 +152,17 @@ multilib_src_configure() {
 multilib_src_compile() {
 	default
 	multilib_is_native_abi && use doc && VARTEXFONTS="${T}/fonts" emake -C doc gcrypt.pdf
+}
+
+multilib_src_test() {
+	# t-secmem and t-sexp need mlock which requires extra privileges; nspawn
+	# at least disallows that by default.
+	local -x GCRYPT_IN_ASAN_TEST=1
+	# Avoid running (very) expensive bench-slope test. On hppa, it
+	# takes at least 7 hours.
+	local -x GCRYPT_NO_BENCHMARKS=1
+
+	default
 }
 
 multilib_src_install() {

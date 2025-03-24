@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -11,14 +11,14 @@ SRC_URI="https://github.com/c4dm/${PN}/archive/${PN}-v${PV}.tar.gz -> ${P}.tar.g
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ~mips ppc ppc64 ~riscv ~sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv ~sparc x86"
 IUSE="doc"
 
 RDEPEND="media-libs/libsndfile:0=[${MULTILIB_USEDEP}]"
 DEPEND="${RDEPEND}"
 BDEPEND="
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 "
 
 S="${WORKDIR}/${PN}-${PN}-v${PV}"
@@ -29,6 +29,8 @@ src_prepare() {
 }
 
 multilib_src_configure() {
+	MAKEOPTS+=" -j1" # bug #943866
+
 	# multilib for default search paths
 	sed -i -e "s:/usr/lib/vamp:${EPREFIX}/usr/$(get_libdir)/vamp:" \
 		src/vamp-hostsdk/PluginHostAdapter.cpp || die

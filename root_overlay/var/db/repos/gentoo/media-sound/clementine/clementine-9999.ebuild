@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -14,14 +14,15 @@ if [[ ${PV} == *9999* ]]; then
 	EGIT_REPO_URI="https://github.com/clementine-player/Clementine.git"
 	inherit git-r3
 else
-	SRC_URI="https://github.com/clementine-player/Clementine/archive/refs/tags/${PV/_}.tar.gz -> ${P}.tar.gz"
-	S="${WORKDIR}/Clementine-${PV/_}"
+	MY_PV="$(ver_cut 1-3)-$(ver_cut 5)-gxxxxxxxxx"
+	SRC_URI="https://github.com/clementine-player/Clementine/releases/download/${MY_PV}/clementine-${MY_PV}.tar.xz -> ${P}.tar.xz"
+	S="${WORKDIR}/clementine-${MY_PV}"
 	KEYWORDS="~amd64 ~arm64 ~ppc64 ~x86"
 fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="alsa box cdda +dbus debug dropbox googledrive ipod lastfm mms moodbar mtp projectm pulseaudio seafile skydrive test +udisks wiimote"
+IUSE="alsa box cdda +dbus debug dropbox googledrive ipod lastfm moodbar mtp projectm pulseaudio seafile skydrive test +udisks wiimote"
 RESTRICT="!test? ( test )"
 
 REQUIRED_USE="
@@ -30,6 +31,7 @@ REQUIRED_USE="
 "
 
 COMMON_DEPEND="
+	dev-cpp/abseil-cpp:=
 	dev-db/sqlite:3
 	dev-libs/glib:2
 	dev-libs/protobuf:=
@@ -43,15 +45,15 @@ COMMON_DEPEND="
 	media-libs/chromaprint:=
 	media-libs/gstreamer:1.0
 	media-libs/gst-plugins-base:1.0
-	>=media-libs/libmygpo-qt-1.0.9[qt5(+)]
-	>=media-libs/taglib-1.11.1_p20181028
+	<media-libs/libmygpo-qt-1.1.0-r10
+	media-libs/taglib:=
 	sys-libs/zlib
 	x11-libs/libX11
 	alsa? ( media-libs/alsa-lib )
 	cdda? ( dev-libs/libcdio:= )
 	dbus? ( dev-qt/qtdbus:5 )
 	ipod? ( >=media-libs/libgpod-0.8.0 )
-	lastfm? ( >=media-libs/liblastfm-1.1.0_pre20150206 )
+	lastfm? ( <media-libs/liblastfm-1.1.0_pre20241124 )
 	moodbar? ( sci-libs/fftw:3.0= )
 	mtp? ( >=media-libs/libmtp-1.0.0:= )
 	projectm? (
@@ -65,7 +67,6 @@ RDEPEND="${COMMON_DEPEND}
 	media-plugins/gst-plugins-meta:1.0
 	media-plugins/gst-plugins-soup:1.0
 	media-plugins/gst-plugins-taglib:1.0
-	mms? ( media-plugins/gst-plugins-libmms:1.0 )
 	mtp? ( gnome-base/gvfs[mtp] )
 	udisks? ( sys-fs/udisks:2 )
 "
@@ -108,7 +109,7 @@ src_prepare() {
 		cmake_comment_add_subdirectory tests
 	fi
 
-	rm -r 3rdparty/{libmygpo-qt,libmygpo-qt5,taglib} || die
+	rm -r 3rdparty/{libmygpo-qt5,taglib} || die
 }
 
 src_configure() {
@@ -139,6 +140,12 @@ src_configure() {
 		-DENABLE_WIIMOTEDEV="$(usex wiimote)"
 		"$(cmake_use_find_package alsa ALSA)"
 	)
+
+	if [[ ${PV} != *9999* ]]; then
+		mycmakeargs+=(
+			-DFORCE_GIT_REVISION="${MY_PV}"
+		)
+	fi
 
 	use !debug && append-cppflags -DQT_NO_DEBUG_OUTPUT
 

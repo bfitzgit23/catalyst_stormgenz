@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -15,7 +15,7 @@ else
 	SRC_URI="https://github.com/dzaima/BQN/archive/v${PV}.tar.gz
 		-> ${P}.tar.gz"
 	S="${WORKDIR}/BQN-${PV}"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="amd64 ~x86"
 fi
 
 LICENSE="MIT"
@@ -46,7 +46,7 @@ src_compile() {
 }
 
 src_test() {
-	edob java -jar "${BUILD_JAR}" -f "${S}"/test/test
+	edo java -jar "${BUILD_JAR}" -f "${S}"/test/test
 }
 
 src_install() {

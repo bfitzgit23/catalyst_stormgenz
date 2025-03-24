@@ -2,8 +2,8 @@
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 	<maintainer type="person" proxied="yes">
-		<email>agrigo2001@yahoo.com.au</email>
-		<name>Adrian Grigo</name>
+		<email>negril.nx+gentoo@gmail.com</email>
+		<name>Paul Zander</name>
 	</maintainer>
 	<maintainer type="person" proxied="yes">
 		<email>darkdefende@gmail.com</email>
@@ -33,9 +33,11 @@
 		<flag name="cuda">
 			Build cycles renderer with nVidia CUDA support.
 		</flag>
+		<flag name="hip">
+			Build cycles renderer with AMD HIP support.
+		</flag>
 		<flag name="cycles">
-			Build cycles renderer (requires <pkg>media-libs/openimageio</pkg> and
-			<pkg>dev-libs/boost</pkg>).
+			Enable the Cycles raytracing render engine.
 		</flag>
 		<flag name="cycles-bin-kernels">
 			Precompile the cycles render kernels for the CUDA/HIP/OneAPI backends, if they are enabled, at compile time.
@@ -48,11 +50,11 @@
 		<flag name="embree">
 			Use embree to accelerate certain areas of the Cycles render engine.
 		</flag>
+		<flag name="experimental">
+			Build Experimental Blender Modules
+		</flag>
 		<flag name="fluid">
 			Adds fluid simulation support via the built-in Mantaflow library.
-		</flag>
-		<flag name="headless">
-			Build without graphical support (renderfarm, server mode only).
 		</flag>
 		<flag name="nanovdb">
 			Enable nanoVDB support in Cycles. Uses less memory than regular openVDB when rendering.
@@ -61,7 +63,7 @@
 			Enable NDOF input devices (SpaceNavigator and friends).
 		</flag>
 		<flag name="oidn">Enable OpenImageDenoiser Support</flag>
-		<flag name="openimageio">Enable OpenImageIO Support</flag>
+		<flag name="oneapi">Build OIDN with Intel oneAPI SyCL support</flag>
 		<flag name="openpgl">Enable path guiding support in Cycles</flag>
 		<flag name="opensubdiv">
 			Add rendering support form OpenSubdiv from Dreamworks Animation
@@ -82,8 +84,14 @@
 		<flag name="pugixml">
 			Enable PugiXML support (Used for OpenImageIO, Grease Pencil SVG export)
 		</flag>
+		<flag name="renderdoc">
+			Build Blender with renderdoc support
+		</flag>
 		<flag name="tbb">
 			Use threading building blocks library from <pkg>dev-cpp/tbb</pkg>.
+		</flag>
+		<flag name="vulkan">
+			Add support for the experimental Vulkan viewport backend
 		</flag>
 	</use>
 </pkgmetadata>

@@ -1,47 +1,58 @@
-# Copyright 2019-2023 Gentoo Authors
+# Copyright 2019-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-MY_PN="melonDS"
-MY_P="${MY_PN}-${PV}"
+REAL_PN="melonDS"
+REAL_PV="${PV/_rc/rc}"
+REAL_P="${REAL_PN}-${REAL_PV}"
 
-inherit cmake flag-o-matic readme.gentoo-r1 toolchain-funcs xdg
+inherit cmake readme.gentoo-r1 toolchain-funcs xdg
 
 DESCRIPTION="Nintendo DS emulator, sorta"
 HOMEPAGE="http://melonds.kuribo64.net
 	https://github.com/Arisotura/melonDS"
 
-if [[ ${PV} == *9999* ]] ; then
+if [[ "${PV}" == *9999* ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/Arisotura/${MY_PN}.git"
+
+	EGIT_REPO_URI="https://github.com/Arisotura/${REAL_PN}"
 else
-	SRC_URI="https://github.com/Arisotura/${MY_PN}/archive/${PV}.tar.gz
-		-> ${MY_P}.tar.gz"
-	S="${WORKDIR}"/${MY_P}
+	SRC_URI="https://github.com/Arisotura/${REAL_PN}/archive/${REAL_PV}.tar.gz
+		-> ${P}.gh.tar.gz"
+	S="${WORKDIR}/${REAL_P}"
+
 	KEYWORDS="~amd64"
 fi
 
-IUSE="+jit +opengl wayland"
 LICENSE="BSD-2 GPL-2 GPL-3 Unlicense"
 SLOT="0"
+IUSE="+jit +opengl wayland"
 
 RDEPEND="
-	app-arch/libarchive
-	dev-qt/qtcore:5
-	dev-qt/qtgui:5
-	dev-qt/qtmultimedia:5
-	dev-qt/qtnetwork:5
-	dev-qt/qtwidgets:5
+	app-arch/libarchive[zstd]
+	dev-qt/qtbase:6[network,opengl,widgets]
+	dev-qt/qtmultimedia:6
+	dev-qt/qtsvg:6
 	media-libs/libsdl2[sound,video]
+	net-libs/enet:=
 	net-libs/libpcap
 	net-libs/libslirp
-	wayland? ( dev-libs/wayland )
+	x11-libs/libxkbcommon
+	wayland? (
+		dev-libs/wayland
+	)
 "
-DEPEND="${RDEPEND}"
-BDEPEND="wayland? ( kde-frameworks/extra-cmake-modules:5 )"
+DEPEND="
+	${RDEPEND}
+"
+BDEPEND="
+	wayland? (
+		kde-frameworks/extra-cmake-modules:0
+	)
+"
 
-# used for JIT recompiler
+# Used for JIT recompiler.
 QA_EXECSTACK="usr/bin/melonDS"
 
 DISABLE_AUTOFORMATTING="yes"
@@ -51,21 +62,18 @@ DOC_CONTENTS="You need the following files in order to run melonDS:
 - firmware.bin
 - romlist.bin
 Place them in ~/.config/melonDS
-Those files can be found somewhere on the Internet ;-)"
-
-src_prepare() {
-	filter-lto
-	append-flags -fno-strict-aliasing
-
-	cmake_src_prepare
-}
+Those files can be extracted from devices or found somewhere on the Internet ;-)"
 
 src_configure() {
-	local mycmakeargs=(
-		-DBUILD_SHARED_LIBS=OFF
-		-DENABLE_JIT=$(usex jit)
-		-DENABLE_OGLRENDERER=$(usex opengl)
-		-DENABLE_WAYLAND=$(usex wayland)
+	local -a mycmakeargs=(
+		-DUSE_CCACHE="OFF"
+
+		-DBUILD_SHARED_LIBS="OFF"
+		-DUSE_SYSTEM_LIBSLIRP="ON"
+
+		-DENABLE_JIT="$(usex jit)"
+		-DENABLE_OGLRENDERER="$(usex opengl)"
+		-DENABLE_WAYLAND="$(usex wayland)"
 	)
 	cmake_src_configure
 }

@@ -6,6 +6,6 @@
 		<name>Gentoo Haskell</name>
 	</maintainer>
 	<upstream>
-		<remote-id type="github">alanz/language-javascript</remote-id>
+		<remote-id type="github">erikd/language-javascript</remote-id>
 	</upstream>
 </pkgmetadata>

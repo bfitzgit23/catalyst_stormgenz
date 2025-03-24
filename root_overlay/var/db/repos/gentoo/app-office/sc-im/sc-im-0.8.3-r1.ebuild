@@ -1,4 +1,4 @@
-# Copyright 2022-2023 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -14,7 +14,7 @@ S="${WORKDIR}/${P}/src"
 
 LICENSE="BSD-4"
 SLOT="0"
-KEYWORDS="amd64 ~arm ~arm64 ~x86"
+KEYWORDS="amd64 ~arm arm64 ~x86"
 IUSE="lua ods plots tmux wayland X xls xlsx"
 REQUIRED_USE="lua? ( ${LUA_REQUIRED_USE} )"
 
@@ -44,6 +44,10 @@ RDEPEND="${DEPEND}"
 BDEPEND="app-alternatives/yacc
 	virtual/pkgconfig"
 
+PATCHES=(
+	"${FILESDIR}/${P}-malloc.patch"
+)
+
 pkg_setup() {
 	CONFLICTING=$(usex tmux "tmux " "")$(usex wayland "wayland " "")$(usex X "X" "")
 	if ( use tmux && ( use wayland || use X ) ) ; then
@@ -55,7 +59,7 @@ pkg_setup() {
 	fi
 
 	# Run lua setup
-	lua-single_pkg_setup
+	use lua && lua-single_pkg_setup
 }
 
 src_prepare() {

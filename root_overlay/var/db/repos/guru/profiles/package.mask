@@ -1,7 +1,7 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-# Andrew Ammerlaan <andrewammerlaan@gentoo.org> (2021-03-29)
+# Nowa Ammerlaan <nowa@gentoo.org> (2021-03-29)
 # James Beddek <telans@posteo.de> (2021-10-09)
 # Per profile masking in overlays is currently not working
 # with pkgcore/pkgdev/pkgcheck. Mask offending packages for all profiles
@@ -18,76 +18,146 @@
 
 # New entries go on top.
 
-# Takuya Wakazono <pastalian46@gmail.com> (2024-08-31)
-# Significantly outdated and unmaintained in guru since 2022.
-# Removal on 2024-09-30.
-app-emulation/proton-ge-custom-bin
+# Rahil Bhimjiani <me@rahil.rocks> (2025-03-17)
+# Not worth the hassle of maintaining
+# Removal on 2025-04-17
+www-apps/vaultwarden-web
 
-# Takuya Wakazono <pastalian46@gmail.com> (2024-08-27)
-# Does not build anymore. Unmaintained in guru since 2021.
-# Removal on 2024-09-27. Bugs #807112, #839606
-app-misc/apidb
-dev-libs/octetos-db
-dev-libs/octetos-db-abstract
-dev-libs/octetos-db-maria
-dev-libs/octetos-db-postgresql
+# Rahil Bhimjiani <me@rahil.rocks> (2025-03-17)
+# Not worth the hassle of maintaining
+# Removal on 2025-04-17
+app-admin/bitwarden-cli
 
-# Takuya Wakazono <pastalian46@gmail.com> (2024-08-19)
-# Maintainer has no intention of keeping those anymore. No revdeps left.
-# Removal on 2024-09-19. Bugs #848459, #900000, #930786, #932330, #932331, #932334.
-dev-cpp/fbthrift
-dev-cpp/fizz
-dev-cpp/wangle
+# David Roman <davidroman96@gmail.com> (2025-03-12)
+# It's just a Windows .exe with a wine wrapper
+# HOMEPAGE just points to a Wikipedia article
+# Removal on 2025-04-12
+games-strategy/swine
+games-strategy/ground-control
+games-rpg/sacred-demo
 
-# David Roman <davidroman96@gmail.com> (2024-08-05)
-# No maintainer. Abandoned (last commit 5 years ago). No revdeps
-# Removal on 2024-09-05
-dev-python/sphinx-version-warning
+# David Roman <davidroman96@gmail.com> (2025-03-12)
+# Uses deprecated EGO_SUM. Last release in 2019.
+# Unmaintained upstream + security vulnerabilities: 
+# 	- https://github.com/sqshq/sampler/issues/128
+# Removal on 2025-04-12
+sys-apps/sampler
+sys-apps/sampler-bin
 
-# David Roman <davidroman96@gmail.com> (2024-08-05)
-# No maintainer, we already have yt-dlp on ::gentoo.
-# Removal on 2024-09-05
-net-misc/youtube-dl
+# David Roman <davidroman96@gmail.com> (2025-03-12)
+# Uses deprecated EGO_SUM. Last release in 2023.
+# Removal on 2025-05-12
+www-misc/gorss
 
-# David Roman <davidroman96@gmail.com> (2024-08-05)
-# Archived upstream. No maintainer
-# Removal on 2024-09-05
-media-gfx/libpsautohint
+# Eric Joldasov <bratishkaerik@landless-city.net> (2025-03-05)
+# Unbuildable now. Required Zig version diverged a lot, now seems like
+# it requires so called "Mach-nominated" version (somewhere between
+# stable and 9999). Gentoo does not provide such versions.
+# Removal on 2025-04-05.
+dev-debug/uscope
 
-# David Roman <davidroman96@gmail.com> (2024-08-02)
-# Seems abandoned upstream (last commit 1 year ago, no releases)
-# Seems also abandoned in ::guru (last meaningful change on 2022)
-# Removal on 2024-09-02
-gui-apps/tootle
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU.
+# Removal on 2025-04-05.
+media-fonts/twemoji
 
-# David Roman <davidroman96@gmail.com> (2024-08-01)
-# Project archived upstream. No release since 2021
-# Removal on 2024-08-31
-app-containers/dnsname-cni-plugin
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #901337.
+# Removal on 2025-04-05.
+net-libs/td
 
-# David Roman <davidroman96@gmail.com> (2024-08-01)
-# No maintainer. Seems dead, last release from 2016
-# Removal on 2024-08-31
-dev-python/funcsigs
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU.
+# Removal on 2025-04-05.
+www-apps/snac
 
-# Michael Mair-Keimberger <mmk@levelnine.at> (2024-07-20)
-# Decided to move my personal wiki to dokuwiki. If someone wants to
-# keep it, feel free to take over it.
-# Removal on 2024-08-20
-acct-group/wikijs
-acct-user/wikijs
-www-apps/wiki-js-bin
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left.
+# Removal on 2025-04-05.
+dev-python/zopfli
 
-# Pascal Jaeger <pascal.jaeger@leimstift.de> (2024-06-29)
-# Package is renamed to 'dissent'
-# Newer versions do not build in portage because of dependency
-# problems.
-# Removal on 2024-08-30.
-net-im/gtkcord4
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left.
+# Removal on 2025-04-05.
+dev-python/webpy
 
-# Anna Vyalkova <cyber+gentoo@sysrq.in> (2024-06-24)
-# Critical security vulnerability.
-<net-im/conduit-0.8.0
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left.
+# Removal on 2025-04-05.
+dev-python/trailrunner
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #884687.
+# Removal on 2025-04-05.
+dev-python/stdlibs
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps.
+# Removal on 2025-04-05.
+dev-python/sphinx-argparse-cli
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #931931.
+# Removal on 2025-04-05.
+dev-python/pyodbc
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left.
+# Removal on 2025-04-05.
+dev-python/pykeepass
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #928257, #928265.
+# Removal on 2025-04-05.
+dev-python/pg8000
+dev-python/scramp
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps.
+# Removal on 2025-04-05.
+dev-python/opentype-sanitizer
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps.
+# Removal on 2025-04-05.
+dev-python/notion-client
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #921892.
+# Removal on 2025-04-05.
+dev-python/jupyter-sphinx
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left.
+# Removal on 2025-04-05.
+dev-python/baron
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #921776.
+# Removal on 2025-04-05.
+dev-python/asyncmy
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained in GURU, no revdeps left. Open bugs: #922914.
+# Removal on 2025-04-05.
+dev-python/aiomysql
+
+# Anna (cybertailor) Vyalkova <cyber+gentoo@sysrq.in> (2025-03-05)
+# Unmaintained upstream, suggested replacement is dev-util/bump-my-version.
+# Open bugs: #945117.
+# Removal on 2025-04-05.
+dev-util/bump2version
+
+# Takuya Wakazono <pastalian46@gmail.com> (2025-02-24)
+# No reverse dependencies left. (The last one was removed in e17a1e7.)
+# One of its test dependencies, dev-python/zstd, is being removed.
+# Removal on 2025-03-24. Bug #928259.
+dev-python/pymemcache
+
+# David Roman <davidroman96@gmail.com> (2025-01-30)
+# Depends on qtpy[pyqt5] but pyqt5 USE has been removed from it
+# Removal on 2025-03-24
+app-misc/brightness-control
 
 # Julien Roy <julien@jroy.ca> (2024-03-21)
 # sys-libs/libucontext is masked in ::gentoo
@@ -97,6 +167,7 @@ sys-libs/gcompat
 # Dracut fails to boot with Clevis 20
 # https://github.com/latchset/clevis/issues/456
 ~app-crypt/clevis-20
+~app-crypt/clevis-21
 
 # Viorel Munteanu <ceamac@gentoo.org> (2023-06-07)
 # Does not work on no-multilib profiles and cannot be masked per profile

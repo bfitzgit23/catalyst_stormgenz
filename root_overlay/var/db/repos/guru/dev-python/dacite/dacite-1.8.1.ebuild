@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 
 inherit distutils-r1
 
@@ -16,8 +16,13 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64"
 
-DEPEND="
-	test? ( dev-python/pytest-benchmark )
-"
+EPYTEST_IGNORE=(
+	# benchmarks
+	tests/performance
+)
 
 distutils_enable_tests pytest
+
+python_test() {
+	epytest -o "addopts="
+}

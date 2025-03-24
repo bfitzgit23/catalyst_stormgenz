@@ -1,13 +1,13 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit cmake
 
 DESCRIPTION="C++ port of the Log for Java (log4j) logging library"
 HOMEPAGE="https://log4cplus.sourceforge.io/ https://github.com/log4cplus/log4cplus"
-SRC_URI="mirror://sourceforge/project/${PN}/${PN}-stable/${PV}/${P}.tar.bz2"
+SRC_URI="https://downloads.sourceforge.net/project/${PN}/${PN}-stable/${PV}/${P}.tar.xz"
 
 LICENSE="|| ( Apache-2.0 BSD-2 )"
 SLOT="0/3"
@@ -15,8 +15,10 @@ KEYWORDS="amd64 ~arm ~arm64 ~ppc64 ~riscv ~x86"
 IUSE="explicit-initialization iconv qt5 server test threads"
 RESTRICT="!test? ( test )"
 
-RDEPEND="iconv? ( virtual/libiconv )
-	qt5? ( dev-qt/qtcore:5 )"
+RDEPEND="
+	iconv? ( virtual/libiconv )
+	qt5? ( dev-qt/qtcore:5 )
+"
 DEPEND="${RDEPEND}"
 
 src_configure() {

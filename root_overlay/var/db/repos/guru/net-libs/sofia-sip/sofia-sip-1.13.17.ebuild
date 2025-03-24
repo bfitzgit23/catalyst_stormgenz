@@ -11,7 +11,7 @@ SRC_URI="https://github.com/freeswitch/${PN}/archive/refs/tags/v${PV}.tar.gz -> 
 
 LICENSE="LGPL-2.1+ BSD public-domain" # See COPYRIGHT
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-linux"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~ppc ~ppc64 ~sparc ~x86 ~x86-linux"
 IUSE="debug doc +glib test"
 RESTRICT="!test? ( test )"
 
@@ -36,6 +36,11 @@ DOCS=(
 	SECURITY.md
 	TODO
 	docs/.
+)
+
+PATCHES=(
+	# fix build with gcc14
+	"${FILESDIR}/${P}-gcc14.patch"
 )
 
 src_prepare() {

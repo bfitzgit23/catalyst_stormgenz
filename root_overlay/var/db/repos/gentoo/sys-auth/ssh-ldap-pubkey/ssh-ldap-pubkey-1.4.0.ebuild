@@ -1,10 +1,11 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
+
 inherit distutils-r1
 
 DESCRIPTION="Utility to manage SSH public keys stored in LDAP"
@@ -16,7 +17,7 @@ if [[ ${PV} == 9999 ]] ; then
 	inherit git-r3
 else
 	SRC_URI="https://github.com/jirutka/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~alpha amd64 ~arm ~arm64 ~ia64 ~ppc ~ppc64 x86"
+	KEYWORDS="~alpha amd64 ~arm ~arm64 ~ppc ~ppc64 x86"
 fi
 
 LICENSE="MIT"
@@ -36,6 +37,10 @@ DEPEND="${RDEPEND}
 DOCS=( README.md CHANGELOG.adoc )
 
 distutils_enable_tests pytest
+
+python_test() {
+	epytest -p pytest-describe
+}
 
 python_install_all() {
 	distutils-r1_python_install_all

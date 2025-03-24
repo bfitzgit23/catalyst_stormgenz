@@ -5,10 +5,10 @@ EAPI=8
 HOMEPAGE=https://digint.ch/btrbk/
 INHERIT=systemd
 IUSE=+mbuffer +doc +lsbtr
-KEYWORDS=~amd64 ~arm ~arm64 ~x86
+KEYWORDS=amd64 arm arm64 ~ppc ~ppc64 ~sparc x86
 LICENSE=GPL-3+
 RDEPEND=dev-lang/perl >=sys-fs/btrfs-progs-4.12 virtual/openssh mbuffer? ( >=sys-block/mbuffer-20180505 )
 SLOT=0
 SRC_URI=https://digint.ch/download/btrbk/releases/btrbk-0.32.6.tar.xz
-_eclasses_=multilib	c19072c3cd7ac5cb21de013f7e9832e0	systemd	5f4bb0758df2e483babf68cd517078ca	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=6ae9860c5a56464daed46af35c516af3
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	systemd	54bd206bb5c4efac6ae28b6b006713b0
+_md5_=cfa8b5b0adde78a37200fcf240615098

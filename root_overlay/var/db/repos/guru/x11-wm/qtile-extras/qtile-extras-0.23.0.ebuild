@@ -3,8 +3,8 @@
 
 EAPI=8
 
-DISTUTILS_USE_PEP517=no
-PYTHON_COMPAT=(python3_{9..12})
+DISTUTILS_USE_PEP517=setuptools
+PYTHON_COMPAT=(python3_{11..12})
 
 inherit distutils-r1
 
@@ -24,12 +24,4 @@ BDEPEND="
 	dev-python/setuptools-scm
 "
 
-export SETUPTOOLS_SCM_PRETEND_VERSION=7.0.0
-
-python_compile() {
-	${EPYTHON} -m build --wheel --no-isolation
-}
-
-python_install() {
-	${EPYTHON} -m installer --destdir="${D}" dist/*.whl
-}
+export SETUPTOOLS_SCM_PRETEND_VERSION=${PV}

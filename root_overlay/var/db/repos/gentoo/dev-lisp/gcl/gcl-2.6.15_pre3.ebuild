@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -11,7 +11,7 @@ SRC_URI="http://git.savannah.gnu.org/cgit/gcl.git/snapshot/${PN}-Version_2_6_15p
 
 LICENSE="LGPL-2+ GPL-2+"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86"
+KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~riscv ~x86"
 IUSE="+ansi athena doc emacs +readline tk X"
 RESTRICT="strip"  #205803
 
@@ -25,12 +25,17 @@ RDEPEND="dev-libs/gmp
 DEPEND="${RDEPEND}
 	virtual/texi2dvi
 	app-text/texi2html
-	>=sys-devel/autoconf-2.52"
+	>=dev-build/autoconf-2.52"
 
-PATCHES=( "${WORKDIR}"/${PF}-spelling.patch )
+PATCHES=(
+	"${WORKDIR}"/${PF}-spelling.patch
+	# bug 893938
+	"${FILESDIR}"/${PN}-2.6.15-riscv.patch
+)
 S="${WORKDIR}"/${PN}-Version_2_6_15pre3/${PN}
 
 src_configure() {
+	filter-lto # bug #931082
 	strip-flags
 	filter-flags -fstack-protector -fstack-protector-all
 

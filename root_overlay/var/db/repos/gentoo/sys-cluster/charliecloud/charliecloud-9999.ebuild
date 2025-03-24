@@ -1,26 +1,26 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{11..13} )
 
 inherit autotools optfeature python-single-r1
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/hpc/${PN}.git"
-	S="${WORKDIR}/${P}"
+	EGIT_REPO_URI="https://gitlab.com/${PN}/main.git"
 else
-	SRC_URI="https://github.com/hpc/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://gitlab.com/${PN}/main/-/archive/v${PV}/main-v${PV}.tar.bz2 -> ${P}.tar.bz2"
 	KEYWORDS="~amd64 ~x86 ~x86-linux"
+	S="${WORKDIR}/main-v${PV}"
 fi
 
 DESCRIPTION="Lightweight user-defined software stacks for high-performance computing"
 HOMEPAGE="https://hpc.github.io/charliecloud/"
+LICENSE="Apache-2.0"
 
 SLOT="0"
-LICENSE="Apache-2.0"
 IUSE="ch-image doc"
 
 # Extensive test suite exists, but downloads container images
@@ -28,34 +28,48 @@ IUSE="ch-image doc"
 # Additionally, clashes with portage namespacing and sandbox.
 RESTRICT="test"
 
+DOCS=( NOTICE README.rst )
+
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-RDEPEND="${PYTHON_DEPS}
-	elibc_musl? ( sys-libs/argp-standalone )
-"
-DEPEND="
+DEPEND="elibc_musl? ( sys-libs/argp-standalone )"
+COMMON_DEPEND="
 	ch-image? (
 		$(python_gen_cond_dep '
 			dev-python/lark[${PYTHON_USEDEP}]
 			dev-python/requests[${PYTHON_USEDEP}]
 		')
+		dev-vcs/git
+		net-misc/rsync
 	)
+"
+RDEPEND="
+	${DEPEND}
+	${COMMON_DEPEND}
+	${PYTHON_DEPS}
+"
+BDEPEND="
+	${COMMON_DEPEND}
+	${PYTHON_DEPS}
+	virtual/pkgconfig
 	doc? (
 		$(python_gen_cond_dep '
 			dev-python/sphinx[${PYTHON_USEDEP}]
 			dev-python/sphinx-rtd-theme[${PYTHON_USEDEP}]
 		')
 		net-misc/rsync
-	)"
+	)
+"
 
 src_prepare() {
 	default
+	# Remove -W from SPHINXOPTS to prevent failure due to warnings
+	sed -i 's#^SPHINXOPTS .*=.*#SPHINXOPTS =#' doc/Makefile.am || die "Makefile patching failed"
 	eautoreconf
 }
 
 src_configure() {
-	local econf_args=()
-	econf_args+=(
+	local econf_args=(
 		$(use_enable doc html)
 		$(use_enable ch-image)
 		# Libdir is used as a libexec-style destination.
@@ -68,6 +82,8 @@ src_configure() {
 		--disable-bundled-lark
 		# Use correct shebang.
 		--with-python="${PYTHON}"
+		# Disable configure checks vor OverlayFS causing sandbox violations.
+		--disable-impolite-checks
 	)
 	econf "${econf_args[@]}"
 }

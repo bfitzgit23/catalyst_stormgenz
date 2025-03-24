@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -6,11 +6,11 @@ inherit autotools readme.gentoo-r1 systemd
 
 DESCRIPTION="An IMAP daemon designed specifically for maildirs"
 HOMEPAGE="https://www.courier-mta.org/imap/"
-SRC_URI="mirror://sourceforge/courier/${P}.tar.bz2"
+SRC_URI="https://downloads.sourceforge.net/courier/${P}.tar.bz2"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 hppa ~ia64 ~mips ~ppc ppc64 ~s390 sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~mips ~ppc ppc64 ~s390 sparc x86"
 
 IUSE="berkdb debug fam +gdbm gnutls ipv6 selinux trashquota"
 REQUIRED_USE="|| ( berkdb gdbm )"
@@ -238,7 +238,7 @@ src_install() {
 pkg_postinst() {
 	# Some users have been reporting that permissions on this directory were
 	# getting scrambled, so let's ensure that they are sane.
-	fperms 0755 "${ROOT}/usr/$(get_libdir)/${PN}"
+	chmod 0755 "${ROOT}/usr/$(get_libdir)/${PN}"
 
 	readme.gentoo_print_elog
 

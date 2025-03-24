@@ -1,4 +1,4 @@
-# Copyright 2022-2023 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: rocm.eclass
@@ -15,9 +15,13 @@
 # edit USE flag to control which GPU architecture to compile. Using
 # ${ROCM_USEDEP} can ensure coherence among dependencies. Ebuilds can call the
 # function get_amdgpu_flag to translate activated target to GPU compile flags,
-# passing it to configuration. Function check_amdgpu can help ebuild ensure
+# passing it to configuration. Function rocm_use_hipcc switches active compiler
+# to hipcc and cleans incompatible flags (useful for users with gcc-only flags
+# in /etc/portage/make.conf). Function check_amdgpu can help ebuild ensure
 # read and write permissions to GPU device in src_test phase, throwing friendly
-# error message if unavailable.
+# error message if unavailable. However src_configure in general should not
+# access any AMDGPU devices. If it does, it usually means that CMakeLists.txt
+# ignores AMDGPU_TARGETS in favor of autodetected GPU, which is not desired.
 #
 # @EXAMPLE:
 # Example ebuild for ROCm library in https://github.com/ROCmSoftwarePlatform
@@ -39,14 +43,12 @@
 # "
 #
 # src_configure() {
-#     # avoid sandbox violation
-#     addpredict /dev/kfd
-#     addpredict /dev/dri/
+#     rocm_use_hipcc
 #     local mycmakeargs=(
 #         -DAMDGPU_TARGETS="$(get_amdgpu_flags)"
 #         -DBUILD_CLIENTS_TESTS=$(usex test ON OFF)
 #     )
-#     CXX=hipcc cmake_src_configure
+#     cmake_src_configure
 # }
 #
 # src_test() {
@@ -87,8 +89,10 @@ case ${EAPI} in
 	*) die "${ECLASS}: EAPI ${EAPI:-0} not supported" ;;
 esac
 
-if [[ ! ${_ROCM_ECLASS} ]]; then
+if [[ -z ${_ROCM_ECLASS} ]]; then
 _ROCM_ECLASS=1
+
+inherit flag-o-matic
 
 # @ECLASS_VARIABLE: ROCM_VERSION
 # @REQUIRED
@@ -125,11 +129,26 @@ _ROCM_ECLASS=1
 # DEPEND="sci-libs/rocBLAS[${ROCM_USEDEP}]"
 # @CODE
 
+# @ECLASS_VARIABLE: ROCM_SKIP_GLOBALS
+# @DESCRIPTION:
+# Controls whether _rocm_set_globals() is executed. This variable is for
+# ebuilds that call check_amdgpu() without the need to define amdgpu_targets_*
+# USE-flags, such as dev-util/hip and dev-libs/rocm-opencl-runtime.
+#
+# Example use:
+# @CODE
+# ROCM_SKIP_GLOBALS=1
+# inherit rocm
+# @CODE
+
 # @FUNCTION: _rocm_set_globals
 # @DESCRIPTION:
 # Set global variables useful to ebuilds: IUSE, ROCM_REQUIRED_USE, and
-# ROCM_USEDEP
+# ROCM_USEDEP, unless ROCM_SKIP_GLOBALS is set.
+
 _rocm_set_globals() {
+	[[ -n ${ROCM_SKIP_GLOBALS} ]] && return
+
 	# Two lists of AMDGPU_TARGETS of certain ROCm version.  Official support
 	# matrix:
 	# https://docs.amd.com/bundle/ROCm-Installation-Guide-v${ROCM_VERSION}/page/Prerequisite_Actions.html.
@@ -146,13 +165,23 @@ _rocm_set_globals() {
 				gfx906 gfx908 gfx90a gfx1030
 			)
 			;;
-		5.*|9999)
+		5.*)
 			unofficial_amdgpu_targets=(
 				gfx803 gfx900 gfx1010 gfx1011 gfx1012
 				gfx1031 gfx1100 gfx1101 gfx1102
 			)
 			official_amdgpu_targets=(
 				gfx906 gfx908 gfx90a gfx1030
+			)
+			;;
+		6.*|9999)
+			unofficial_amdgpu_targets=(
+				gfx803 gfx900 gfx940 gfx941
+				gfx1010 gfx1011 gfx1012
+				gfx1031 gfx1101 gfx1102
+			)
+			official_amdgpu_targets=(
+				gfx906 gfx908 gfx90a gfx942 gfx1030 gfx1100
 			)
 			;;
 		*)
@@ -179,7 +208,6 @@ _rocm_set_globals() {
 _rocm_set_globals
 unset -f _rocm_set_globals
 
-
 # @FUNCTION: get_amdgpu_flags
 # @USAGE: get_amdgpu_flags
 # @DESCRIPTION:
@@ -187,22 +215,7 @@ unset -f _rocm_set_globals
 # Append default target feature to GPU arch. See
 # https://llvm.org/docs/AMDGPUUsage.html#target-features
 get_amdgpu_flags() {
-	local amdgpu_target_flags
-	for gpu_target in ${AMDGPU_TARGETS}; do
-	local target_feature=
-		case ${gpu_target} in
-			gfx906|gfx908)
-				target_feature=:xnack-
-				;;
-			gfx90a)
-				target_feature=:xnack+
-				;;
-			*)
-				;;
-		esac
-		amdgpu_target_flags+="${gpu_target}${target_feature};"
-	done
-	echo "${amdgpu_target_flags}"
+	echo $(printf "%s;" ${AMDGPU_TARGETS[@]})
 }
 
 # @FUNCTION: check_amdgpu
@@ -222,3 +235,27 @@ check_amdgpu() {
 }
 
 fi
+
+# @FUNCTION: rocm_use_hipcc
+# @USAGE: rocm_use_hipcc
+# @DESCRIPTION:
+# switch active C and C++ compilers to hipcc, clean unsupported flags and setup ROCM_TARGET_LST file.
+rocm_use_hipcc() {
+	# During the configuration stage, CMake tests whether the compiler is able to compile a simple program.
+	# Since CMake checker does not specify --offload-arch=, hipcc enumerates devices using four methods
+	# until it finds at least one device. Last way is by accessing them (via rocminfo).
+	# To prevent potential sandbox violations, we set the ROCM_TARGET_LST variable (which is checked first).
+	local target_lst="${T}"/gentoo_rocm_target.lst
+	if [[ "${AMDGPU_TARGETS[@]}" = "" ]]; then
+		# Expected no GPU code; still need to calm down sandbox
+		echo "gfx000" > "${target_lst}" || die
+	else
+		printf "%s\n" ${AMDGPU_TARGETS[@]} > "${target_lst}" || die
+	fi
+	export ROCM_TARGET_LST="${target_lst}"
+
+	# Export updated CC and CXX. Note that CC is needed even if no C code used,
+	# as CMake checks that C compiler can compile a simple test program.
+	export CC=hipcc CXX=hipcc
+	strip-unsupported-flags
+}

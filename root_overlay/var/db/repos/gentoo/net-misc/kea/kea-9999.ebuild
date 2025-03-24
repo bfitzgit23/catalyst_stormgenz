@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -10,16 +10,16 @@ MY_P="${PN}-${MY_PV}"
 DESCRIPTION="High-performance production grade DHCPv4 & DHCPv6 server"
 HOMEPAGE="https://www.isc.org/kea/"
 
-PYTHON_COMPAT=( python3_{8..11} )
+PYTHON_COMPAT=( python3_{11..12} )
 
-inherit autotools fcaps python-single-r1 systemd tmpfiles
+inherit autotools fcaps flag-o-matic python-single-r1 systemd tmpfiles
 
 if [[ ${PV} = 9999* ]] ; then
 	inherit git-r3
 	EGIT_REPO_URI="https://gitlab.isc.org/isc-projects/kea.git"
 else
-	SRC_URI="ftp://ftp.isc.org/isc/kea/${MY_P}.tar.gz
-		ftp://ftp.isc.org/isc/kea/${MY_PV}/${MY_P}.tar.gz"
+	SRC_URI="https://downloads.isc.org/isc/kea/${MY_P}.tar.gz
+		https://downloads.isc.org/isc/kea/${MY_PV}/${MY_P}.tar.gz"
 	# odd minor version = development release
 	if [[ $(( $(ver_cut 2) % 2 )) -ne 1 ]] ; then
 		if ! [[ "${PV}" == *_beta* || "${PV}" == *_rc* ]] ; then
@@ -71,11 +71,15 @@ pkg_setup() {
 src_prepare() {
 	default
 
-	cp "${FILESDIR}"/ax_gtest.m4 "${S}"/m4macros/ax_gtest.m4 || die 'Replace gtest m4 macro failed'
+	if use test; then
+		cp "${FILESDIR}"/ax_gtest.m4 "${S}"/m4macros/ax_gtest.m4 || die 'Replace gtest m4 macro failed'
+	fi
 
 	# brand the version with Gentoo
 	sed -i \
-		-e "s/AC_INIT(kea,${PV}.*, kea-dev@lists.isc.org)/AC_INIT([kea], [${PVR}-gentoo], [kea-dev@lists.isc.org])/g" \
+		-e 's/KEA_SRCID="tarball"/KEA_SRCID="gentoo"/g' \
+		-e 's/AC_MSG_RESULT("tarball")/AC_MSG_RESULT("gentoo")/g' \
+		-e "s/EXTENDED_VERSION=\"\${EXTENDED_VERSION} (\$KEA_SRCID)\"/EXTENDED_VERSION=\"${PVR} (\$KEA_SRCID)\"/g" \
 		configure.ac || die
 
 	sed -i \
@@ -86,6 +90,13 @@ src_prepare() {
 }
 
 src_configure() {
+	# -Werror=odr
+	# https://bugs.gentoo.org/861617
+	#
+	# I would truly love to submit an upstream bug but their self-hosted gitlab
+	# won't let me sign up. -- Eli
+	filter-lto
+
 	local myeconfargs=(
 		--disable-install-configurations
 		--disable-rpath
@@ -98,7 +109,6 @@ src_configure() {
 		--with-log4cplus
 		$(use_enable debug)
 		$(use_enable doc generate-docs)
-		$(use_enable test gtest)
 		$(use_enable shell)
 		$(use_with mysql)
 		$(use_with openssl)
@@ -108,7 +118,8 @@ src_configure() {
 }
 
 src_install() {
-	default
+	emake -j1 install DESTDIR="${D}"
+
 	newconfd "${FILESDIR}"/${PN}-confd-r1 ${PN}
 	newinitd "${FILESDIR}"/${PN}-initd-r1 ${PN}
 

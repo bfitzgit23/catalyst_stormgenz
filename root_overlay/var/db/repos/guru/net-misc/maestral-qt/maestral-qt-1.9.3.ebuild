@@ -4,7 +4,7 @@
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 inherit desktop distutils-r1
 
 MY_PV=${PV/_rc/.dev}
@@ -23,7 +23,7 @@ RDEPEND="
 	>=dev-python/click-8.0.2[${PYTHON_USEDEP}]
 	dev-python/markdown2[${PYTHON_USEDEP}]
 	dev-python/packaging[${PYTHON_USEDEP}]
-	dev-python/PyQt6[widgets,gui,svg,${PYTHON_USEDEP}]
+	dev-python/pyqt6[widgets,gui,svg,${PYTHON_USEDEP}]
 	>=net-misc/maestral-${PV%_rc*}_rc0[${PYTHON_USEDEP}]
 "
 BDEPEND="

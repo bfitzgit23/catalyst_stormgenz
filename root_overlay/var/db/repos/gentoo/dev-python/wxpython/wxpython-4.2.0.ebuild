@@ -1,10 +1,10 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DISTUTILS_IN_SOURCE_BUILD="1"
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..11} )
 PYPI_NO_NORMALIZE=1
 PYPI_PN="wxPython"
 WX_GTK_VER="3.2-gtk3"
@@ -33,7 +33,7 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	app-doc/doxygen
+	app-text/doxygen
 	dev-python/cython[${PYTHON_USEDEP}]
 	dev-python/setuptools[${PYTHON_USEDEP}]
 	>=dev-python/sip-6.6.2[${PYTHON_USEDEP}]
@@ -51,6 +51,7 @@ PATCHES=(
 	#"${FILESDIR}/${PN}-4.0.6-skip-broken-tests.patch"
 	"${FILESDIR}/${PN}-4.2.0-no-attrdict.patch"
 	"${FILESDIR}/${PN}-4.2.0-flags.patch"
+	"${FILESDIR}/${PN}-4.2.0-cython-3.patch"
 )
 
 python_prepare_all() {
@@ -77,7 +78,7 @@ src_configure() {
 }
 
 python_compile() {
-	DOXYGEN=/usr/bin/doxygen ${PYTHON} build.py dox etg --nodoc || die
+	DOXYGEN="$(type -P doxygen)" ${PYTHON} build.py dox etg --nodoc || die
 
 	# Refresh the bundled/pregenerated sip files
 	${PYTHON} build.py sip || die

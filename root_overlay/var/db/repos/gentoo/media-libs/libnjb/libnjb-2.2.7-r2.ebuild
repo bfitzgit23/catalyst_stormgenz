@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,16 +7,16 @@ inherit libtool udev
 
 DESCRIPTION="Library for communicating with the Creative Nomad JukeBox digital audio player"
 HOMEPAGE="https://libnjb.sourceforge.net"
-SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/${PN}/${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="amd64 ppc ppc64 x86"
+KEYWORDS="amd64 ~arm64 ppc ppc64 x86"
 IUSE="doc static-libs"
 
 RDEPEND="virtual/libusb:0"
 DEPEND="${RDEPEND}
-	doc? ( app-doc/doxygen )"
+	doc? ( app-text/doxygen )"
 
 PATCHES=(
 	"${FILESDIR}"/${P}-exclude-samples.patch

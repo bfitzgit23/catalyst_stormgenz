@@ -2,8 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-WANT_AUTOCONF="2.5"
-inherit autotools desktop flag-o-matic git-r3 xdg-utils
+WANT_AUTOCONF="2.71"
+inherit autotools desktop git-r3 xdg-utils
 DESCRIPTION="Dogecoin Core Qt for desktop. Downloaded blockchain is under 2.2GB. Much secure."
 HOMEPAGE="https://github.com/dogecoin"
 EGIT_REPO_URI="https://github.com/dogecoin/dogecoin.git"
@@ -50,11 +50,6 @@ RDEPEND="${DEPEND}
 	)
 "
 
-BDEPEND="
-	dev-build/autoconf
-	dev-build/automake
-"
-
 pkg_pretend() {
 		if use intel-avx2 && [[ ! -e "${ROOT}"/etc/portage/patches/app-crypt/intel-ipsec-mb/remove_digest_init.patch ]]; then
 			eerror "${ROOT}/etc/portage/patches/app-crypt/intel-ipsec-mb/remove_digest_init.patch does not exist!"
@@ -86,7 +81,7 @@ src_configure() {
 	local my_econf=(
 		--bindir="${DOGEDIR}/bin"
 		--disable-bench
-		--enable-c++14
+		--enable-c++17
 		$(use_with gui qt5)
 		$(use_with intel-avx2 intel-avx2)
 		$(use_with dogecoind daemon)
@@ -106,15 +101,15 @@ src_install() {
 	insinto "${DOGEDIR}/bin"
 
 	if use gui ; then
-        insinto /usr/share/pixmaps
-        doins src/qt/res/icons/dogecoin.png
-        dosym "${DOGEDIR}/bin/${PN}" "/usr/bin/${PN}"
+	insinto /usr/share/pixmaps
+	doins src/qt/res/icons/dogecoin.png
+	dosym "${DOGEDIR}/bin/${PN}" "/usr/bin/${PN}"
 
-        if use prune ; then
-            domenu "${FILESDIR}"/"${PN}-prune.desktop"
-        else
-            domenu "${FILESDIR}"/"${PN}.desktop"
-        fi
+	if use prune ; then
+		domenu "${FILESDIR}"/"${PN}-prune.desktop"
+	else
+		domenu "${FILESDIR}"/"${PN}.desktop"
+	fi
 	fi
 
 	if use dogecoind ; then

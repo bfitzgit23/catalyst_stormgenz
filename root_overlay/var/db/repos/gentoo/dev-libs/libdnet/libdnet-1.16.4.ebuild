@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -15,7 +15,7 @@ S="${WORKDIR}/${PN}-${P}"
 
 LICENSE="LGPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86"
+KEYWORDS="~alpha amd64 arm ~arm64 ~hppa ~mips ppc ppc64 ~riscv sparc x86"
 IUSE="python test"
 RESTRICT="!test? ( test )"
 
@@ -34,6 +34,9 @@ src_prepare() {
 
 	sed -i \
 		-e 's/libcheck.a/libcheck.so/g' \
+		configure.ac || die
+	sed -i \
+		-e "s/lib\/libcheck/$(get_libdir)\/libcheck/g" \
 		configure.ac || die
 	sed -i \
 		-e 's|-L$libdir ||g' \
@@ -56,7 +59,7 @@ src_prepare() {
 src_configure() {
 	econf \
 		$(use_with python) \
-		$(use_with test check "${ESYSROOT}/usr")
+		$(use_enable test check)
 }
 
 src_compile() {
@@ -65,6 +68,12 @@ src_compile() {
 		cd python || die
 		distutils-r1_src_compile
 	fi
+}
+
+src_test() {
+	# https://bugs.gentoo.org/778797#c4
+	# check_ip needs privileges and check_fw can't work on Linux
+	emake check XFAIL_TESTS="check_fw check_ip"
 }
 
 src_install() {

@@ -1,4 +1,4 @@
-# Copyright 2023 Gentoo Authors
+# Copyright 2023-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -13,13 +13,14 @@ if [[ ${PV} == *9999 ]]; then
 	EGIT_REPO_URI="https://github.com/jasper-software/jasper.git"
 else
 	SRC_URI="https://github.com/jasper-software/${PN}/archive/version-${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+	KEYWORDS="~amd64 ~arm ~arm64 ~loong ~x86"
 	S="${WORKDIR}/${PN}-version-${PV}"
 fi
 
 LICENSE="JasPer2.0"
 SLOT="0/7"
-IUSE="doc heif jpeg opengl"
+IUSE="doc heif jpeg opengl test"
+RESTRICT="!test? ( test )"
 
 RDEPEND="
 	heif? ( media-libs/libheif:= )
@@ -33,11 +34,16 @@ DEPEND="${RDEPEND}"
 BDEPEND="
 	app-shells/bash
 	doc? (
-		app-doc/doxygen
+		app-text/doxygen
 		dev-texlive/texlive-latexextra
 		dev-texlive/texlive-plaingeneric
 		virtual/latex-base
-	)"
+	)
+	test? ( media-libs/openjpeg )"
+
+PATCHES=(
+	"${FILESDIR}"/${PN}-4.1.2-which-hunt.patch
+)
 
 src_configure() {
 	local mycmakeargs=(

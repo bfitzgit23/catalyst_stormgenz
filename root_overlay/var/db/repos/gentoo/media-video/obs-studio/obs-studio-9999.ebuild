@@ -1,18 +1,22 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 CMAKE_REMOVE_MODULES_LIST=( FindFreetype )
 LUA_COMPAT=( luajit )
-PYTHON_COMPAT=( python3_{9..12} )
+# For the time being upstream supports up to Python 3.12 only.
+# Any issues found with 3.13 should be reported as a Gentoo bug.
+PYTHON_COMPAT=( python3_{10..13} )
 
-inherit cmake lua-single optfeature python-single-r1 xdg
+inherit cmake flag-o-matic lua-single optfeature python-single-r1 xdg
 
-CEF_DIR="cef_binary_5060_linux64"
-OBS_BROWSER_COMMIT="291464d6988083411e7369fc53eba6d5ef07ff67"
-OBS_WEBSOCKET_COMMIT="6fd18a7ef1ecb149e8444154af1daab61d4241a9"
-QR_COMMIT="8518684c0f33d004fa93971be2c6a8eca3167d1e"
+CEF_VERSION="cef_binary_6533_linux"
+OBS_BROWSER_COMMIT="16ff0faef223959f6ab9dbfd4e8c6c1622a7991b"
+OBS_WEBSOCKET_COMMIT="63e04d20daf84391955580579e6576dfb373fa7f"
+
+DESCRIPTION="Software for Recording and Streaming Live Video Content"
+HOMEPAGE="https://obsproject.com"
 
 if [[ ${PV} == 9999 ]]; then
 	inherit git-r3
@@ -20,30 +24,31 @@ if [[ ${PV} == 9999 ]]; then
 	EGIT_SUBMODULES=(
 		plugins/obs-browser
 		plugins/obs-websocket
-		plugins/obs-websocket/deps/asio
-		plugins/obs-websocket/deps/json
-		plugins/obs-websocket/deps/qr
-		plugins/obs-websocket/deps/websocketpp
 	)
 else
 	SRC_URI="
-		https://github.com/obsproject/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz
-		https://github.com/obsproject/obs-browser/archive/${OBS_BROWSER_COMMIT}.tar.gz -> obs-browser-${OBS_BROWSER_COMMIT}.tar.gz
-		https://github.com/nayuki/QR-Code-generator/archive/${QR_COMMIT}.tar.gz -> qr-${QR_COMMIT}.tar.gz
-		https://github.com/obsproject/obs-websocket/archive/${OBS_WEBSOCKET_COMMIT}.tar.gz -> obs-websocket-${OBS_WEBSOCKET_COMMIT}.tar.gz
+		https://github.com/obsproject/${PN}/archive/${PV}.tar.gz
+			-> ${P}.tar.gz
+		https://github.com/obsproject/obs-browser/archive/${OBS_BROWSER_COMMIT}.tar.gz
+			-> obs-browser-${OBS_BROWSER_COMMIT}.tar.gz
+		https://github.com/obsproject/obs-websocket/archive/${OBS_WEBSOCKET_COMMIT}.tar.gz
+			-> obs-websocket-${OBS_WEBSOCKET_COMMIT}.tar.gz
 	"
-	KEYWORDS="~amd64 ~ppc64 ~x86"
+	KEYWORDS="~amd64 ~arm64 ~ppc64 ~x86"
 fi
-SRC_URI+=" browser? ( https://cdn-fastly.obsproject.com/downloads/${CEF_DIR}.tar.bz2 )"
 
-DESCRIPTION="Software for Recording and Streaming Live Video Content"
-HOMEPAGE="https://obsproject.com"
+SRC_URI+="
+	browser? (
+		amd64? ( https://cdn-fastly.obsproject.com/downloads/${CEF_VERSION}_x86_64.tar.xz )
+		arm64? ( https://cdn-fastly.obsproject.com/downloads/${CEF_VERSION}_aarch64.tar.xz )
+	)
+"
 
 LICENSE="Boost-1.0 GPL-2+ MIT Unlicense"
 SLOT="0"
 IUSE="
-	+alsa browser decklink fdk jack lua nvenc pipewire pulseaudio
-	python qsv speex +ssl truetype v4l vlc wayland websocket
+	+alsa browser decklink fdk jack lua mpegts nvenc pipewire pulseaudio
+	python qsv sndio speex test-input truetype v4l vlc wayland websocket
 "
 REQUIRED_USE="
 	browser? ( || ( alsa pulseaudio ) )
@@ -57,15 +62,19 @@ BDEPEND="
 "
 # media-video/ffmpeg[opus] required due to bug 909566
 DEPEND="
+	dev-cpp/nlohmann_json
 	dev-libs/glib:2
 	dev-libs/jansson:=
+	dev-libs/uthash
 	dev-qt/qtbase:6[network,widgets,xml(+)]
 	dev-qt/qtsvg:6
-	media-libs/libglvnd
+	media-libs/libglvnd[X]
 	media-libs/libva
+	media-libs/rnnoise
 	media-libs/x264:=
-	media-video/ffmpeg:=[nvenc?,opus,x264]
+	>=media-video/ffmpeg-6.1:=[nvenc?,opus,x264]
 	net-misc/curl
+	net-libs/mbedtls:0=
 	sys-apps/dbus
 	sys-apps/pciutils
 	sys-apps/util-linux
@@ -81,7 +90,6 @@ DEPEND="
 			>=app-accessibility/at-spi2-core-2.46.0:2
 			( app-accessibility/at-spi2-atk dev-libs/atk )
 		)
-		dev-cpp/nlohmann_json
 		dev-libs/expat
 		dev-libs/glib
 		dev-libs/nspr
@@ -108,12 +116,17 @@ DEPEND="
 	fdk? ( media-libs/fdk-aac:= )
 	jack? ( virtual/jack )
 	lua? ( ${LUA_DEPS} )
+	mpegts? (
+		net-libs/librist
+		net-libs/srt
+	)
+	nvenc? ( >=media-libs/nv-codec-headers-12 )
 	pipewire? ( media-video/pipewire:= )
 	pulseaudio? ( media-libs/libpulse )
 	python? ( ${PYTHON_DEPS} )
-	qsv? ( media-libs/oneVPL )
+	qsv? ( media-libs/libvpl )
+	sndio? ( media-sound/sndio )
 	speex? ( media-libs/speexdsp )
-	ssl? ( net-libs/mbedtls:= )
 	truetype? (
 		media-libs/fontconfig
 		media-libs/freetype
@@ -129,8 +142,8 @@ DEPEND="
 	)
 	websocket? (
 		dev-cpp/asio
-		dev-cpp/nlohmann_json
 		dev-cpp/websocketpp
+		dev-libs/qr-code-generator
 	)
 "
 RDEPEND="${DEPEND}"
@@ -162,47 +175,51 @@ src_unpack() {
 
 		rm -d ${P}/plugins/obs-websocket || die
 		mv obs-websocket-${OBS_WEBSOCKET_COMMIT} ${P}/plugins/obs-websocket || die
-
-		rm -d ${P}/plugins/obs-websocket/deps/qr || die
-		mv QR-Code-generator-${QR_COMMIT} ${P}/plugins/obs-websocket/deps/qr || die
 	fi
 }
 
 src_prepare() {
 	default
 
-	sed -i '/-Werror$/d' "${WORKDIR}"/${P}/cmake/Modules/CompilerConfig.cmake || die
+	# -Werror=lto-type-mismatch
+	# https://bugs.gentoo.org/867250
+	# https://github.com/obsproject/obs-studio/issues/8988
+	use wayland && filter-lto
 
 	cmake_src_prepare
+
+	pushd deps/json11 &> /dev/null || die
+		eapply "${FILESDIR}/json11-1.0.0-include-cstdint.patch"
+	popd &> /dev/null || die
 }
 
 src_configure() {
 	local libdir=$(get_libdir)
 	local mycmakeargs=(
-		$(usev browser -DCEF_ROOT_DIR=../${CEF_DIR})
-		-DCALM_DEPRECATION=ON
-		-DCCACHE_SUPPORT=OFF
 		-DENABLE_ALSA=$(usex alsa)
 		-DENABLE_AJA=OFF
 		-DENABLE_BROWSER=$(usex browser)
+		-DENABLE_CCACHE=OFF
 		-DENABLE_DECKLINK=$(usex decklink)
+		-DENABLE_FFMPEG_NVENC=$(usex nvenc)
 		-DENABLE_FREETYPE=$(usex truetype)
 		-DENABLE_JACK=$(usex jack)
 		-DENABLE_LIBFDK=$(usex fdk)
-		-DENABLE_NEW_MPEGTS_OUTPUT=OFF # Requires librist and libsrt.
+		-DENABLE_NEW_MPEGTS_OUTPUT=$(usex mpegts)
+		-DENABLE_NVENC=$(usex nvenc)
 		-DENABLE_PIPEWIRE=$(usex pipewire)
 		-DENABLE_PULSEAUDIO=$(usex pulseaudio)
 		-DENABLE_QSV11=$(usex qsv)
-		-DENABLE_RTMPS=$(usex ssl ON OFF) # Needed for bug 880861
+		-DENABLE_RNNOISE=ON
+		-DENABLE_SNDIO=$(usex sndio)
 		-DENABLE_SPEEXDSP=$(usex speex)
+		-DENABLE_TEST_INPUT=$(usex test-input)
 		-DENABLE_V4L2=$(usex v4l)
 		-DENABLE_VLC=$(usex vlc)
 		-DENABLE_VST=ON
 		-DENABLE_WAYLAND=$(usex wayland)
 		-DENABLE_WEBRTC=OFF # Requires libdatachannel.
 		-DENABLE_WEBSOCKET=$(usex websocket)
-		-DOBS_MULTIARCH_SUFFIX=${libdir#lib}
-		-DUNIX_STRUCTURE=1
 	)
 
 	if [[ ${PV} != 9999 ]]; then
@@ -221,7 +238,9 @@ src_configure() {
 		mycmakeargs+=( -DENABLE_SCRIPTING=OFF )
 	fi
 
-	if use browser && use ssl; then
+	if use browser; then
+		use amd64 && mycmakeargs+=( -DCEF_ROOT_DIR=../${CEF_VERSION}_x86_64 )
+		use arm64 && mycmakeargs+=( -DCEF_ROOT_DIR=../${CEF_VERSION}_aarch64 )
 		mycmakeargs+=( -DENABLE_WHATSNEW=ON )
 	else
 		mycmakeargs+=( -DENABLE_WHATSNEW=OFF )
@@ -234,8 +253,8 @@ src_install() {
 	cmake_src_install
 
 	# external plugins may need some things not installed by default, install them here
-	insinto /usr/include/obs/UI/obs-frontend-api
-	doins UI/obs-frontend-api/obs-frontend-api.h
+	insinto /usr/include/obs/frontend/api
+	doins frontend/api/obs-frontend-api.h
 }
 
 pkg_postinst() {

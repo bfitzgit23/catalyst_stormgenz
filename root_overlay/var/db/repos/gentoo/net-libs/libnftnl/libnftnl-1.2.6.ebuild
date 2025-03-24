@@ -3,7 +3,7 @@
 
 EAPI=8
 
-VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}"/usr/share/openpgp-keys/netfilter.org.asc
+VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/netfilter.org.asc
 inherit linux-info usr-ldscript verify-sig
 
 DESCRIPTION="Netlink API to the in-kernel nf_tables subsystem"
@@ -17,7 +17,7 @@ else
 		https://netfilter.org/projects/${PN}/files/${P}.tar.xz
 		verify-sig? ( https://netfilter.org/projects/${PN}/files/${P}.tar.xz.sig )
 	"
-	KEYWORDS="~alpha amd64 arm arm64 hppa ~ia64 ~loong ~mips ppc ppc64 ~riscv ~s390 sparc x86"
+	KEYWORDS="~alpha amd64 arm arm64 hppa ~loong ~mips ppc ppc64 ~riscv ~s390 sparc x86"
 
 	BDEPEND+="verify-sig? ( sec-keys/openpgp-keys-netfilter )"
 fi

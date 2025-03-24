@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit cmake desktop xdg
+inherit cmake desktop flag-o-matic xdg
 
 MY_P="SuperTuxKart-${PV}-src"
 DESCRIPTION="A kart racing game starring Tux, the linux penguin (TuxKart fork)"
@@ -15,7 +15,7 @@ SRC_URI="
 
 LICENSE="GPL-2 GPL-3 CC-BY-SA-3.0 CC-BY-SA-4.0 CC0-1.0 public-domain ZLIB"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc64 ~x86"
+KEYWORDS="~amd64 ~loong ~ppc64 ~x86"
 IUSE="debug nettle recorder sqlite wiimote"
 
 # - Don't unbundle irrlicht and bullet
@@ -56,9 +56,21 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.1-irrlicht-arch-support.patch
 	"${FILESDIR}"/${PN}-1.3-irrlicht-system-libs.patch
 	"${FILESDIR}"/${P}-gcc-13.patch
+	"${FILESDIR}"/${P}-gcc-15.patch
 )
 
 src_configure() {
+	# -Werror=strict-aliasing
+	# https://bugs.gentoo.org/858521
+	# https://github.com/supertuxkart/stk-code/issues/5035
+	#
+	# The issue is bundled code from sci-physics/bullet which is unlikely to
+	# be debundled.
+	#
+	# Do not trust with LTO either.
+	append-flags -fno-strict-aliasing
+	filter-lto
+
 	local mycmakeargs=(
 		-DUSE_SQLITE3=$(usex sqlite)
 		-DUSE_SYSTEM_ANGELSCRIPT=ON

@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: mozcoreconf-v6.eclass
@@ -20,13 +20,12 @@ case ${EAPI} in
 	*) die "${ECLASS}: EAPI ${EAPI:-0} not supported" ;;
 esac
 
-if [[ ! ${_MOZCORECONF_V6_ECLASS} ]]; then
+if [[ -z ${_MOZCORECONF_V6_ECLASS} ]]; then
 _MOZCORECONF_V6_ECLASS=1
 
 inherit toolchain-funcs flag-o-matic python-any-r1
 
 BDEPEND="virtual/pkgconfig
-	dev-lang/python:2.7[ncurses,sqlite,ssl,threads(+)]
 	${PYTHON_DEPS}"
 
 IUSE="${IUSE} custom-cflags custom-optimization"
@@ -99,12 +98,6 @@ moz_pkgsetup() {
 	export QA_CONFIGURE_OPTIONS=".*"
 
 	python-any-r1_pkg_setup
-	# workaround to set python3 into PYTHON3 until mozilla doesn't need py2
-	if [[ "${PYTHON_COMPAT[@]}" != "${PYTHON_COMPAT[@]#python3*}" ]]; then
-		export PYTHON3=${PYTHON}
-		export PYTHON=python2.7
-		export EPYTHON="${EPREFIX}"/usr/bin/python2.7
-	fi
 }
 
 # @FUNCTION: mozconfig_init
@@ -164,7 +157,7 @@ mozconfig_init() {
 		mozconfig_annotate "less than -O2 causes a segfault on x86" --enable-optimize=-O2
 	elif [[ ${ARCH} == arm ]] && [[ $(gcc-major-version) -ge 6 ]]; then
 		mozconfig_annotate "less than -O2 causes a breakage on arm with gcc-6" --enable-optimize=-O2
-	elif use custom-optimization || [[ ${ARCH} =~ (alpha|ia64) ]]; then
+	elif use custom-optimization || [[ ${ARCH} == alpha ]]; then
 		# Set optimization level based on CFLAGS
 		if is-flag -O0; then
 			mozconfig_annotate "from CFLAGS" --enable-optimize=-O0
@@ -210,10 +203,6 @@ mozconfig_init() {
 		# Additionally, alpha should *always* build with -mieee for correct math
 		# operation
 		append-flags -fPIC -mieee
-		;;
-	ia64)
-		# Historically we have needed to add this manually for 64-bit
-		append-flags -fPIC
 		;;
 	esac
 

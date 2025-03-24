@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -29,7 +29,7 @@ RDEPEND="
 
 SLOT="0"
 LICENSE="GPL-2"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~mips ppc ppc64 ~riscv ~s390 sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~mips ppc ppc64 ~riscv ~s390 sparc x86"
 IUSE="+fax fidonet split-usr"
 
 PATCHES=(
@@ -65,6 +65,9 @@ src_prepare() {
 		-e 's:^CFLAGS=:CFLAGS+= -I..:g' \
 		-e 's:^RANLIB=:RANLIB?=:g' \
 		*/Makefile || die
+
+	# Use POSIX compatible commands
+	sed -e 's/echo -e/printf %b/g' -i  Makefile || die
 }
 
 src_configure() {

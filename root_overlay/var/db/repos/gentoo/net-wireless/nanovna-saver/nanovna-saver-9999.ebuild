@@ -1,14 +1,13 @@
-# Copyright 2019-2023 Gentoo Authors
+# Copyright 2019-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 inherit distutils-r1 xdg-utils
 
 DESCRIPTION="tool for reading, displaying and saving data from the NanoVNA"
 HOMEPAGE="https://github.com/mihtjel/nanovna-saver"
-SRC_URI=""
 
 LICENSE="GPL-3+"
 SLOT="0"
@@ -20,13 +19,13 @@ else
 	KEYWORDS="~amd64"
 	export SETUPTOOLS_SCM_PRETEND_VERSION="${PV}"
 fi
-IUSE=""
 
-DEPEND=""
 RDEPEND="${DEPEND}
 	dev-python/cython[${PYTHON_USEDEP}]
 	dev-python/pyserial[${PYTHON_USEDEP}]
-	dev-python/PyQt6[${PYTHON_USEDEP},gui,widgets]
+	dev-python/pyqt6[${PYTHON_USEDEP},gui,widgets]
+	dev-python/pyqt6-sip[${PYTHON_USEDEP}]
+	dev-python/sip[${PYTHON_USEDEP}]
 	dev-python/numpy[${PYTHON_USEDEP}]
 	dev-python/scipy[${PYTHON_USEDEP}]"
 BDEPEND="dev-python/setuptools-scm[${PYTHON_USEDEP}]"

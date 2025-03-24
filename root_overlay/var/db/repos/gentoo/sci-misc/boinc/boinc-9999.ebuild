@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2023 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -6,7 +6,7 @@ EAPI=8
 # For live ebuilds this should be set to the latest available patch in ${FILESDIR}
 # It does not need to reflect the actual internal version reported by BOINC unless that patch is broken.
 MY_PV=7.18
-WX_GTK_VER=3.0-gtk3
+WX_GTK_VER=3.2-gtk3
 
 inherit autotools desktop flag-o-matic linux-info optfeature wxwidgets xdg-utils
 
@@ -19,7 +19,7 @@ if [[ ${PV} == *9999 ]] ; then
 	inherit git-r3
 else
 	SRC_URI+=" https://github.com/BOINC/boinc/archive/client_release/${MY_PV}/${PV}.tar.gz -> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm64 ~ia64 ~ppc ~ppc64 ~sparc ~x86"
+	KEYWORDS="~amd64 ~arm64 ~ppc ~ppc64 ~sparc ~x86"
 	S="${WORKDIR}/${PN}-client_release-${MY_PV}-${PV}"
 fi
 
@@ -44,7 +44,7 @@ DEPEND="
 		virtual/opencl
 	)
 	dev-libs/openssl:=
-	net-misc/curl[curl_ssl_gnutls(-)=,-curl_ssl_nss(-),curl_ssl_openssl(-)=,-curl_ssl_axtls(-),-curl_ssl_cyassl(-)]
+	net-misc/curl[curl_ssl_gnutls(-)=,curl_ssl_openssl(-)=,-curl_ssl_axtls(-),-curl_ssl_cyassl(-)]
 	sys-apps/util-linux
 	sys-libs/zlib
 	X? (

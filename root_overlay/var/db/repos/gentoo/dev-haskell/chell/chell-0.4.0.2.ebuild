@@ -14,7 +14,7 @@ SRC_URI="https://hackage.haskell.org/package/${P}/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0/${PV}"
-KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
 IUSE="+color-output"
 
 RDEPEND=">=dev-haskell/options-1.0:=[profile?] <dev-haskell/options-2.0:=[profile?]
@@ -28,11 +28,9 @@ DEPEND="${RDEPEND}
 	>=dev-haskell/cabal-1.18.1.3
 "
 
-src_prepare() {
-	cabal_chdeps \
-		'ansi-terminal >= 0.5 && < 0.8' 'ansi-terminal >= 0.5'
-	default
-}
+CABAL_CHDEPS=(
+	'ansi-terminal >= 0.5 && < 0.8' 'ansi-terminal >= 0.5'
+)
 
 src_configure() {
 	haskell-cabal_src_configure \

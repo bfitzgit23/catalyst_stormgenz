@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit linux-info python-single-r1 xdg-utils
 
@@ -19,11 +19,11 @@ if [[ ${PV} == *_pre* ]] ; then
 	SRC_URI="https://www.lirc.org/software/snapshots/${MY_P}.tar.bz2"
 elif [[ ${PV} == *_p* ]] ; then
 	inherit autotools
-	SRC_URI="mirror://sourceforge/lirc/${PN}-$(ver_cut 1-3).tar.bz2"
+	SRC_URI="https://downloads.sourceforge.net/lirc/${PN}-$(ver_cut 1-3).tar.bz2"
 	SRC_URI+=" mirror://debian/pool/main/l/${PN}/${PN}_$(ver_cut 1-3)-$(ver_cut 5-).debian.tar.xz"
 	S="${WORKDIR}"/${PN}-$(ver_cut 1-3)
 else
-	SRC_URI="mirror://sourceforge/lirc/${MY_P}.tar.bz2"
+	SRC_URI="https://downloads.sourceforge.net/lirc/${MY_P}.tar.bz2"
 fi
 
 LICENSE="GPL-2+"
@@ -61,7 +61,7 @@ DEPEND="
 	$(python_gen_cond_dep '
 		dev-python/setuptools[${PYTHON_USEDEP}]
 	')
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 	sys-apps/kmod
 	sys-kernel/linux-headers
 "

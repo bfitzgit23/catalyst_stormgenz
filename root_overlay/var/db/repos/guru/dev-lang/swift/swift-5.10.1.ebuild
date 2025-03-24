@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..13} )
+PYTHON_COMPAT=( python3_{11..13} )
 inherit python-single-r1
 
 DESCRIPTION="A high-level, general-purpose, multi-paradigm, compiled programming language"
@@ -15,9 +15,6 @@ SRC_URI="
 	https://github.com/apple/swift-atomics/archive/refs/tags/1.0.2.tar.gz -> swift-atomics-1.0.2.tar.gz
 	https://github.com/apple/swift-certificates/archive/refs/tags/1.0.1.tar.gz -> swift-certificates-1.0.1.tar.gz
 	https://github.com/apple/swift-collections/archive/refs/tags/1.0.5.tar.gz -> swift-collections-1.0.5.tar.gz
-	https://github.com/apple/swift-corelibs-foundation/archive/refs/tags/${P}-RELEASE.tar.gz -> swift-corelibs-foundation-${PV}.tar.gz
-	https://github.com/apple/swift-corelibs-libdispatch/archive/refs/tags/${P}-RELEASE.tar.gz -> swift-corelibs-libdispatch-${PV}.tar.gz
-	https://github.com/apple/swift-corelibs-xctest/archive/refs/tags/${P}-RELEASE.tar.gz -> swift-corelibs-xctest-${PV}.tar.gz
 	https://github.com/apple/swift-crypto/archive/refs/tags/3.0.0.tar.gz -> swift-crypto-3.0.0.tar.gz
 	https://github.com/apple/swift-nio-ssl/archive/refs/tags/2.15.0.tar.gz -> swift-nio-ssl-2.15.0.tar.gz
 	https://github.com/apple/swift-nio/archive/refs/tags/2.31.2.tar.gz -> swift-nio-2.31.2.tar.gz
@@ -29,6 +26,9 @@ SRC_URI="
 	https://github.com/swiftlang/llvm-project/archive/refs/tags/${P}-RELEASE.tar.gz -> llvm-project-${PV}.tar.gz
 	https://github.com/swiftlang/sourcekit-lsp/archive/refs/tags/${P}-RELEASE.tar.gz -> sourcekit-lsp-${PV}.tar.gz
 	https://github.com/swiftlang/swift-cmark/archive/refs/tags/${P}-RELEASE.tar.gz -> swift-cmark-${PV}.tar.gz
+	https://github.com/swiftlang/swift-corelibs-foundation/archive/refs/tags/${P}-RELEASE.tar.gz -> swift-corelibs-foundation-${PV}.tar.gz
+	https://github.com/swiftlang/swift-corelibs-libdispatch/archive/refs/tags/${P}-RELEASE.tar.gz -> swift-corelibs-libdispatch-${PV}.tar.gz
+	https://github.com/swiftlang/swift-corelibs-xctest/archive/refs/tags/${P}-RELEASE.tar.gz -> swift-corelibs-xctest-${PV}.tar.gz
 	https://github.com/swiftlang/swift-docc-render-artifact/archive/refs/tags/${P}-RELEASE.tar.gz -> swift-docc-render-artifact-${PV}.tar.gz
 	https://github.com/swiftlang/swift-docc-symbolkit/archive/refs/tags/${P}-RELEASE.tar.gz -> swift-docc-symbolkit-${PV}.tar.gz
 	https://github.com/swiftlang/swift-docc/archive/refs/tags/${P}-RELEASE.tar.gz -> swift-docc-${PV}.tar.gz
@@ -49,8 +49,9 @@ SRC_URI="
 "
 
 PATCHES=(
-	"${FILESDIR}/${P}-link-with-lld.patch"
-	"${FILESDIR}/${P}-llbuild-link-ncurses-tinfo-gentoo.patch"
+	"${FILESDIR}/${PF}/link-ncurses-tinfo.patch"
+	"${FILESDIR}/${PF}/link-with-lld.patch"
+	"${FILESDIR}/${PF}/lldb-cmake-minimum-version.patch"
 )
 
 S="${WORKDIR}"
@@ -68,7 +69,7 @@ RDEPEND="
 	>=dev-libs/libedit-20221030
 	>=dev-libs/libxml2-2.11.5
 	>=net-misc/curl-8.4
-	>=sys-devel/lld-15
+	>=llvm-core/lld-15
 	>=sys-libs/ncurses-6
 	>=sys-libs/zlib-1.3
 	dev-lang/python
@@ -85,11 +86,14 @@ BDEPEND="
 	>=dev-util/patchelf-0.18
 	>=dev-vcs/git-2.39
 	>=sys-apps/coreutils-9
-	>=sys-devel/clang-15
-	>=sys-devel/lld-15
+	>=llvm-core/clang-15
+	>=llvm-core/lld-15
 	>=sys-libs/ncurses-6
 	>=sys-libs/zlib-1.3
 	dev-lang/python
+	$(python_gen_cond_dep '
+		dev-python/setuptools[${PYTHON_USEDEP}]
+	' python3_{12..13})
 "
 
 src_unpack() {
@@ -111,6 +115,14 @@ src_unpack() {
 		&& mv 'swift-package-manager' 'swiftpm' \
 		&& popd \
 		|| die
+}
+
+src_configure() {
+	default
+
+	# Sets `${EPYTHON}` according to `PYTHON_SINGLE_TARGET`, sets up
+	# `${T}/${EPYTHON}` with that version, and adds it to the `PATH`.
+	python_setup
 }
 
 src_compile() {
@@ -149,7 +161,18 @@ src_compile() {
 		# The Clang `compiler-rt` library builds the LLVM ORC JIT component by
 		# default, which we don't need; the component builds with an executable
 		# stack, which we'd like to avoid.
-		'-DCOMPILER_RT_BUILD_ORC:BOOL=NO'
+		'-DCOMPILER_RT_BUILD_ORC:BOOL=NO',
+
+		# LLDB ships with Python bindings, and uses CMake to search for Python.
+		# By default, CMake tries to find the latest version of Python available
+		# on disk (currently `python3.13`, then `python3.12`, then...). This
+		# might not be the version of Python the rest of the system uses, or
+		# which is specified by `PYTHON_SINGLE_TARGET`.
+		#
+		# Since `python_setup` already places `${EPYTHON}` in the `PATH`, we can
+		# tell CMake to use the unversioned `python` rather than a versioned
+		# one to end up respecting `PYTHON_SINGLE_TARGET`.
+		'-DPython3_FIND_UNVERSIONED_NAMES=FIRST'
 	)
 	local extra_cmake_options="$(IFS=,; echo "${_extra_cmake_options[*]}")"
 

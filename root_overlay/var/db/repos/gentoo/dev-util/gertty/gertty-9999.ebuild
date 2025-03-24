@@ -1,8 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
+DISTUTILS_USE_PEP517=setuptools
 
 inherit distutils-r1
 
@@ -21,15 +22,12 @@ LICENSE="Apache-2.0"
 SLOT="0"
 IUSE=""
 
-# needed til upstream merges https://review.opendev.org/c/ttygroup/gertty/+/880123
-PATCHES="${FILESDIR}/sqlalchemy-2.patch"
-
 DEPEND=">=dev-python/pbr-0.11[${PYTHON_USEDEP}]"
 RDEPEND="
 	>=dev-python/pbr-0.11[${PYTHON_USEDEP}]
 	>=dev-python/urwid-1.2.1[${PYTHON_USEDEP}]
 	>=dev-python/sqlalchemy-1.0.4[${PYTHON_USEDEP}]
-	>=dev-python/GitPython-0.3.7[${PYTHON_USEDEP}]
+	>=dev-python/gitpython-0.3.7[${PYTHON_USEDEP}]
 	dev-python/python-dateutil[${PYTHON_USEDEP}]
 	>=dev-python/requests-2.5.3[${PYTHON_USEDEP}]
 	<dev-python/requests-3.0.0[${PYTHON_USEDEP}]

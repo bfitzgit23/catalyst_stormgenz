@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -14,7 +14,7 @@ SRC_URI="https://archive.xfce.org/src/xfce/${PN}/${PV%.*}/${P}.tar.bz2"
 
 LICENSE="GPL-2+ LGPL-2.1+"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ~mips ppc ppc64 ~riscv ~sparc x86 ~amd64-linux ~x86-linux ~x64-solaris"
+KEYWORDS="amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv ~sparc x86 ~amd64-linux ~x86-linux ~x64-solaris"
 
 DEPEND="
 	>=dev-libs/glib-2.66.0
@@ -26,9 +26,7 @@ RDEPEND="
 	${DEPEND}
 "
 BDEPEND="
-	dev-util/gtk-doc-am
 	dev-util/intltool
-	>=dev-util/xfce4-dev-tools-4.16.0
 	sys-devel/gettext
 	virtual/pkgconfig
 "

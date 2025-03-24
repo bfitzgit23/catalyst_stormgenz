@@ -1,8 +1,24 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
+
+# Arthur Zamarin <arthurzam@gentoo.org> (2024-08-26)
+# media-libs/libheif is not keyworded here
+heif
+
+# Arthur Zamarin <arthurzam@gentoo.org> (2024-08-26)
+# media-libs/libjxl is not keyworded here
+jpegxl
 
 # Unmask the flag which corresponds to ARCH.
 -mips
+
+# matoro <matoro_gentoo@matoro.tk> (2023-11-22)
+# KDE not keyworded here
+kde
+
+# matoro <matoro_gentoo@matoro.tk> (2023-11-22)
+# dev-db/redis fails test suite on BE at least
+redis
 
 # matoro <matoro_gentoo@matoro.tk> (2023-03-07)
 # GPU-related USE flags.  While hardware with PCIe host
@@ -22,7 +38,7 @@ tpm
 rdma
 
 # Mart Raudsepp <leio@gentoo.org> (2018-02-11)
-# dev-util/valgrind is not keyworded here yet,
+# dev-debug/valgrind is not keyworded here yet,
 # though the MIPS platform is supported upstream
 valgrind
 
@@ -73,7 +89,6 @@ cblas-external
 
 # Samuli Suominen <ssuominen@gentoo.org>
 # Media cannot be tested for MIPS at the moment.
-# media-libs/libmpeg3
 # media-libs/portaudio
 # dev-libs/libcdio
 # media-libs/musicbrainz
@@ -92,11 +107,6 @@ gnome
 # Peter Volkov <pva@gentoo.org> MPI was never tested on mips, but
 # some programs with this useflag are useful, e.g #227631
 mpi
-
-# Ryan Hill <dirtyepic@gentoo.org>
-# virtual/blas virtual/cblas and virtual/lapack not keyworded
-lapack
-blas
 
 # Alexander Færøy <eroyf@gentoo.org>
 # Clamav -- untested, masking for now.
@@ -125,7 +135,6 @@ input_devices_vmmouse
 input_devices_void
 input_devices_wacom
 input_devices_joystick
-video_cards_glint
 video_cards_nvidia
 
 # Matt Turner <mattst88@gentoo.org>
@@ -238,11 +247,7 @@ rpm
 # We don't have net-libs/libsmi keyworded
 smi
 
-# Matt Turner <mattst88@gentoo.org> (2010-12-13)
-# We don't have sys-devel/llvm
-llvm
-
-# Matt Turner <mattst88@gentoo.org (2011-06-14)
+# Matt Turner <mattst88@gentoo.org> (2011-06-14)
 # pdfannotextractor needs java
 pdfannotextractor
 
@@ -268,3 +273,4 @@ opencl
 # Ben de Groot <yngwin@gentoo.org> (2015-02-01)
 # please remove when keyworded
 qt5
+qt6

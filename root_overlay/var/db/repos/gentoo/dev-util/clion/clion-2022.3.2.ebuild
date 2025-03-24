@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -12,7 +12,7 @@ SRC_URI="https://download.jetbrains.com/cpp/CLion-${PV}.tar.gz"
 LICENSE="|| ( IDEA IDEA_Academic IDEA_Classroom IDEA_OpenSource IDEA_Personal )
 	Apache-1.1 Apache-2.0 BSD BSD-2 CC0-1.0 CDDL-1.1 CPL-0.5 CPL-1.0
 	EPL-1.0 EPL-2.0 GPL-2 GPL-2-with-classpath-exception GPL-3 ISC JDOM
-	LGPL-2.1+ LGPL-3 MIT MPL-1.0 MPL-1.1 OFL public-domain PSF-2 UoI-NCSA ZLIB"
+	LGPL-2.1+ LGPL-3 MIT MPL-1.0 MPL-1.1 OFL-1.1 public-domain PSF-2 UoI-NCSA ZLIB"
 SLOT="0"
 KEYWORDS="~amd64"
 RESTRICT="bindist mirror splitdebug"
@@ -21,19 +21,19 @@ BDEPEND="dev-util/patchelf"
 
 RDEPEND="
 	>=app-accessibility/at-spi2-core-2.46.0:2
+	dev-debug/gdb
 	dev-libs/expat
 	dev-libs/glib:2
 	dev-libs/nspr
 	dev-libs/nss
 	dev-libs/wayland
-	dev-util/cmake
-	dev-util/ninja
+	dev-build/cmake
+	app-alternatives/ninja
 	media-libs/alsa-lib
 	media-libs/freetype:2
 	media-libs/mesa
 	net-print/cups
 	sys-apps/dbus
-	sys-devel/gdb
 	sys-libs/zlib
 	x11-libs/cairo
 	x11-libs/libdrm

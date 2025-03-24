@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit cmake systemd tmpfiles
+inherit cmake eapi9-ver systemd tmpfiles
 
 DESCRIPTION="An open source instant messaging transport"
 HOMEPAGE="https://www.spectrum.im"
@@ -54,9 +54,14 @@ RDEPEND="
 
 DEPEND="
 	${RDEPEND}
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 	test? ( dev-util/cppunit )
 "
+
+PATCHES=(
+	"${FILESDIR}"/${PN}-2.2.1-boost-1.85.patch
+	"${FILESDIR}"/${PN}-2.2.1-use-c++14.patch
+)
 
 src_prepare() {
 	# Respect users LDFLAGS
@@ -108,14 +113,9 @@ src_install() {
 pkg_postinst() {
 	tmpfiles_process spectrum2.conf
 
-	if [[ ${REPLACING_VERSIONS} ]]; then
-		for v in ${REPLACING_VERSIONS}; do
-			if ver_test "${v}" -lt 2.2.0; then
-				ewarn "Starting with Release 2.2.0, the path for spectrum2"
-				ewarn "executable helper files has been changed from '/usr/bin'"
-				ewarn "to '/usr/libexec'. Please update your config files!"
-				break
-			fi
-		done
+	if ver_replacing -lt 2.2.0; then
+		ewarn "Starting with Release 2.2.0, the path for spectrum2"
+		ewarn "executable helper files has been changed from '/usr/bin'"
+		ewarn "to '/usr/libexec'. Please update your config files!"
 	fi
 }

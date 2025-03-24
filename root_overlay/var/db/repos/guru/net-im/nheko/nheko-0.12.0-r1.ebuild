@@ -32,7 +32,7 @@ RDEPEND="
 	dev-libs/olm
 	>=dev-libs/openssl-1.1.0:=
 	>=dev-libs/qtkeychain-0.14.1-r1:=[qt6]
-	>=dev-libs/re2-0.2022.04.01:=
+	dev-libs/re2:0/10
 	dev-libs/spdlog:=
 	dev-qt/qtbase:6[concurrent,dbus,gui,widgets]
 	dev-qt/qtdeclarative:6[widgets]
@@ -76,7 +76,10 @@ BDEPEND="
 	)
 "
 
-PATCHES=( "${FILESDIR}"/${P}-remove-wayland-dep-on-x11.patch )
+PATCHES=(
+	"${FILESDIR}"/${PN}-0.12.0-fmt11.patch
+	"${FILESDIR}"/${PN}-0.12.0-remove-wayland-dep-on-x11.patch
+)
 
 src_configure() {
 	local -a mycmakeargs=(

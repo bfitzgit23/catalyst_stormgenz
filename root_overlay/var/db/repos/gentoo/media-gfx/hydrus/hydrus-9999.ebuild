@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..11} )
 PYTHON_REQ_USE="sqlite"
 
 DOCS_BUILDER=mkdocs
@@ -34,11 +34,13 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 RESTRICT="!test? ( test )"
 
 # RDEPEND is sorted as such:
-# - No specific requirements
-# - Specific version or slot
+# Python libraries with no specific requirements
+# Python libraries with specific version, slot, or use requirements
+# Non-python dependencies
 RDEPEND="
 	${PYTHON_DEPS}
 	$(python_gen_cond_dep '
+		dev-python/beautifulsoup4[${PYTHON_USEDEP}]
 		dev-python/cbor2[${PYTHON_USEDEP}]
 		dev-python/chardet[${PYTHON_USEDEP}]
 		dev-python/cloudscraper[${PYTHON_USEDEP}]
@@ -48,19 +50,17 @@ RDEPEND="
 		dev-python/pillow[${PYTHON_USEDEP},lcms]
 		dev-python/psutil[${PYTHON_USEDEP}]
 		dev-python/pyopenssl[${PYTHON_USEDEP}]
-		dev-python/pyside2[widgets,gui,${PYTHON_USEDEP}]
 		dev-python/python-mpv[${PYTHON_USEDEP}]
 		dev-python/pyyaml[${PYTHON_USEDEP}]
 		dev-python/requests[${PYTHON_USEDEP}]
 		dev-python/send2trash[${PYTHON_USEDEP}]
 		dev-python/service-identity[${PYTHON_USEDEP}]
-		dev-python/six[${PYTHON_USEDEP}]
 		dev-python/twisted[${PYTHON_USEDEP}]
+
+		dev-python/qtpy[widgets,gui,svg,multimedia,${PYTHON_USEDEP}]
+
 		media-libs/opencv[python,png,jpeg,${PYTHON_USEDEP}]
 		media-video/ffmpeg
-
-		>=dev-python/QtPy-1.9.0-r4[pyside2,${PYTHON_USEDEP}]
-		dev-python/beautifulsoup4[${PYTHON_USEDEP}]
 	')
 "
 BDEPEND="
@@ -69,8 +69,6 @@ BDEPEND="
 		test? (
 			dev-python/httmock[${PYTHON_USEDEP}]
 			dev-python/mock[${PYTHON_USEDEP}]
-
-			dev-python/pyside2[widgets,gui,multimedia,${PYTHON_USEDEP}]
 		)
 	')
 "
@@ -144,7 +142,7 @@ src_install() {
 
 pkg_postinst() {
 	optfeature "automatic port forwarding support" "net-libs/miniupnpc"
-	optfeature "bandwidth charts support" "dev-python/pyside2[charts]"
 	optfeature "memory compression in the client" "dev-python/lz4"
-	optfeature "SOCKS proxy support" "dev-python/requests[socks5]" "dev-python/PySocks"
+	optfeature "SOCKS proxy support" "dev-python/requests[socks5]" "dev-python/pysocks"
+	optfeature "bandwidth charts support" "dev-python/pyside[charts]"
 }

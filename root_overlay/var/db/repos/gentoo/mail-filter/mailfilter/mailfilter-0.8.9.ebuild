@@ -1,11 +1,11 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DESCRIPTION="Mailfilter is a utility to get rid of unwanted spam mails"
 HOMEPAGE="https://mailfilter.sourceforge.io/"
-SRC_URI="mirror://sourceforge/mailfilter/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/mailfilter/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -17,7 +17,7 @@ PATCHES=(
 	"${FILESDIR}"/${PV}-prototypes.patch
 )
 
-DEPEND="sys-devel/flex
+DEPEND="app-alternatives/lex
 	ssl? ( dev-libs/openssl:= )"
 RDEPEND="ssl? ( dev-libs/openssl:= )"
 

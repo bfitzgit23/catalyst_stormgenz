@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-USE_RUBY="ruby30 ruby31 ruby32"
+USE_RUBY="ruby31 ruby32 ruby33"
 
 RUBY_FAKEGEM_RECIPE_TEST="none"
 
@@ -41,6 +41,9 @@ all_ruby_prepare() {
 
 	# Avoid test that uses the console and hangs on user input
 	rm -f test/pry_test.rb || die
+
+	# Avoid a test broken by newer irb versions.
+	rm -f test/irb_test.rb || die
 }
 
 each_ruby_test() {

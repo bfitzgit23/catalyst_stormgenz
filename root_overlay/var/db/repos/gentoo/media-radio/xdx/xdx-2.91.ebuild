@@ -1,15 +1,15 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="8"
 
 DESCRIPTION="a GTK+ TCP/IP DX-cluster and ON4KST chat client"
 HOMEPAGE="https://sourceforge.net/projects/xdxclusterclient"
-SRC_URI="mirror://sourceforge/xdxclusterclient/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/xdxclusterclient/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="nls"
 
 RDEPEND="x11-libs/gtk+:3

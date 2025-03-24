@@ -1,42 +1,45 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
+CARGO_OPTIONAL=1
 
-inherit bash-completion-r1 linux-info optfeature systemd toolchain-funcs
+inherit cargo flag-o-matic bash-completion-r1 edo optfeature systemd toolchain-funcs
 
 if [[ ${PV} == 9999 ]] ; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/dracutdevs/dracut"
+	EGIT_REPO_URI="https://github.com/dracut-ng/dracut-ng"
 else
 	if [[ "${PV}" != *_rc* ]]; then
-		KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86"
+		KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86"
 	fi
-	SRC_URI="https://github.com/dracutdevs/dracut/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/dracut-ng/dracut-ng/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz"
+	S="${WORKDIR}/${PN}-ng-${PV}"
 fi
 
 DESCRIPTION="Generic initramfs generation tool"
-HOMEPAGE="https://dracut.wiki.kernel.org"
+HOMEPAGE="https://github.com/dracut-ng/dracut-ng/wiki"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="selinux test"
-
-RESTRICT="!test? ( test )"
+IUSE="+dracut-cpio selinux test"
+RESTRICT="test"
+PROPERTIES="test? ( test_privileged test_network )"
 
 RDEPEND="
-	app-arch/cpio
+	app-alternatives/cpio
 	>=app-shells/bash-4.0:0
 	sys-apps/coreutils[xattr(-)]
 	>=sys-apps/kmod-23[tools]
 	|| (
 		>=sys-apps/sysvinit-2.87-r3
 		sys-apps/openrc[sysv-utils(-),selinux?]
+		sys-apps/openrc-navi[sysv-utils(-),selinux?]
 		sys-apps/systemd[sysv-utils]
 		sys-apps/s6-linux-init[sysv-utils(-)]
 	)
 	>=sys-apps/util-linux-2.21
-	virtual/pkgconfig
+	virtual/pkgconfig[native-symlinks(+)]
 	virtual/udev
 
 	elibc_musl? ( sys-libs/fts-standalone )
@@ -57,14 +60,52 @@ BDEPEND="
 	>=app-text/docbook-xsl-stylesheets-1.75.2
 	>=dev-libs/libxslt-1.1.26
 	virtual/pkgconfig
+	dracut-cpio? ( ${RUST_DEPEND} )
+	test? (
+		net-nds/rpcbind
+		net-fs/nfs-utils
+		sys-block/open-iscsi
+		sys-fs/btrfs-progs
+		sys-fs/dmraid
+		sys-fs/lvm2[lvm,thin]
+		sys-fs/mdadm
+		sys-fs/multipath-tools
+		alpha? ( app-emulation/qemu[qemu_softmmu_targets_alpha] )
+		amd64? ( app-emulation/qemu[qemu_softmmu_targets_x86_64] )
+		arm? ( app-emulation/qemu[qemu_softmmu_targets_arm] )
+		arm64? ( app-emulation/qemu[qemu_softmmu_targets_aarch64] )
+		hppa? ( app-emulation/qemu[qemu_softmmu_targets_hppa] )
+		loong? ( app-emulation/qemu[qemu_softmmu_targets_loongarch64] )
+		mips? ( || (
+			app-emulation/qemu[qemu_softmmu_targets_mips]
+			app-emulation/qemu[qemu_softmmu_targets_mips64]
+			app-emulation/qemu[qemu_softmmu_targets_mips64el]
+		) )
+		ppc? ( app-emulation/qemu[qemu_softmmu_targets_ppc] )
+		ppc64? ( app-emulation/qemu[qemu_softmmu_targets_ppc64] )
+		riscv? ( || (
+			app-emulation/qemu[qemu_softmmu_targets_riscv32]
+			app-emulation/qemu[qemu_softmmu_targets_riscv64]
+		) )
+		sparc? ( || (
+			app-emulation/qemu[qemu_softmmu_targets_sparc]
+			app-emulation/qemu[qemu_softmmu_targets_sparc64]
+		) )
+		x86? ( app-emulation/qemu[qemu_softmmu_targets_i386] )
+	)
 "
 
 QA_MULTILIB_PATHS="usr/lib/dracut/.*"
 
 PATCHES=(
 	"${FILESDIR}"/gentoo-ldconfig-paths-r1.patch
-	"${FILESDIR}"/gentoo-network-r1.patch
+	# Gentoo specific acct-user and acct-group conf adjustments
+	"${FILESDIR}"/${PN}-106-acct-user-group-gentoo.patch
 )
+
+pkg_setup() {
+	use dracut-cpio && rust_pkg_setup
+}
 
 src_configure() {
 	local myconf=(
@@ -72,28 +113,46 @@ src_configure() {
 		--sysconfdir="${EPREFIX}/etc"
 		--bashcompletiondir="$(get_bashcompdir)"
 		--systemdsystemunitdir="$(systemd_get_systemunitdir)"
+		--disable-dracut-cpio
 	)
+
+	# this emulates what the build system would be doing without us
+	append-cflags -D_FILE_OFFSET_BITS=64
 
 	tc-export CC PKG_CONFIG
 
-	echo ./configure "${myconf[@]}"
-	./configure "${myconf[@]}" || die
+	edo ./configure "${myconf[@]}"
+	if use dracut-cpio; then
+		cargo_gen_config
+		cargo_src_configure
+	fi
+}
 
-	if [[ ${PV} != 9999 && ! -f dracut-version.sh ]] ; then
-		# Source tarball from github doesn't include this file
-		echo "DRACUT_VERSION=${PV}" > dracut-version.sh || die
+src_compile() {
+	default
+	if use dracut-cpio; then
+		pushd src/dracut-cpio >/dev/null || die
+		cargo_src_compile
+		popd >/dev/null || die
 	fi
 }
 
 src_test() {
-	if [[ ${EUID} != 0 ]]; then
-		# Tests need root privileges, bug #298014
-		ewarn "Skipping tests: Not running as root."
-	elif [[ ! -w /dev/kvm ]]; then
-		ewarn "Skipping tests: Unable to access /dev/kvm."
+	addwrite /dev/kvm
+	# Translate ARCH so run-qemu can find the correct qemu-system-ARCH
+	local qemu_arch
+	if use amd64; then
+		qemu_arch=x86_64
+	elif use arm64; then
+		qemu_arch=aarch64
+	elif use loong; then
+		qemu_arch=loongarch64
+	elif use x86; then
+		qemu_arch=i386
 	else
-		emake -C test check
+		qemu_arch=$(tc-arch)
 	fi
+	ARCH=${qemu_arch} emake -C test check
 }
 
 src_install() {
@@ -101,46 +160,33 @@ src_install() {
 		AUTHORS
 		NEWS.md
 		README.md
-		docs/README.cross
-		docs/README.generic
-		docs/README.kernel
-		docs/SECURITY.md
 	)
-
 	default
+	if use dracut-cpio; then
+		exeinto /usr/lib/dracut
+		doexe "src/dracut-cpio/$(cargo_target_dir)/dracut-cpio"
+	fi
+}
 
-	docinto html
-	dodoc dracut.html
+pkg_preinst() {
+	# Remove directory/symlink conflicts
+	# https://bugs.gentoo.org/943007
+	local save_nullglob=$(shopt -p nullglob)
+	shopt -s nullglob
+	local module
+	for module in "${EROOT}"/usr/lib/dracut/modules.d/{80test,80test-makeroot,80test-root}; do
+		if [[ ! -L ${module} && -d ${module} ]]; then
+			rm -rv "${module}" || die
+		fi
+		local backups=( "${module}".backup.* )
+		if [[ ${#backups[@]} -gt 0 ]]; then
+			rm -v "${backups[@]}" || die
+		fi
+	done
+	eval "${save_nullglob}"
 }
 
 pkg_postinst() {
-	if linux-info_get_any_version && linux_config_exists; then
-		ewarn ""
-		ewarn "If the following test report contains a missing kernel"
-		ewarn "configuration option, you should reconfigure and rebuild your"
-		ewarn "kernel before booting image generated with this Dracut version."
-		ewarn ""
-
-		local CONFIG_CHECK="~BLK_DEV_INITRD ~DEVTMPFS"
-
-		# Kernel configuration options descriptions:
-		local ERROR_DEVTMPFS='CONFIG_DEVTMPFS: "Maintain a devtmpfs filesystem to mount at /dev" '
-		ERROR_DEVTMPFS+='is missing and REQUIRED'
-		local ERROR_BLK_DEV_INITRD='CONFIG_BLK_DEV_INITRD: "Initial RAM filesystem and RAM disk '
-		ERROR_BLK_DEV_INITRD+='(initramfs/initrd) support" is missing and REQUIRED'
-
-		check_extra_config
-		echo
-	else
-		ewarn ""
-		ewarn "Your kernel configuration couldn't be checked."
-		ewarn "Please check manually if following options are enabled:"
-		ewarn ""
-		ewarn "  CONFIG_BLK_DEV_INITRD"
-		ewarn "  CONFIG_DEVTMPFS"
-		ewarn ""
-	fi
-
 	optfeature "Networking support" net-misc/networkmanager
 	optfeature "Legacy networking support" net-misc/curl "net-misc/dhcp[client]" \
 		sys-apps/iproute2 "net-misc/iputils[arping]"
@@ -178,4 +224,10 @@ pkg_postinst() {
 	optfeature \
 		"Enable rngd service to help generating entropy early during boot" \
 		sys-apps/rng-tools
+	optfeature "building Unified Kernel Images with dracut (--uefi)" \
+		"sys-apps/systemd[boot]" "sys-apps/systemd-utils[boot]"
+	optfeature "automatically generating an initramfs on each kernel installation" \
+		"sys-kernel/installkernel[dracut]"
+	optfeature "automatically generating an UKI on each kernel installation" \
+		"sys-kernel/installkernel[dracut,uki]"
 }

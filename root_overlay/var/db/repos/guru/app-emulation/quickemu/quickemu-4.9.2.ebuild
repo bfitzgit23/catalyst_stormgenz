@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 inherit python-single-r1
 
 DESCRIPTION="Create and run optimised Windows, macOS and Linux desktop virtual machines"
@@ -27,7 +27,7 @@ DEPEND="
 	net-misc/zsync
 	sys-apps/usbutils
 	sys-apps/util-linux
-	|| ( sys-firmware/edk2-ovmf sys-firmware/edk2-ovmf-bin )
+	|| ( sys-firmware/edk2 sys-firmware/edk2-bin )
 	sys-process/procps
 	x11-apps/xrandr
 	x11-misc/xdg-user-dirs

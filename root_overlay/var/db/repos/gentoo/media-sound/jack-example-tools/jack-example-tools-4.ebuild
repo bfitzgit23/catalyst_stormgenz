@@ -1,4 +1,4 @@
-# Copyright 2022-2023 Gentoo Authors
+# Copyright 2022-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,11 +7,14 @@ inherit meson
 
 DESCRIPTION="Official examples and tools from the JACK project"
 HOMEPAGE="https://jackaudio.org/"
-SRC_URI="https://github.com/jackaudio/jack-example-tools/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="
+	https://github.com/jackaudio/jack-example-tools/archive/refs/tags/${PV}.tar.gz
+		-> ${P}.tar.gz
+"
 
 LICENSE="GPL-2+ zalsa? ( GPL-3+ )"
 SLOT="0"
-KEYWORDS="amd64 arm arm64 ~loong ppc ppc64 ~riscv x86"
+KEYWORDS="amd64 arm arm64 ~loong ~mips ppc ppc64 ~riscv x86"
 IUSE="alsa jack-net jack-netsource opus +readline sndfile zalsa"
 
 RDEPEND="
@@ -38,7 +41,7 @@ RDEPEND="
 		media-libs/zita-resampler:=
 	)
 	!<media-sound/jack-audio-connection-kit-0.126.0
-	!<media-sound/jack2-1.9.21"
+"
 DEPEND="${RDEPEND}"
 
 DOCS=( CHANGELOG.md README.md )

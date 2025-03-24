@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -13,7 +13,7 @@ S="${WORKDIR}"/${PN}-c-${PV}
 LICENSE="UCAR-Unidata"
 # SONAME of libnetcdf.so
 SLOT="0/19"
-KEYWORDS="amd64 ~arm ~arm64 ~ia64 ~ppc ppc64 -riscv ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="amd64 ~arm ~arm64 ~ppc ppc64 -riscv ~x86 ~amd64-linux ~x86-linux"
 IUSE="+dap doc examples hdf +hdf5 mpi szip test"
 RESTRICT="!test? ( test )"
 
@@ -30,7 +30,7 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen[dot] )
+	doc? ( app-text/doxygen[dot] )
 "
 
 REQUIRED_USE="

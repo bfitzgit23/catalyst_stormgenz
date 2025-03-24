@@ -6,7 +6,7 @@ EAPI=8
 M_PN=LenovoLegionLinux
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=(python3_{9..12})
+PYTHON_COMPAT=(python3_{11..12})
 
 inherit linux-mod-r1 distutils-r1 systemd optfeature
 
@@ -31,7 +31,7 @@ BDEPEND="
 
 RDEPEND="
 	gui? (
-		dev-python/PyQt6[gui,widgets]
+		dev-python/pyqt6[gui,widgets]
 		dev-python/pyyaml
 		dev-python/argcomplete
 		dev-python/darkdetect
@@ -94,6 +94,8 @@ src_install() {
 }
 
 pkg_postinst() {
+	linux-mod-r1_pkg_postinst
+
 	ewarn "Default config files are present in /usr/share/legion_linux"
 	ewarn "Copy folder /usr/share/legion_linux to /etc/legion_linux"
 	ewarn "Note: Fancurve can be edit using the gui app"

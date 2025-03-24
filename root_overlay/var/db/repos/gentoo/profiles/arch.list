@@ -3,7 +3,6 @@ amd64
 arm
 arm64
 hppa
-ia64
 loong
 m68k
 mips
@@ -23,5 +22,6 @@ riscv-linux
 x86-linux
 arm64-macos
 ppc-macos
+x86-macos
 x64-macos
 x64-solaris

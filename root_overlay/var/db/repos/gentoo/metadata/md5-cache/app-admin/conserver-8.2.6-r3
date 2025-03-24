@@ -1,16 +1,16 @@
-BDEPEND=sys-devel/gnuconfig >=app-portage/elt-patches-20170815 || ( >=sys-devel/automake-1.16.5:1.16 ) >=sys-devel/autoconf-2.71-r5 >=sys-devel/libtool-2.4.7 ssl? ( dev-libs/openssl:0 )
+BDEPEND=sys-devel/gnuconfig >=app-portage/elt-patches-20250306 || ( >=dev-build/automake-1.17-r1:1.17 >=dev-build/automake-1.16.5:1.16 ) || ( >=dev-build/autoconf-2.72-r1:2.72 ) >=dev-build/libtool-2.4.7-r3 ssl? ( dev-libs/openssl )
 DEFINED_PHASES=configure install postinst prepare test
-DEPEND=net-libs/libnsl:= virtual/libcrypt:= debug? ( dev-libs/dmalloc:= ) freeipmi? ( sys-libs/freeipmi:= ) kerberos? ( virtual/krb5 net-libs/libgssglue ) ssl? ( dev-libs/openssl:0= ) pam? ( sys-libs/pam ) tcpd? ( sys-apps/tcp-wrappers )
+DEPEND=net-libs/libnsl:= virtual/libcrypt:= freeipmi? ( sys-libs/freeipmi:= ) kerberos? ( virtual/krb5 net-libs/libgssglue ) ssl? ( dev-libs/openssl:0= ) pam? ( sys-libs/pam ) tcpd? ( sys-apps/tcp-wrappers )
 DESCRIPTION=Serial Console Manager
-EAPI=7
+EAPI=8
 HOMEPAGE=https://www.conserver.com
 INHERIT=autotools pam ssl-cert
-IUSE=debug ipv6 freeipmi kerberos pam ssl test tcpd ssl
-KEYWORDS=~alpha amd64 ~ia64 ppc ppc64 ~sparc x86
+IUSE=ipv6 freeipmi kerberos pam ssl test tcpd ssl
+KEYWORDS=~alpha amd64 ppc ppc64 ~sparc x86
 LICENSE=BSD BSD-with-attribution
-RDEPEND=net-libs/libnsl:= virtual/libcrypt:= debug? ( dev-libs/dmalloc:= ) freeipmi? ( sys-libs/freeipmi:= ) kerberos? ( virtual/krb5 net-libs/libgssglue ) ssl? ( dev-libs/openssl:0= ) pam? ( sys-libs/pam ) tcpd? ( sys-apps/tcp-wrappers ) pam? ( sys-auth/pambase )
+RDEPEND=net-libs/libnsl:= virtual/libcrypt:= freeipmi? ( sys-libs/freeipmi:= ) kerberos? ( virtual/krb5 net-libs/libgssglue ) ssl? ( dev-libs/openssl:0= ) pam? ( sys-libs/pam ) tcpd? ( sys-apps/tcp-wrappers ) pam? ( sys-auth/pambase )
 RESTRICT=!test? ( test )
 SLOT=0
 SRC_URI=https://github.com/conserver/conserver/releases/download/v8.2.6/conserver-8.2.6.tar.gz
-_eclasses_=autotools	6ae9a4347149b19a112caa1182d03bde	flag-o-matic	be27a904c614cb93ae037762dc69bcc2	gnuconfig	b6b3e92f8b8c996400074b5f61a59256	libtool	9d3a9a889a6fa62ae794f817c156491b	multilib	c19072c3cd7ac5cb21de013f7e9832e0	pam	b56d0c9c20fc5b553f13c8ae165a10a5	ssl-cert	33f6c352c602e87ceda767a86f3b7131	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=4da684906f3197fccaed6e100b00f741
+_eclasses_=gnuconfig	ddeb9f8caff1b5f71a09c75b7534df79	toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	libtool	c81bd096be5f4c82f4e8f156ef112402	autotools	f20ecf7ab0a7c34e83238b3ed4aaf6d6	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	pam	b56d0c9c20fc5b553f13c8ae165a10a5	ssl-cert	c6ea4108da6e229ed3a7d2d949f72a26
+_md5_=2e351a3114b471565a5cc57c0b886191

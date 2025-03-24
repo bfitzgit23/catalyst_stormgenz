@@ -14,7 +14,7 @@ HOMEPAGE="https://git-annex.branchable.com/"
 
 LICENSE="AGPL-3"
 SLOT="0"
-KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86 ~amd64-linux"
+KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86 ~amd64-linux"
 IUSE="+assistant +benchmark +dbus debug doc +gitlfs +magicmime +pairing +torrentparser +webapp"
 
 REQUIRED_USE="webapp? ( assistant )"
@@ -65,7 +65,7 @@ RDEPEND="dev-haskell/aeson:=
 	>=dev-haskell/persistent-2.8.1:=
 	>=dev-haskell/persistent-sqlite-2.8.1:=
 	dev-haskell/persistent-template:=
-	>=dev-haskell/quickcheck-2.10.0:2=
+	>=dev-haskell/quickcheck-2.10.0:=
 	dev-haskell/random:=
 	dev-haskell/regex-tdfa:=
 	dev-haskell/resourcet:=

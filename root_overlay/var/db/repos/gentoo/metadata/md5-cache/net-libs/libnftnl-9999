@@ -1,15 +1,15 @@
-BDEPEND=virtual/pkgconfig verify-sig? ( app-crypt/gnupg >=app-portage/gemato-16 ) sys-devel/gnuconfig >=app-portage/elt-patches-20170815 || ( >=sys-devel/automake-1.16.5:1.16 ) >=sys-devel/autoconf-2.71-r5 >=sys-devel/libtool-2.4.7 >=dev-vcs/git-1.8.2.1[curl]
+BDEPEND=virtual/pkgconfig verify-sig? ( app-crypt/gnupg >=app-portage/gemato-20 ) sys-devel/gnuconfig >=app-portage/elt-patches-20250306 || ( >=dev-build/automake-1.17-r1:1.17 >=dev-build/automake-1.16.5:1.16 ) || ( >=dev-build/autoconf-2.72-r1:2.72 ) >=dev-build/libtool-2.4.7-r3 >=dev-vcs/git-1.8.2.1[curl]
 DEFINED_PHASES=configure install prepare setup unpack
 DEPEND=>=net-libs/libmnl-1.0.4:=
 DESCRIPTION=Netlink API to the in-kernel nf_tables subsystem
 EAPI=8
 HOMEPAGE=https://netfilter.org/projects/nftables/
-INHERIT=linux-info usr-ldscript verify-sig autotools git-r3
-IUSE=examples static-libs test split-usr verify-sig
+INHERIT=linux-info verify-sig autotools git-r3
+IUSE=examples static-libs test verify-sig
 LICENSE=GPL-2
 PROPERTIES=live
 RDEPEND=>=net-libs/libmnl-1.0.4:=
 RESTRICT=!test? ( test )
 SLOT=0/11
-_eclasses_=autotools	6ae9a4347149b19a112caa1182d03bde	git-r3	2358a7b20091609e24bd3a83b3ac5991	gnuconfig	b6b3e92f8b8c996400074b5f61a59256	libtool	9d3a9a889a6fa62ae794f817c156491b	linux-info	c4f1201b96a8a2c1f3b86cc8b2c71c91	multilib	c19072c3cd7ac5cb21de013f7e9832e0	toolchain-funcs	862d337d98edb576796827be2c6b11ca	usr-ldscript	ff03a5d223e97515fa25b5cae97ebda9	verify-sig	dd7ea2e5b0bdcb42523e4797bbf4dd6e
-_md5_=87881d836d4ba5e47a21bbb0861acb4a
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	linux-info	ea4122ba1d8791a12b78e53f9510a2e3	eapi9-pipestatus	d2c134036ac31c3085aebc9147f572bd	verify-sig	7433426b6b28bf2737ba4b82c8aa8c53	gnuconfig	ddeb9f8caff1b5f71a09c75b7534df79	libtool	c81bd096be5f4c82f4e8f156ef112402	autotools	f20ecf7ab0a7c34e83238b3ed4aaf6d6	git-r3	875eb471682d3e1f18da124be97dcc81
+_md5_=33d6f02b729da58ba1c2556fbeae4a07

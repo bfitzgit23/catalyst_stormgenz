@@ -1,16 +1,16 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 inherit autotools
 
-DESCRIPTION="A library with SDR DSP primitives"
-HOMEPAGE="http://git.osmocom.org/libosmo-dsp/"
+DESCRIPTION="Library with SDR DSP primitives"
+HOMEPAGE="https://gitea.osmocom.org/sdr/libosmo-dsp/"
 
 if [[ ${PV} == 9999* ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="git://git.osmocom.org/${PN}"
+	EGIT_REPO_URI="https://git.osmocom.org/${PN}"
 else
 	SRC_URI="https://dev.gentoo.org/~zerochaos/distfiles/${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm ~riscv ~x86"
@@ -24,7 +24,7 @@ RDEPEND="sci-libs/fftw:3.0"
 DEPEND="${RDEPEND}"
 BDEPEND="
 	doc? (
-		app-doc/doxygen
+		app-text/doxygen
 		dev-texlive/texlive-latexextra
 	)
 	virtual/pkgconfig

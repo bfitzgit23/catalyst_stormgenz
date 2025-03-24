@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 inherit meson python-single-r1 xdg
 
 if [[ "${PV}" == "9999" ]]
@@ -11,11 +11,7 @@ then
 	inherit git-r3
 	EGIT_REPO_URI="https://git.sr.ht/~sircmpwn/hiprompt-gtk-py"
 else
-	EGIT_COMMIT="8d6ef1d042ec2731f84245164094e622f4be3f2d"
-	MY_P="${PN}-${EGIT_COMMIT}"
-
-	SRC_URI="https://git.sr.ht/~sircmpwn/hiprompt-gtk-py/archive/${EGIT_COMMIT}.tar.gz -> ${MY_P}.tar.gz"
-	S="${WORKDIR}/${MY_P}"
+	SRC_URI="https://git.sr.ht/~sircmpwn/hiprompt-gtk-py/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm64 ~riscv"
 fi
 

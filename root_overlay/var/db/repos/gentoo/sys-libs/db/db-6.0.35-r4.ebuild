@@ -1,8 +1,8 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-inherit autotools db flag-o-matic multilib multilib-minimal toolchain-funcs
+inherit autotools db flag-o-matic multilib-minimal toolchain-funcs
 
 #Number of official patches
 #PATCHNO=`echo ${PV}|sed -e "s,\(.*_p\)\([0-9]*\),\2,"`
@@ -24,12 +24,12 @@ DESCRIPTION="Oracle Berkeley DB"
 HOMEPAGE="http://www.oracle.com/technetwork/database/database-technologies/berkeleydb/overview/index.html"
 SRC_URI="http://download.oracle.com/berkeley-db/${MY_P}.tar.gz"
 for (( i=1 ; i<=${PATCHNO} ; i++ )) ; do
-	export SRC_URI="${SRC_URI} http://www.oracle.com/technology/products/berkeley-db/db/update/${MY_PV}/patch.${MY_PV}.${i}"
+	SRC_URI+=" http://www.oracle.com/technology/products/berkeley-db/db/update/${MY_PV}/patch.${MY_PV}.${i}"
 done
 
 LICENSE="AGPL-3"
 SLOT="$(ver_cut 1-2)"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
 IUSE="doc cxx tcl test"
 
 REQUIRED_USE="test? ( tcl )"
@@ -104,6 +104,14 @@ src_prepare() {
 		-i "${S_BASE}"/test/tcl/reputils.tcl || die
 }
 
+src_configure() {
+	# bug #943726
+	append-cflags -std=gnu17
+	# Force bfd before calling multilib_toolchain_setup
+	tc-ld-force-bfd #470634 #729510
+	multilib-minimal_src_configure
+}
+
 multilib_src_configure() {
 	local myconf=(
 		--enable-compat185
@@ -120,8 +128,6 @@ multilib_src_configure() {
 		$(use_enable cxx stl)
 		$(use_enable test)
 	)
-
-	tc-ld-force-bfd #470634 #729510
 
 	# compilation with -O0 fails on amd64, see bug #171231
 	if [[ ${ABI} == amd64 ]]; then

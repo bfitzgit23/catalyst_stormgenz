@@ -1,13 +1,12 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 LUA_COMPAT=( lua5-{1..4} luajit )
-
 inherit cmake desktop lua-single pax-utils
 
-if [[ ${PV} == *9999 ]] ; then
+if [[ ${PV} == *9999* ]] ; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/awesomeWM/${PN}.git"
 else
@@ -15,7 +14,7 @@ else
 	KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~riscv ~x86"
 fi
 
-DESCRIPTION="A dynamic floating and tiling window manager"
+DESCRIPTION="Dynamic floating and tiling window manager"
 HOMEPAGE="https://awesomewm.org/"
 
 LICENSE="GPL-2"
@@ -32,7 +31,7 @@ RDEPEND="${LUA_DEPS}
 	dev-libs/libxdg-basedir
 	$(lua_gen_cond_dep 'dev-lua/lgi[${LUA_USEDEP}]')
 	x11-libs/cairo[X,xcb(+)]
-	x11-libs/gdk-pixbuf:2
+	x11-libs/gdk-pixbuf:2[introspection]
 	x11-libs/libxcb
 	x11-libs/pango[introspection]
 	x11-libs/startup-notification

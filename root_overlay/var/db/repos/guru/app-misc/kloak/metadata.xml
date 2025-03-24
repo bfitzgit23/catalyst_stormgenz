@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<maintainer type="person">
-		<email>c@cgps.ch</email>
-		<name>Chaquen Beliakov Amaya</name>
-	</maintainer>
+	<!-- maintainer-needed -->
 	<upstream>
 		<remote-id type="github">Whonix/kloak</remote-id>
 		<remote-id type="gitlab">whonix/kloak</remote-id>
 	</upstream>
+	<use>
+		<flag name="apparmor">Install AppArmor profile</flag>
+		<flag name="systemd">Install systemd service file</flag>
+	</use>
 </pkgmetadata>

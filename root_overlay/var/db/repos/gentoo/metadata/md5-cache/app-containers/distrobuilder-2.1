@@ -1,4 +1,4 @@
-BDEPEND=verify-sig? ( sec-keys/openpgp-keys-linuxcontainers ) >=dev-lang/go-1.18 app-arch/unzip
+BDEPEND=verify-sig? ( sec-keys/openpgp-keys-linuxcontainers ) >=dev-lang/go-1.20:= app-arch/unzip
 DEFINED_PHASES=compile install setup test unpack
 DESCRIPTION=System container image builder for LXC and LXD
 EAPI=8
@@ -11,5 +11,5 @@ RDEPEND=app-crypt/gnupg dev-util/debootstrap dev-vcs/git net-misc/rsync sys-fs/s
 RESTRICT=test strip
 SLOT=0
 SRC_URI=https://linuxcontainers.org/downloads/distrobuilder/distrobuilder-2.1.tar.gz verify-sig? ( https://linuxcontainers.org/downloads/distrobuilder/distrobuilder-2.1.tar.gz.asc )
-_eclasses_=go-module	8624eede24936fd7666e5298e5332f22	linux-info	c4f1201b96a8a2c1f3b86cc8b2c71c91	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=10515c59279216845e141728edd057df
+_eclasses_=multiprocessing	1e32df7deee68372153dca65f4a7c21f	toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	go-env	0e2babf96e7d0b045fc07ad199eb2399	go-module	df32d29550d40a92da723d3b8e17b467	linux-info	ea4122ba1d8791a12b78e53f9510a2e3
+_md5_=1e9fb1df559035db0cbcc19f9c045757

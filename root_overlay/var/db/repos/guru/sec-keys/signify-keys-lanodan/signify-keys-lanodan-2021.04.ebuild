@@ -5,13 +5,13 @@ EAPI=8
 
 MY_PV="$(ver_rs 1 -)"
 DESCRIPTION="Signify keys used by Haelwenn (lanodan) Monnier"
-HOMEPAGE="https://hacktivis.me/releases/signify/"
-SRC_URI="https://hacktivis.me/releases/signify/${MY_PV}.pub -> ${PN}-${MY_PV}.pub"
+HOMEPAGE="https://distfiles.hacktivis.me/releases/signify/"
+SRC_URI="https://distfiles.hacktivis.me/releases/signify/${MY_PV}.pub -> ${PN}-${MY_PV}.pub"
 S="${WORKDIR}"
 
 LICENSE="public-domain"
 SLOT="${MY_PV}"
-KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86"
 
 src_install() {
 	local files=( ${A} )

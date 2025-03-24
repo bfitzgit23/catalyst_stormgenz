@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -15,7 +15,7 @@ SRC_URI="mirror://apache/apr/${P}.tar.bz2"
 
 LICENSE="Apache-2.0"
 SLOT="1"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x64-solaris"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x64-solaris"
 IUSE="berkdb doc gdbm ldap mysql nss odbc openssl postgres sqlite static-libs"
 
 RDEPEND="
@@ -39,8 +39,8 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	>=sys-devel/libtool-2.4.2
-	doc? ( app-doc/doxygen )
+	>=dev-build/libtool-2.4.2
+	doc? ( app-text/doxygen )
 "
 
 DOCS=( CHANGES NOTICE README )
@@ -51,6 +51,11 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.6.1-my_bool.patch
 	"${FILESDIR}"/${PN}-1.6.1-drop-my_init.patch
 	"${FILESDIR}"/${PN}-1.6.3-fix-pkgconfig-libs.patch
+	"${FILESDIR}"/${PN}-1.6.3-configure-int.patch
+)
+
+QA_CONFIG_IMPL_DECL_SKIP=(
+	memset_s # bug #898566
 )
 
 src_prepare() {

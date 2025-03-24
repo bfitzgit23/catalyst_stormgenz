@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -7,7 +7,7 @@ EGIT_REPO_URI="https://git.postgresql.org/git/pgpool2.git"
 
 POSTGRES_COMPAT=( 9.6 {10..15} )
 
-inherit autotools git-r3 postgres-multi
+inherit autotools flag-o-matic git-r3 postgres-multi
 
 DESCRIPTION="Connection pool server for PostgreSQL"
 HOMEPAGE="https://www.pgpool.net/"
@@ -53,6 +53,11 @@ src_prepare() {
 }
 
 src_configure() {
+	# bug #946410
+	append-cflags -std=gnu17
+	# Usual always_inline problem
+	filter-flags -fno-semantic-interposition
+
 	postgres-multi_foreach econf \
 		--disable-rpath \
 		--sysconfdir="${EPREFIX}/etc/${PN}" \

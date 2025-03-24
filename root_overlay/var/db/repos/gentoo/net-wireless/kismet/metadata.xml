@@ -9,6 +9,7 @@
 		<flag name="libusb">Support libusb based capture sources such as mousejack, cc2540(ble), and nrf51822(ble)</flag>
 		<flag name="mqtt">Enable MQTT support</flag>
 		<flag name="pcre">Build with pcre support</flag>
+		<flag name="protobuf">Support old protobuf message passing in case of remote capture sources which are not up to date.</flag>
 		<flag name="rtlsdr">Enable rtlsdr based kismet capture sources</flag>
 		<flag name="suid">
 			Install a setuid root helper binary with limited functionality;
@@ -16,6 +17,11 @@
 			reducing security risks
 		</flag>
 		<flag name="ubertooth">Enable capture source for ubertooth to sniff bluetooth low energy</flag>
+		<flag name="wext">
+			Enable building kismet with support for the deprecated Linux Wireless Extensions.
+			This is required for some out of tree and staging drivers, and kismet has not
+			been well tested with it disabled, so it defaults to on.
+		</flag>
 	</use>
 	<upstream>
 		<remote-id type="github">kismetwireless/kismet</remote-id>

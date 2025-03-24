@@ -14,7 +14,7 @@ SRC_URI="https://hackage.haskell.org/package/${P}/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0/${PV}"
-KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
 IUSE=""
 
 RDEPEND=">=dev-haskell/exceptions-0.8:=[profile?]
@@ -26,10 +26,7 @@ DEPEND="${RDEPEND}
 		dev-haskell/void )
 "
 
-src_prepare() {
-	default
-
-	cabal_chdeps \
-		'base >= 4.7 && < 4.11' 'base >= 4.7' \
-		'exceptions >= 0.8 && < 0.9' 'exceptions >= 0.8'
-}
+CABAL_CHDEPS=(
+	'base >= 4.7 && < 4.11' 'base >= 4.7'
+	'exceptions >= 0.8 && < 0.9' 'exceptions >= 0.8'
+)

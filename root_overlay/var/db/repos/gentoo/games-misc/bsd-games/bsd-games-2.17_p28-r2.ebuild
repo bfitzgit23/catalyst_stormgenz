@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -15,7 +15,7 @@ S="${WORKDIR}/${PN}-$(ver_cut 1-2)"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~x86"
+KEYWORDS="~amd64 ~x86"
 
 DEPEND="
 	sys-apps/miscfiles
@@ -29,8 +29,8 @@ RDEPEND="
 	acct-group/gamestat
 "
 BDEPEND="
-	sys-devel/bison
-	sys-devel/flex
+	app-alternatives/yacc
+	app-alternatives/lex
 	virtual/pkgconfig
 "
 
@@ -52,6 +52,7 @@ src_prepare() {
 	eapply "${FILESDIR}"/${PN}-2.17-bg.patch
 	eapply "${FILESDIR}"/${PN}-2.17-gcc4.patch
 	eapply "${FILESDIR}"/${PN}-2.17-rename-getdate-clash.patch
+	eapply "${FILESDIR}"/${PN}-2.17-sigpause-gnusource.patch
 
 	default
 

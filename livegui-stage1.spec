@@ -1,17 +1,17 @@
 subarch: amd64
-version_stamp: stormgenz-09-01-2024
+version_stamp: stormg-22-03-2025
 target: livecd-stage1
 rel_type: default
 profile: default/linux/amd64/23.0/desktop
-snapshot_treeish: c34f7dd28806f83646e35a497a6e48f777e9de3c
+snapshot_treeish: b5449a876ab62c0424d1476d3716e8f8dc32876e
 source_subpath: default/stage3-amd64-openrc-latest.tar.xz
 compression_mode: pixz
-portage_confdir: /home/bennji/catalyst_stormgenz/config/stages
-repos: /home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/guru
-/home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/tezeta
-/home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/tatsh-overlay
-/home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/edgets
-/home/bennji/catalyst_stormgenz/root_overlay/var/db/repos/steam-overlay
+portage_confdir: /home/ben/Desktop/catalyst_stormg/config/stages
+repos: /home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/guru
+/home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/tezeta
+/home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/tatsh-overlay
+/home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/edgets
+/home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/steam-overlay
 
 livecd/use:
 	-aac
@@ -33,7 +33,6 @@ livecd/use:
 	plymouth
         widgets
 	build
-	-ruby31
 
 livecd/packages:
 	app-admin/hddtemp
@@ -95,14 +94,12 @@ livecd/packages:
 	media-gfx/fbgrab
 	media-gfx/gimp
 	media-gfx/graphviz
-	media-gfx/inkscape
+#	media-gfx/inkscape
 	media-sound/alsa-utils
 	net-analyzer/openbsd-netcat
 	net-ftp/ftp
 	net-ftp/ncftp
 	net-im/pidgin
-	net-irc/hexchat
-	net-irc/irssi
 	net-misc/chrony
 	net-misc/dhcpcd
 	net-misc/iputils
@@ -198,7 +195,7 @@ livecd/packages:
 	sys-process/iotop
 	sys-process/procps
 	sys-process/psmisc
-	www-client/firefox-bin
+	www-client/firefox
 	x11-misc/lightdm-gtk-greeter
 	x11-misc/lightdm
  	gnome-base/gnome-common
@@ -231,9 +228,10 @@ livecd/packages:
 	app-arch/engrampa
 	app-admin/syslog-ng
  	xfce-base/xfce4-meta
-	dev-qt/qtstyleplugins
+	x11-misc/qt5ct
+	gui-apps/qt6ct
+	x11-themes/kvantum
 	media-video/vlc
-	x11-themes/adwaita-icon-theme
 	x11-themes/gtk-engines-adwaita
  	media-gfx/flameshot
 	media-fonts/jetbrains-mono
@@ -244,11 +242,8 @@ livecd/packages:
 	app-misc/fastfetch
 	app-admin/calamares
 	x11-themes/adw-gtk3
-	x11-themes/tela-icon-theme
-	x11-themes/arc-icon-theme
-	media-fonts/ubuntu-font-family
-	media-fonts/joypixels
-	media-fonts/fontawesome
+	x11-themes/papirus-icon-theme
 	media-fonts/corefonts
-	x11-terms/alacritty
-	x11-misc/picom
+	x11-themes/gentoo10-backgrounds
+	x11-themes/gentoo-xcursors
+	x11-themes/gentoo-artwork

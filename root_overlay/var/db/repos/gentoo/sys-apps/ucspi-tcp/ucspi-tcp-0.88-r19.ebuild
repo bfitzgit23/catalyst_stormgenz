@@ -9,14 +9,14 @@ DESCRIPTION="Collection of tools for managing UNIX services"
 HOMEPAGE="https://cr.yp.to/ucspi-tcp.html"
 SRC_URI="
 	https://cr.yp.to/${PN}/${P}.tar.gz
-	mirror://qmail/ucspi-rss.diff
+	http://qmail.org/ucspi-rss.diff
 	http://smarden.org/pape/djb/manpages/${P}-man.tar.gz
 	http://xs3.b92.net/tomislavr/${P}-rblspp.patch
 	ipv6? ( https://www.fefe.de/ucspi/${P}-ipv6.diff20.bz2 )"
 
 LICENSE="public-domain"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux ~ppc-macos"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux ~ppc-macos"
 IUSE="ipv6 qmail-spp selinux"
 RESTRICT="test"
 

@@ -1,10 +1,10 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # @ECLASS: git-r3.eclass
 # @MAINTAINER:
 # Michał Górny <mgorny@gentoo.org>
-# @SUPPORTED_EAPIS: 6 7 8
+# @SUPPORTED_EAPIS: 7 8
 # @BLURB: Eclass for fetching and unpacking git repositories.
 # @DESCRIPTION:
 # Third generation eclass for easing maintenance of live ebuilds using
@@ -26,7 +26,7 @@
 # If non-empty, then the repo likely needs EGIT_LFS to clone properly.
 
 case ${EAPI} in
-	6|7|8) ;;
+	7|8) ;;
 	*) die "${ECLASS}: EAPI ${EAPI:-0} not supported" ;;
 esac
 
@@ -35,13 +35,8 @@ _GIT_R3_ECLASS=1
 
 PROPERTIES+=" live"
 
-if [[ ${EAPI} != 6 ]]; then
-	BDEPEND=">=dev-vcs/git-1.8.2.1[curl]"
-	[[ ${EGIT_LFS} ]] && BDEPEND+=" dev-vcs/git-lfs"
-else
-	DEPEND=">=dev-vcs/git-1.8.2.1[curl]"
-	[[ ${EGIT_LFS} ]] && DEPEND+=" dev-vcs/git-lfs"
-fi
+BDEPEND=">=dev-vcs/git-1.8.2.1[curl]"
+[[ ${EGIT_LFS} ]] && BDEPEND+=" dev-vcs/git-lfs"
 
 # @ECLASS_VARIABLE: EGIT_CLONE_TYPE
 # @USER_VARIABLE
@@ -119,6 +114,14 @@ fi
 # This is the recommended mode for LFS repos to prevent excessive disk
 # usage.
 : "${EGIT_LFS_CLONE_TYPE:=shallow}"
+
+# @ECLASS_VARIABLE: EVCS_STORE_DIRS
+# @OUTPUT_VARIABLE
+# @DESCRIPTION:
+# Record of names of all the repositories directories being cloned in the git3_src.
+# This is useful in the case of ebuild that fetch multiple repos and
+# it would be used by eclean to clean them up.
+EVCS_STORE_DIRS=()
 
 # @ECLASS_VARIABLE: EGIT3_STORE_DIR
 # @USER_VARIABLE
@@ -360,6 +363,8 @@ _git-r3_set_gitdir() {
 
 	GIT_DIR=${EGIT3_STORE_DIR}/${repo_name}
 
+	EVCS_STORE_DIRS+=( "${GIT_DIR}" )
+
 	if [[ ! -d ${EGIT3_STORE_DIR} && ! ${EVCS_OFFLINE} ]]; then
 		(
 			addwrite /
@@ -419,6 +424,7 @@ _git-r3_set_submodules() {
 
 		l=${l#submodule.}
 		local subname=${l%%.url=*}
+		local is_manually_specified=
 
 		# filter out on EGIT_SUBMODULES
 		if declare -p EGIT_SUBMODULES &>/dev/null; then
@@ -439,13 +445,14 @@ _git-r3_set_submodules() {
 				continue
 			else
 				einfo "Using submodule ${parent_path}${subname}"
+				is_manually_specified=1
 			fi
 		fi
 
 		# skip modules that have 'update = none', bug #487262.
 		local upd=$(echo "${data}" | git config -f /dev/fd/0 \
 			submodule."${subname}".update)
-		[[ ${upd} == none ]] && continue
+		[[ ${upd} == none && ! ${is_manually_specified} ]] && continue
 
 		# https://github.com/git/git/blob/master/refs.c#L31
 		# we are more restrictive than git itself but that should not
@@ -672,6 +679,8 @@ git-r3_fetch() {
 					# and HEAD in case we need the default branch
 					# (we keep it in refs/git-r3 since otherwise --prune interferes)
 					"+HEAD:refs/git-r3/HEAD"
+					# fetch the specifc commit_ref to deal with orphan commits
+					"${remote_ref}"
 				)
 			else # single or shallow
 				local fetch_l fetch_r
@@ -801,13 +810,17 @@ git-r3_fetch() {
 
 		if [[ ${EGIT_LFS} ]]; then
 			# Fetch the LFS files from the current ref (if any)
-			local lfs_fetch_command=( git lfs fetch "${r}" )
+			local lfs_fetch_command=( git lfs fetch "${r}" "${remote_ref}" )
 
 			case "${EGIT_LFS_CLONE_TYPE}" in
 				shallow)
-					lfs_fetch_command+=(
-						--prune
-					)
+					if [[ -d ${GIT_DIR}/lfs/objects ]] && ! rmdir "${GIT_DIR}"/lfs/objects 2> /dev/null; then
+						# Only prune if the lfs directory is not empty.
+						# The prune command can take a very long time to resolve even if there are no lfs objects.
+						lfs_fetch_command+=(
+							--prune
+						)
+					fi
 					;;
 				single)
 					;;

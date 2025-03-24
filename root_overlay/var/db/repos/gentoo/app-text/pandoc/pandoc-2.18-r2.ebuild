@@ -15,7 +15,7 @@ SRC_URI="https://hackage.haskell.org/package/${P}/${P}.tar.gz"
 
 LICENSE="GPL-2+"
 SLOT="0/${PV}"
-KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
 IUSE="embed-data-files trypandoc"
 
 RDEPEND=">=dev-haskell/aeson-0.7:=[profile?] <dev-haskell/aeson-2.1:=[profile?]
@@ -78,6 +78,8 @@ RDEPEND=">=dev-haskell/aeson-0.7:=[profile?] <dev-haskell/aeson-2.1:=[profile?]
 	>=dev-haskell/hslua-2.2:=[profile?] <dev-haskell/hslua-2.3:=[profile?]
 	trypandoc? ( >=dev-haskell/wai-0.3:=[profile?]
 			>=dev-haskell/wai-extra-3.0.24:=[profile?] )
+	!app-text/pandoc-cli
+	!dev-haskell/pandoc
 "
 DEPEND="${RDEPEND}
 	>=dev-haskell/cabal-3.2.0.0

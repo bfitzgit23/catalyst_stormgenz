@@ -1,21 +1,21 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..11} )
 inherit autotools python-single-r1
 
 MY_PN="OpenIPMI"
 MY_P="${MY_PN}-${PV/_/-}"
 DESCRIPTION="Library interface to IPMI"
 HOMEPAGE="https://sourceforge.net/projects/openipmi/"
-SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/${PN}/${MY_P}.tar.gz"
 S="${WORKDIR}/${MY_P}"
 
 LICENSE="LGPL-2.1 GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~arm arm64 hppa ~ia64 ppc ppc64 ~riscv x86"
+KEYWORDS="amd64 ~arm arm64 hppa ~loong ppc ppc64 ~riscv x86"
 IUSE="crypt snmp perl python static-libs tcl"
 
 RDEPEND="

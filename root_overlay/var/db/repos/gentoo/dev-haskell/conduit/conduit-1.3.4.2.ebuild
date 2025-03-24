@@ -14,7 +14,7 @@ SRC_URI="https://hackage.haskell.org/package/${P}/${P}.tar.gz"
 
 LICENSE="MIT"
 SLOT="0/${PV}"
-KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
 
 RDEPEND="dev-haskell/exceptions:=[profile?]
 	>=dev-haskell/mono-traversable-1.0.7:=[profile?]
@@ -24,7 +24,7 @@ RDEPEND="dev-haskell/exceptions:=[profile?]
 	dev-haskell/text:=[profile?]
 	dev-haskell/unliftio-core:=[profile?]
 	dev-haskell/vector:=[profile?]
-	>=dev-lang/ghc-8.6.3:=
+	>=dev-lang/ghc-8.6.3:= <dev-lang/ghc-9.1
 "
 DEPEND="${RDEPEND}
 	>=dev-haskell/cabal-2.4.0.1

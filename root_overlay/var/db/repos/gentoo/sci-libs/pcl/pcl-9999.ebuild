@@ -1,47 +1,49 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-SCM=""
-if [ "${PV#9999}" != "${PV}" ] ; then
-	SCM="git-r3"
+inherit cmake cuda
+
+if [[ ${PV} == *9999* ]]; then
+	inherit git-r3
 	EGIT_REPO_URI="https://github.com/PointCloudLibrary/pcl"
-fi
-
-inherit ${SCM} cmake cuda
-
-if [ "${PV#9999}" != "${PV}" ] ; then
-	SRC_URI=""
 else
-	KEYWORDS="~amd64 ~arm"
 	SRC_URI="https://github.com/PointCloudLibrary/pcl/archive/${P}.tar.gz"
 	S="${WORKDIR}/${PN}-${P}"
+	KEYWORDS="~amd64 ~arm"
 fi
 
-HOMEPAGE="https://pointclouds.org/"
 DESCRIPTION="2D/3D image and point cloud processing"
+HOMEPAGE="https://pointclouds.org/"
+
 LICENSE="BSD"
-SLOT="0/1.12"
-IUSE="cuda doc opengl openni openni2 pcap png +qhull qt5 usb vtk cpu_flags_x86_sse test tutorials"
-# tests need the gtest sources to be available at build time
-RESTRICT="test"
+SLOT="0/$(ver_cut 1-2)"
+IUSE="cuda doc opengl openni openni2 pcap png +qhull qt6 usb vtk cpu_flags_x86_sse test tutorials"
+
+REQUIRED_USE="
+	openni? ( usb )
+	openni2? ( usb )
+	tutorials? ( doc )
+"
+RESTRICT="!test? ( test )"
 
 RDEPEND="
-	>=sci-libs/flann-1.7.1
 	dev-libs/boost:=
 	dev-cpp/eigen:3
-	opengl? ( virtual/opengl media-libs/freeglut )
+	>=sci-libs/flann-1.7.1
+	opengl? (
+		media-libs/freeglut
+		virtual/opengl
+	)
 	openni? ( dev-libs/OpenNI )
 	openni2? ( dev-libs/OpenNI2 )
 	pcap? ( net-libs/libpcap )
 	png? ( media-libs/libpng:0= )
 	qhull? ( media-libs/qhull:= )
-	qt5? (
-		dev-qt/qtgui:5
-		dev-qt/qtcore:5
-		dev-qt/qtconcurrent:5
-		dev-qt/qtopengl:5
+	qt6? (
+		dev-qt/qtbase:6[concurrent,gui,opengl]
+		vtk? ( sci-libs/vtk[-qt5(-),qt6] )
 	)
 	usb? ( virtual/libusb:1 )
 	vtk? ( >=sci-libs/vtk-5.6:=[imaging,rendering,views] )
@@ -49,10 +51,11 @@ RDEPEND="
 "
 DEPEND="${RDEPEND}
 	!!dev-cpp/metslib
+	test? ( dev-cpp/gtest )
 "
 BDEPEND="
 	doc? (
-		app-doc/doxygen[dot]
+		app-text/doxygen[dot]
 		virtual/latex-base
 	)
 	tutorials? (
@@ -60,17 +63,14 @@ BDEPEND="
 		dev-python/sphinx-rtd-theme
 		dev-python/sphinxcontrib-doxylink
 	)
-	virtual/pkgconfig"
-
-REQUIRED_USE="
-	openni? ( usb )
-	openni2? ( usb )
-	tutorials? ( doc )
+	virtual/pkgconfig
 "
 
 PATCHES=(
 	"${FILESDIR}"/${PN}-1.12.1-allow-configuration-of-install-dirs.patch
 	"${FILESDIR}"/${PN}-1.12.1-fix-hardcoded-relative-directory-of-the-installed-cmake-files.patch
+	"${FILESDIR}"/${PN}-1.14.1-gcc15.patch
+	"${FILESDIR}"/${PN}-1.14.1-tests.patch
 )
 
 src_prepare() {
@@ -92,7 +92,6 @@ src_configure() {
 		"-DWITH_OPENGL=$(usex opengl TRUE FALSE)"
 		"-DWITH_PNG=$(usex png TRUE FALSE)"
 		"-DWITH_QHULL=$(usex qhull TRUE FALSE)"
-		"-DWITH_QT=$(usex qt5 TRUE FALSE)"
 		"-DWITH_VTK=$(usex vtk TRUE FALSE)"
 		"-DWITH_PCAP=$(usex pcap TRUE FALSE)"
 		"-DWITH_OPENNI=$(usex openni TRUE FALSE)"
@@ -100,8 +99,18 @@ src_configure() {
 		"-DPCL_ENABLE_SSE=$(usex cpu_flags_x86_sse TRUE FALSE)"
 		"-DWITH_DOCS=$(usex doc TRUE FALSE)"
 		"-DWITH_TUTORIALS=$(usex tutorials TRUE FALSE)"
-		"-DBUILD_global_tests=FALSE"
+		-DBUILD_global_tests="$(usex test)"
 	)
 
+	if use qt6; then
+		mycmakeargs+=( "-DWITH_QT=QT6" )
+	else
+		mycmakeargs+=( "-DWITH_QT=NO" )
+	fi
+
 	cmake_src_configure
+}
+
+src_test() {
+	BUILD_DIR="${BUILD_DIR}/test" cmake_src_test
 }

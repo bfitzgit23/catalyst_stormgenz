@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,7 +7,7 @@ inherit autotools gnome2-utils readme.gentoo-r1
 
 DESCRIPTION="Yet another IM-client of SCIM"
 HOMEPAGE="http://www.scim-im.org/projects/scim_bridge"
-SRC_URI="mirror://sourceforge/scim/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/scim/${P}.tar.gz"
 
 LICENSE="GPL-2 LGPL-2.1"
 SLOT="0"
@@ -26,7 +26,7 @@ RDEPEND="
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	dev-util/intltool
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 "
 
 DISABLE_AUTOFORMATTING="yes"

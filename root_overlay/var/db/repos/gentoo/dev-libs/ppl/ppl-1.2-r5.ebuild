@@ -1,18 +1,18 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit autotools
+inherit autotools flag-o-matic
 
 DESCRIPTION="The Parma Polyhedra Library for numerical analysis of complex systems"
 HOMEPAGE="http://bugseng.com/products/ppl"
 SRC_URI="http://bugseng.com/products/ppl/download/ftp/releases/${PV}/${P}.tar.xz
-	https://dev.gentoo.org/~juippis/distfiles/tmp/ppl-1.2-r3-disable-boeing-tests.patch"
+	https://dev.gentoo.org/~juippis/distfiles/tmp/${P}-r3-disable-boeing-tests.patch"
 
 LICENSE="GPL-3"
 SLOT="0/4.14" # SONAMEs
-KEYWORDS="~alpha amd64 arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux"
+KEYWORDS="~alpha amd64 arm ~arm64 ~hppa ~m68k ~ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux"
 IUSE="cdd +cxx doc lpsol pch test"
 
 RDEPEND=">=dev-libs/gmp-6[cxx(+)]
@@ -41,6 +41,10 @@ src_prepare() {
 }
 
 src_configure() {
+	# mem_fun_ref and friends were removed in c++17, and some toolchains
+	# are beginning to default to that (bug 919850).
+	append-cxxflags -std=c++14
+
 	local interfaces=( c )
 	use cxx && interfaces+=( cxx )
 	econf \

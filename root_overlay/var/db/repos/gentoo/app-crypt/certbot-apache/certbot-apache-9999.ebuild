@@ -1,50 +1,27 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
-DISTUTILS_USE_PEP517=setuptools
-
-inherit distutils-r1
-
-PARENT_PN="${PN%-apache}"
-PARENT_P="${PARENT_PN}-${PV}"
-
-if [[ "${PV}" == *9999 ]]; then
-	inherit git-r3
-
-	EGIT_REPO_URI="https://github.com/certbot/certbot.git"
-	EGIT_SUBMODULES=()
-	EGIT_CHECKOUT_DIR="${WORKDIR}/${PARENT_P}"
-else
-	SRC_URI="
-		https://github.com/certbot/certbot/archive/v${PV}.tar.gz
-			-> ${PARENT_P}.gh.tar.gz
-	"
-	# Only for amd64, arm64 and x86 because of dev-python/python-augeas
-	KEYWORDS="~amd64 ~arm64 ~x86"
-fi
-
 DESCRIPTION="Apache plugin for Certbot (Let’s Encrypt client)"
 HOMEPAGE="
 	https://github.com/certbot/certbot
+	https://pypi.org/project/certbot-apache/
 	https://letsencrypt.org/
 "
 
-LICENSE="Apache-2.0"
+LICENSE="metapackage"
 SLOT="0"
 
-S="${WORKDIR}/${PARENT_P}/${PN}"
-
-BDEPEND="
-	test? ( dev-python/pytest[${PYTHON_USEDEP}] )
-"
-
+# Meta package for transition
+# No need to upgrade thanks to ">="
 RDEPEND="
-	>=app-crypt/acme-${PV}[${PYTHON_USEDEP}]
-	>=app-crypt/certbot-${PV}[${PYTHON_USEDEP}]
-	dev-python/python-augeas[${PYTHON_USEDEP}]
+	>=app-crypt/certbot-9999[certbot-apache]
 "
 
-distutils_enable_tests pytest
+pkg_postinst() {
+	elog "This is a meta-package to help in transition to single package "
+	elog "app-crypt/certbot."
+	elog "It is advice to simply deselect this package and to emerge "
+	elog "app-crypt/certbot[certbot-apache] for this module."
+}

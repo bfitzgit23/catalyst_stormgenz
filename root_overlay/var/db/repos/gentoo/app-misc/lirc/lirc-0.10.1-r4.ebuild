@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{9,10} )
+PYTHON_COMPAT=( python3_{10,11,12} )
 
 inherit flag-o-matic linux-info python-single-r1 systemd xdg-utils
 
@@ -15,7 +15,7 @@ LIRC_DRIVER_DEVICE="/dev/lirc0"
 MY_P=${PN}-${PV/_/-}
 
 if [[ "${PV/_pre/}" = "${PV}" ]]; then
-	SRC_URI="mirror://sourceforge/lirc/${MY_P}.tar.bz2"
+	SRC_URI="https://downloads.sourceforge.net/lirc/${MY_P}.tar.bz2"
 else
 	SRC_URI="https://www.lirc.org/software/snapshots/${MY_P}.tar.bz2"
 fi
@@ -57,7 +57,7 @@ DEPEND="
 	$(python_gen_cond_dep '
 		dev-python/setuptools[${PYTHON_USEDEP}]
 	')
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 	sys-apps/kmod
 	sys-kernel/linux-headers
 "

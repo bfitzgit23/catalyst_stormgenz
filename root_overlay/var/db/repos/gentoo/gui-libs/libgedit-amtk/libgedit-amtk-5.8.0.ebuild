@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -6,18 +6,18 @@ EAPI=8
 inherit gnome2 meson
 
 DESCRIPTION="Actions, Menus and Toolbars Kit for GTK applications"
-HOMEPAGE="https://github.com/gedit-technology/libgedit-amtk"
+HOMEPAGE="https://gitlab.gnome.org/World/gedit/libgedit-amtk"
 SRC_URI="https://gedit-technology.net/tarballs/libgedit-amtk/${P}.tar.xz"
 
 LICENSE="LGPL-2.1+"
 SLOT="5/0"
-KEYWORDS="~alpha amd64 ~arm arm64 ~ia64 ~loong ~ppc ~ppc64 ~riscv ~sparc x86"
+KEYWORDS="~alpha amd64 ~arm arm64 ~loong ~ppc ~ppc64 ~riscv ~sparc x86"
 IUSE="+introspection gtk-doc"
 
 RDEPEND="
 	!gui-libs/amtk
 	>=dev-libs/glib-2.56:2
-	>=x11-libs/gtk+-3.22:3
+	>=x11-libs/gtk+-3.22:3[introspection?]
 	introspection? ( >=dev-libs/gobject-introspection-1.42:= )
 "
 DEPEND="${RDEPEND}"

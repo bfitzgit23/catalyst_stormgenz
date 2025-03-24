@@ -1,16 +1,16 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 inherit desktop flag-o-matic python-any-r1 scons-utils toolchain-funcs xdg
 
 DESCRIPTION="Free Lemmings clone"
 HOMEPAGE="https://pingus.gitlab.io/"
 SRC_URI="https://pingus.googlecode.com/files/${P}.tar.bz2"
 
-LICENSE="GPL-3"
+LICENSE="GPL-3+ GPL-2+ ZLIB"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="opengl music"

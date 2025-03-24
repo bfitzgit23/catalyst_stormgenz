@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -21,35 +21,22 @@ LICENSE="LGPL-3"
 SLOT="0"
 
 IUSE="avdevice +audiofilters +alsa cdio cuvid extensions gme inputs libass
-	modplug notifications opengl pipewire portaudio pulseaudio +qt5 qt6 sid
-	shaders +taglib vaapi vdpau videofilters visualizations vulkan xv"
+	modplug notifications opengl pipewire portaudio pulseaudio sid
+	shaders +taglib vaapi videofilters visualizations vulkan xv"
 
 REQUIRED_USE="
 	audiofilters? ( || ( alsa pipewire portaudio pulseaudio ) )
 	shaders? ( vulkan )
-	^^ ( qt5 qt6 )
 "
 
 RDEPEND="
-	qt5? (
-		dev-qt/qtcore:5
-		dev-qt/qtdbus:5
-		dev-qt/qtgui:5[X(-),vulkan?]
-		dev-qt/qtsvg:5
-		dev-qt/qtwidgets:5
-		dev-qt/qtx11extras:5
-		extensions? ( dev-qt/qtdeclarative:5 )
-		videofilters? ( dev-qt/qtconcurrent:5 )
-	)
-	qt6? (
-		dev-qt/qtbase:6[concurrent,dbus,gui,network,opengl?,ssl,vulkan?,widgets]
-		dev-qt/qt5compat:6
-		dev-qt/qtsvg:6
-		extensions? ( dev-qt/qtdeclarative:6 )
-	)
-	media-video/ffmpeg:=[vaapi?,vdpau?]
+	dev-qt/qtbase:6[concurrent,dbus,gui,network,opengl?,ssl,vulkan?,widgets]
+	dev-qt/qt5compat:6
+	dev-qt/qtsvg:6
+	media-video/ffmpeg:=[vaapi?]
 	alsa? ( media-libs/alsa-lib )
 	cdio? ( dev-libs/libcdio[cddb] )
+	extensions? ( dev-qt/qtdeclarative:6 )
 	gme? ( media-libs/game-music-emu )
 	libass? ( media-libs/libass )
 	opengl? ( virtual/opengl )
@@ -58,15 +45,14 @@ RDEPEND="
 	pulseaudio? ( media-libs/libpulse )
 	sid? ( media-libs/libsidplayfp )
 	shaders? ( >=media-libs/shaderc-2020.1 )
-	taglib? ( media-libs/taglib	)
+	taglib? ( media-libs/taglib:= )
 	vaapi? ( media-libs/libva[X] )
 	vulkan? ( >=media-libs/vulkan-loader-1.2.133 )
 	xv? ( x11-libs/libXv )
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	qt5? ( dev-qt/linguist-tools:5 )
-	qt6? ( dev-qt/qttools:6[linguist] )
+	dev-qt/qttools:6[linguist]
 "
 
 src_prepare() {
@@ -81,13 +67,12 @@ src_prepare() {
 
 src_configure() {
 	local mycmakeargs=(
-		-DBUILD_WITH_QT6=$(usex qt6)
+		-DBUILD_WITH_QT6=ON
 		# core
-		-DUSE_LINK_TIME_OPTIMIZATION=false
 		-DUSE_UPDATES=OFF
 		-DUSE_ALSA=$(usex alsa)
 		-DUSE_AUDIOCD=$(usex cdio)
-		-DUSE_DBUS_SUSPEND=ON
+		-DUSE_DBUS_PM=ON
 		-DUSE_FREEDESKTOP_NOTIFICATIONS=ON
 		-DUSE_LIBASS=$(usex libass)
 		-DUSE_NOTIFY=$(usex notifications)
@@ -99,7 +84,6 @@ src_configure() {
 		# ffmpeg
 		-DUSE_FFMPEG_AVDEVICE=$(usex avdevice)
 		-DUSE_FFMPEG_VAAPI=$(usex vaapi)
-		-DUSE_FFMPEG_VDPAU=$(usex vdpau)
 
 		# chiptune
 		-DUSE_CHIPTUNE_GME=$(usex gme)

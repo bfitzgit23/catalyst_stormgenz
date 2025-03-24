@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -14,7 +14,9 @@ else
 fi
 
 DESCRIPTION="Ncurses based music player with plugin support for many formats"
-HOMEPAGE="https://cmus.github.io/"
+HOMEPAGE="https://cmus.github.io/ https://github.com/cmus/cmus"
+
+S="${WORKDIR}/${P/_/-}"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -22,7 +24,11 @@ IUSE="aac alsa ao cddb cdio debug discid elogind examples ffmpeg +flac jack libs
 	+mad mikmod modplug mp4 musepack opus oss pidgin pulseaudio sndio systemd tremor +unicode
 	+vorbis wavpack"
 
-REQUIRED_USE="?? ( elogind systemd )"
+# Both CONFIG_TREMOR=y and CONFIG_VORBIS=y are required to link to tremor libs instead of vorbis libs
+REQUIRED_USE="
+	?? ( elogind systemd )
+	tremor? ( vorbis )
+	mp4? ( aac )" # enabling mp4 adds -lfaad
 
 BDEPEND="
 	virtual/pkgconfig
@@ -60,13 +66,7 @@ RDEPEND="${DEPEND}
 	)
 "
 
-# Both CONFIG_TREMOR=y and CONFIG_VORBIS=y are required to link to tremor libs instead of vorbis libs
-REQUIRED_USE="tremor? ( vorbis )
-	mp4? ( aac )" # enabling mp4 adds -lfaad
-
 DOCS=( AUTHORS README.md )
-
-S="${WORKDIR}/${P/_/-}"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-2.9.1-atomic.patch"

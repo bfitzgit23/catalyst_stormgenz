@@ -1,4 +1,4 @@
-# Copyright 1999-2024 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -20,23 +20,23 @@ else
 	KEYWORDS="~amd64"
 fi
 
-# main
 LICENSE="AGPL-3"
-# deps
-LICENSE+=" 0BSD Apache-2.0 Apache-2.0-with-LLVM-exceptions BSD-2 BSD ISC MIT MPL-2.0 Unicode-DFS-2016"
+# Dependent crate licenses
+LICENSE+=" 0BSD Apache-2.0 BSD ISC MIT MPL-2.0 Unicode-3.0"
 
 SLOT="0"
-IUSE="cli mysql postgres sqlite web"
+IUSE="cli mysql postgres +sqlite web"
 REQUIRED_USE="|| ( mysql postgres sqlite )"
 
 RDEPEND="
 	acct-user/vaultwarden
 	acct-group/vaultwarden
-	cli? ( || ( app-admin/bitwarden-cli app-admin/bitwarden-cli-bin  ) )
+	dev-libs/openssl:=
+	cli? ( app-admin/bitwarden-cli-bin )
 	mysql? ( dev-db/mysql-connector-c:= )
 	postgres? ( dev-db/postgresql:* )
 	sqlite? ( dev-db/sqlite:3 )
-	web? ( || ( www-apps/vaultwarden-web www-apps/vaultwarden-web-bin  ) )
+	web? ( www-apps/vaultwarden-web-bin )
 "
 
 DEPEND="${RDEPEND}"
@@ -63,6 +63,11 @@ DOC_CONTENTS="\n
 	Admin interface: http://0.0.0.0:8000/admin
 "
 
+pkg_setup() {
+	check-reqs_pkg_setup
+	rust_pkg_setup
+}
+
 src_unpack() {
 	if [[ ${PV} == 9999* ]]; then
 		# clone vaultwarden
@@ -81,6 +86,14 @@ src_unpack() {
 
 src_prepare() {
 	default
+	if [[ ${PV} != 9999* ]]; then
+		cat <<-'EOF' >> "${ECARGO_HOME}"/config.toml || die
+			[source."git+https://github.com/BlackDex/yubico-rs?rev=00df14811f58155c0f02e3ab10f1570ed3e115c6"]
+			git = "https://github.com/BlackDex/yubico-rs"
+			rev = "00df14811f58155c0f02e3ab10f1570ed3e115c6"
+			replace-with = "gentoo"
+		EOF
+	fi
 	use web && { sed -i -e 's|^WEB_VAULT_ENABLED=false|WEB_VAULT_ENABLED=true|g;' .env.template || die; }
 }
 
@@ -100,7 +113,7 @@ src_compile() {
 }
 
 src_install() {
-	dobin target/*/"${PN}"
+	dobin target/*/*/"${PN}"
 	systemd_newunit "${FILESDIR}"/vaultwarden-1.30.3.service "${PN}".service
 	newinitd "${FILESDIR}"/vaultwarden-1.30.3.initd "${PN}"
 	newtmpfiles "${FILESDIR}"/vaultwarden-tmpfiles-1.30.3.conf "${PN}".conf

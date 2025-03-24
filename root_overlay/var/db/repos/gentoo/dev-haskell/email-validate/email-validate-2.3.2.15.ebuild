@@ -14,7 +14,7 @@ SRC_URI="https://hackage.haskell.org/package/${P}/${P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0/${PV}"
-KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
 
 PATCHES=( "${FILESDIR}/${PN}-2.3.2.15-fix-doctest.patch" )
 
@@ -28,10 +28,8 @@ DEPEND="${RDEPEND}
 		>=dev-haskell/quickcheck-2.4 <dev-haskell/quickcheck-2.15 )
 "
 
-src_prepare() {
-	default
-
-	cabal_chdeps \
-		'hspec >= 2.2.3 && < 2.9' 'hspec >= 2.2.3' \
-		'doctest >= 0.8 && < 0.19' 'doctest >=0.8'
-}
+CABAL_CHDEPS=(
+	'hspec >= 2.2.3 && < 2.9' 'hspec >= 2.2.3'
+	'doctest >= 0.8 && < 0.19' 'doctest >=0.8'
+	'template-haskell >= 2.10.0.0 && < 2.18' 'template-haskell >=2.10'
+)

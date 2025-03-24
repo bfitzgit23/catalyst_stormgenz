@@ -1,9 +1,9 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{9..13} python3_13t )
 PYTHON_REQ_USE='threads(+)'
 PLOCALES="ca cs de el en_GB es eu fr it ja ko nn pl pt pt_PT ru sv zh"
 inherit toolchain-funcs flag-o-matic plocale python-any-r1 waf-utils desktop xdg
@@ -15,29 +15,27 @@ if [[ ${PV} == *9999* ]]; then
 	EGIT_REPO_URI="https://git.ardour.org/ardour/ardour.git"
 	inherit git-r3
 else
-	KEYWORDS="~amd64 ~x86"
 	SRC_URI="https://dev.gentoo.org/~fordfrog/distfiles/Ardour-${PV}.0.tar.bz2"
 	S="${WORKDIR}/Ardour-${PV}.0"
+	KEYWORDS="~amd64 ~loong ~x86"
 fi
 
 LICENSE="GPL-2"
-SLOT="7"
+SLOT="9"
 IUSE="doc jack nls phonehome pulseaudio cpu_flags_ppc_altivec cpu_flags_x86_sse cpu_flags_x86_mmx cpu_flags_x86_3dnow"
 
 RDEPEND="
+	dev-cpp/cairomm:0
 	dev-cpp/glibmm:2
-	dev-cpp/gtkmm:2.4
+	dev-cpp/pangomm:1.4
 	dev-libs/boost:=
 	dev-libs/glib:2
 	dev-libs/libsigc++:2
 	dev-libs/libxml2:2
-	dev-libs/libxslt
-	>=gnome-base/libgnomecanvas-2
 	media-libs/alsa-lib
 	media-libs/aubio
 	media-libs/flac:=
 	media-libs/freetype:2
-	media-libs/libart_lgpl
 	media-libs/liblo
 	media-libs/liblrdf
 	media-libs/libsamplerate
@@ -45,35 +43,34 @@ RDEPEND="
 	media-libs/libsoundtouch
 	media-libs/raptor:2
 	media-libs/rubberband
-	media-libs/taglib
+	media-libs/taglib:=
 	media-libs/vamp-plugin-sdk
+	net-libs/libwebsockets
 	net-misc/curl
 	sys-libs/readline:0=
 	sci-libs/fftw:3.0[threads]
 	virtual/libusb:1
 	x11-libs/cairo
-	x11-libs/gtk+:2
 	x11-libs/pango
 	jack? ( virtual/jack )
 	pulseaudio? ( media-libs/libpulse )
 	media-libs/lilv
 	media-libs/sratom
 	dev-libs/sord
-	media-libs/suil[X,gtk2]
 	media-libs/lv2"
+#	media-libs/suil[X,gtk2] bundled suil is used, maybe probably because of ytk
 #	!bundled-libs? ( media-sound/fluidsynth ) at least libltc is missing to be able to unbundle...
 
 DEPEND="${RDEPEND}
-	${PYTHON_DEPS}
+	jack? ( virtual/jack )"
+BDEPEND="${PYTHON_DEPS}
 	dev-util/itstool
 	sys-devel/gettext
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen[dot] )
-	jack? ( virtual/jack )"
+	doc? ( app-text/doxygen[dot] )"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-6.8-metadata.patch"
-	"${FILESDIR}/${PN}-7.4-libc++.patch"
 )
 
 pkg_pretend() {
@@ -81,17 +78,13 @@ pkg_pretend() {
 		ewarn "Linking with gold linker might produce broken executable, see bug #733972"
 }
 
-pkg_setup() {
-	if has_version \>=dev-libs/libsigc++-2.6 ; then
-		append-cxxflags -std=c++11
-	fi
-	python-any-r1_pkg_setup
-}
-
 src_prepare() {
 	default
 
+	# delete optimization flags
 	sed 's/'full-optimization\'\ :\ \\[.*'/'full-optimization\'\ :\ \'\','/' -i "${S}"/wscript || die
+
+	# handle arch
 	MARCH=$(get-flag march)
 	OPTFLAGS=""
 	if use cpu_flags_x86_sse; then
@@ -113,9 +106,13 @@ src_prepare() {
 	sed 's/flag_line\ =\ o.*/flag_line\ =\ \": '"${OPTFLAGS}"' just some place holders\"/' \
 		-i "${S}"/wscript || die
 	sed 's/cpu\ ==\ .*/cpu\ ==\ "LeaveMarchAsIs":/' -i "${S}"/wscript || die
+
+	# boost and shebang
 	append-flags "-lboost_system"
 	python_fix_shebang "${S}"/wscript
 	python_fix_shebang "${S}"/waf
+
+	# handle locales
 	my_lcmsg() {
 		rm -f {gtk2_ardour,gtk2_ardour/appdata,libs/ardour,libs/gtkmm2ext}/po/${1}.po
 	}
@@ -126,12 +123,16 @@ src_configure() {
 	# avoid bug https://bugs.gentoo.org/800067
 	local -x AS="$(tc-getCC) -c"
 
+	# -Werror=odr
+	# https://tracker.ardour.org/view.php?id=9649
+	# https://bugs.gentoo.org/917095
+	filter-lto
+
 	local backends="alsa,dummy"
 	use jack && backends+=",jack"
 	use pulseaudio && backends+=",pulseaudio"
 
 	tc-export CC CXX
-	mkdir -p "${D}"
 	local myconf=(
 		--configdir=/etc
 		--freedesktop
@@ -139,14 +140,13 @@ src_configure() {
 		--optimize
 		--with-backends=${backends}
 		$({ use cpu_flags_ppc_altivec || use cpu_flags_x86_sse; } && \
-			echo "--fpu-optimization" || echo "--no-fpu-optimization")
+			echo '' || echo "--no-fpu-optimization")
 		$(usex doc "--docs" '')
-		$(usex nls "--nls" "--no-nls")
-		$(usex phonehome "--phone-home" "--no-phone-home")
+		$(usex nls '' "--no-nls")
+		$(usex phonehome '' "--no-phone-home")
 		# not possible right now  --use-external-libs
+		# missing dependency: https://github.com/c4dm/qm-dsp
 	)
-
-	[[ "$(tc-get-cxx-stdlib)" = "libc++" ]] && myconf+=( --use-libc++ )
 
 	waf-utils_src_configure "${myconf[@]}"
 }
@@ -179,6 +179,7 @@ src_install() {
 
 	insinto /usr/share/mime/packages
 	newins build/gtk2_ardour/ardour.xml ardour${SLOT}.xml
+	rm "${D}/usr/share/mime/packages/ardour.xml" || die
 }
 
 pkg_postinst() {

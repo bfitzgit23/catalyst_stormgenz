@@ -3,7 +3,7 @@
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 inherit desktop xdg python-single-r1
 
 IFACIALMOCAP_COMMIT="8095807804b138a3236d9ce21e800e02fe44e53a"
@@ -22,7 +22,7 @@ SRC_URI="
 		-> godot-vpuppr-release-profile.${P}.tar.gz
 	osf-tracker? (
 		https://github.com/you-win/OpenSeeFace/releases/download/latest/OpenSeeFace_latest_linux.tar.gz
-			-> OpenSeeFace_latest.tar.gz
+			-> OpenSeeFace_20230108.tar.gz
 		https://github.com/virtual-puppet-project/openseeface-tracker/archive/${OPENSEEFACE_COMMIT}.tar.gz
 			-> openseeface-tracker-${OPENSEEFACE_COMMIT}.tar.gz
 	)
@@ -47,15 +47,12 @@ SRC_URI="
 LICENSE="MIT"
 SLOT="0"
 
-IUSE="+osf-tracker ifm-tracker mouse-tracker vts-tracker meowface-tracker remote-control"
+IUSE="+osf-tracker ifm-tracker vts-tracker meowface-tracker remote-control"
 REQUIRED_USE="osf-tracker? ( ${PYTHON_REQUIRED_USE} )"
 
 RESTRICT="strip"
 RDEPEND="
 	osf-tracker? ( ${PYTHON_DEPS} )
-"
-BDEPEND="
-	mouse-tracker? ( virtual/rust )
 "
 
 export EDITOR="${WORKDIR}/Godot_v3.x-stable_linux_headless.64"

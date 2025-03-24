@@ -48,6 +48,11 @@ DEPEND="
 	acct-group/plugdev
 "
 
+PATCHES=(
+	"${FILESDIR}/${P}_libusb.patch"
+	"${FILESDIR}/${P}_libusb-go-1.24.patch"
+)
+
 src_compile() {
 	default
 	go build -v -work -x -o ${PN} || die

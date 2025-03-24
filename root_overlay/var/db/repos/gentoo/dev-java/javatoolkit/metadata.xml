@@ -5,5 +5,9 @@
 		<email>java@gentoo.org</email>
 		<name>Java</name>
 	</maintainer>
+	<upstream>
+		<remote-id type="gentoo">proj/javatoolkit</remote-id>
+		<remote-id type="github">gentoo/javatoolkit</remote-id>
+	</upstream>
 	<stabilize-allarches/>
 </pkgmetadata>

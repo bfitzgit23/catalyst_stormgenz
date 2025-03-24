@@ -1,31 +1,34 @@
-# Copyright 2021-2024 Gentoo Authors
+# Copyright 2021-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit cargo optfeature shell-completion
+RUST_MIN_VER="1.75.0"
+
+inherit cargo shell-completion
 
 DESCRIPTION="Unofficial Bitwarden CLI"
 HOMEPAGE="https://git.tozt.net/rbw"
 
 if [[ ${PV} = *9999* ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://git.tozt.net/rbw"
+	EGIT_REPO_URI="https://github.com/doy/rbw.git"
 else
-	SRC_URI="https://git.tozt.net/rbw/snapshot/${P}.tar.gz
-		${CARGO_CRATE_URIS}"
+	SRC_URI="
+		https://github.com/doy/rbw/archive/refs/tags/${PV}.tar.gz -> ${P}.tar.gz
+		https://github.com/pastalian/distfiles/releases/download/${P}/${P}-crates.tar.xz
+	"
 	KEYWORDS="~amd64"
 fi
 
 LICENSE="MIT"
 # Dependent crate licenses
-LICENSE+=" Apache-2.0 BSD Boost-1.0 ISC MIT Unicode-DFS-2016"
+LICENSE+=" Apache-2.0 BSD Boost-1.0 ISC MIT Unicode-3.0"
 # Manually added crate licenses
 LICENSE+=" openssl"
 SLOT="0"
 
 RDEPEND="app-crypt/pinentry"
-BDEPEND=">=virtual/rust-1.75.0"
 
 QA_FLAGS_IGNORED="
 	usr/bin/rbw
@@ -59,16 +62,4 @@ src_install() {
 	dofishcomp rbw.fish
 	newzshcomp rbw.zsh _rbw
 	einstalldocs
-}
-
-pkg_postinst() {
-	if [[ "${REPLACING_VERSIONS%-r*}" = '1.11.1' ]]; then
-		elog "If you were affected by issue #163 (getting messages like failed to"
-		elog "decrypt encrypted secret: invalid mac when doing any operations on your"
-		elog "vault), you will need to rbw sync after upgrading in order to update"
-		elog "your local vault with the necessary new data."
-	fi
-	# copypasta crate provides wayland clipboard support via dlopen calls against
-	# libwayland-client.so
-	optfeature "Wayland clipboard support" dev-libs/wayland
 }

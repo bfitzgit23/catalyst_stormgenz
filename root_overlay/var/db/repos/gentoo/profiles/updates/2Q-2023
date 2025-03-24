@@ -1,7 +1,6 @@
 move dev-python/jupyter_core dev-python/jupyter-core
 move dev-python/mkdocs_pymdownx_material_extras dev-python/mkdocs-pymdownx-material-extras
 move dev-python/jupyter_client dev-python/jupyter-client
-move dev-python/importlib_resources dev-python/importlib-resources
 move dev-python/importlib_metadata dev-python/importlib-metadata
 move dev-python/python-keyutils dev-python/keyutils
 move dev-python/notebook_shim dev-python/notebook-shim
@@ -11,7 +10,6 @@ move dev-python/pretty-yaml dev-python/pyaml
 move dev-python/aws-xray-sdk-python dev-python/aws-xray-sdk
 move dev-python/python-docs app-doc/python-docs
 move dev-python/flit_core dev-python/flit-core
-move dev-python/jupyter_ydoc dev-python/jupyter-ydoc
 move dev-python/jupyter_console dev-python/jupyter-console
 move dev-python/jupyter_events dev-python/jupyter-events
 move dev-python/jupyter_kernel_test dev-python/jupyter-kernel-test
@@ -30,3 +28,4 @@ move dev-python/service_identity dev-python/service-identity
 move dev-python/readme_renderer dev-python/readme-renderer
 move dev-libs/sexp dev-libs/sexpp
 move net-proxy/obfs4proxy net-proxy/lyrebird
+move dev-java/rat dev-java/apache-rat

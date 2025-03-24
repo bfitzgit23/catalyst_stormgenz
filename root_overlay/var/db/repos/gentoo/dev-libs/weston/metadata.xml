@@ -13,7 +13,7 @@
 	<flag name="drm">Enable drm compositor support</flag>
 	<flag name="editor">Install wayland-editor example application</flag>
 	<flag name="fullscreen">Enable fullscreen shell</flag>
-	<flag name="gles2">Use GLESv2 cairo instead of full GL</flag>
+	<flag name="gles2">Enable the GLESv2 renderer, not just the <pkg>x11-libs/pixman</pkg>-based software fallback</flag>
 	<flag name="headless">Headless backend and a noop renderer, mainly for testing purposes</flag>
 	<flag name="ivi">Enable the IVI shell</flag>
 	<flag name="kiosk">Enable the kiosk shell</flag>
@@ -22,7 +22,6 @@
 	<flag name="remoting">Enable plugin to stream output to remote hosts using <pkg>media-libs/gstreamer</pkg></flag>
 	<flag name="resize-optimization">Increase performance, allocate more RAM. Recommended to disable on Raspberry Pi</flag>
 	<flag name="screen-sharing">Enable screen-sharing through RDP</flag>
-	<flag name="seatd">Enable support for rootless session via <pkg>sys-auth/seatd</pkg></flag>
 	<flag name="wayland-compositor">Enable Wayland compositor support</flag>
 	<flag name="xwayland">Enable ability support native X11 applications</flag>
 </use>

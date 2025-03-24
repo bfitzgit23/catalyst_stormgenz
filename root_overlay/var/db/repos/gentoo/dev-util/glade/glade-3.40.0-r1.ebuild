@@ -1,8 +1,8 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
-PYTHON_COMPAT=( python3_{9..11} )
+PYTHON_COMPAT=( python3_{10..12} )
 
 inherit gnome2 python-single-r1 meson optfeature virtualx
 
@@ -11,7 +11,7 @@ HOMEPAGE="https://glade.gnome.org https://gitlab.gnome.org/GNOME/glade"
 
 LICENSE="GPL-2+ FDL-1.1+"
 SLOT="3.10/13" # subslot = suffix of libgladeui-2.so
-KEYWORDS="~alpha amd64 arm arm64 ~ia64 ~loong ~mips ppc ppc64 ~riscv sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 ~loong ~mips ppc ppc64 ~riscv sparc x86"
 
 IUSE="gjs gtk-doc +introspection python webkit"
 REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
@@ -59,7 +59,7 @@ PATCHES=(
 )
 
 pkg_setup() {
-	python-single-r1_pkg_setup
+	use python && python-single-r1_pkg_setup
 }
 
 src_configure() {

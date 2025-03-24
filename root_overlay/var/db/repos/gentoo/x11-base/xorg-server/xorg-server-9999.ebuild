@@ -1,9 +1,8 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-XORG_TARBALL_SUFFIX="xz"
 XORG_EAUTORECONF="no"
 inherit flag-o-matic xorg-3 meson
 EGIT_REPO_URI="https://gitlab.freedesktop.org/xorg/xserver.git"
@@ -11,7 +10,7 @@ EGIT_REPO_URI="https://gitlab.freedesktop.org/xorg/xserver.git"
 DESCRIPTION="X.Org X servers"
 SLOT="0/${PV}"
 if [[ ${PV} != 9999* ]]; then
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux"
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux"
 fi
 
 IUSE_SERVERS="xephyr xnest xorg xvfb"
@@ -23,7 +22,6 @@ CDEPEND="
 	dev-libs/libbsd
 	dev-libs/openssl:0=
 	>=x11-apps/iceauth-1.0.2
-	>=x11-apps/rgb-1.0.3
 	>=x11-apps/xauth-1.0.3
 	x11-apps/xkbcomp
 	>=x11-libs/libdrm-2.4.89
@@ -73,7 +71,7 @@ CDEPEND="
 	!!x11-drivers/nvidia-drivers[-libglvnd(+)]
 "
 DEPEND="${CDEPEND}
-	>=x11-base/xorg-proto-2021.4.99.2
+	>=x11-base/xorg-proto-2024.1
 	>=x11-libs/xtrans-1.3.5
 	media-fonts/font-util
 	test? ( >=x11-libs/libxcvt-0.1.0 )
@@ -84,7 +82,7 @@ RDEPEND="${CDEPEND}
 	xorg? ( >=x11-apps/xinit-1.3.3-r1 )
 "
 BDEPEND="
-	sys-devel/flex
+	app-alternatives/lex
 "
 PDEPEND="
 	xorg? ( >=x11-base/xorg-drivers-$(ver_cut 1-2) )"
@@ -105,6 +103,9 @@ PATCHES=(
 src_configure() {
 	# bug #835653
 	use x86 && replace-flags -Os -O2
+	use x86 && replace-flags -Oz -O2
+
+	use debug && EMESON_BUILDTYPE=debug
 
 	# localstatedir is used for the log location; we need to override the default
 	#	from ebuild.sh
@@ -112,7 +113,6 @@ src_configure() {
 	local emesonargs=(
 		--localstatedir "${EPREFIX}/var"
 		--sysconfdir "${EPREFIX}/etc/X11"
-		--buildtype $(usex debug debug plain)
 		-Db_ndebug=$(usex debug false true)
 		$(meson_use !minimal dri1)
 		$(meson_use !minimal dri2)
@@ -135,7 +135,6 @@ src_configure() {
 		-Dhal=false
 		-Dlinux_acpi=false
 		-Dlinux_apm=false
-		-Dsecure-rpc=false
 		-Dsha1=libcrypto
 		-Dxkb_output_dir="${EPREFIX}/var/lib/xkb"
 	)

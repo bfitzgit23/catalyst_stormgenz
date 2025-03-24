@@ -1,22 +1,23 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-inherit autotools dist-kernel-utils flag-o-matic linux-mod-r1 multiprocessing
+MODULES_INITRAMFS_IUSE=+initramfs
+inherit autotools flag-o-matic linux-mod-r1 multiprocessing
 
 DESCRIPTION="Linux ZFS kernel module for sys-fs/zfs"
 HOMEPAGE="https://github.com/openzfs/zfs"
 
-MODULES_KERNEL_MAX=6.4
-MODULES_KERNEL_MIN=3.10
+MODULES_KERNEL_MAX=6.13
+MODULES_KERNEL_MIN=4.18
 
 if [[ ${PV} == 9999 ]] ; then
 	EGIT_REPO_URI="https://github.com/openzfs/zfs.git"
 	inherit git-r3
 	unset MODULES_KERNEL_MAX
 else
-	VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}"/usr/share/openpgp-keys/openzfs.asc
+	VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/openzfs.asc
 	inherit verify-sig
 
 	MY_PV=${PV/_rc/-rc}
@@ -30,7 +31,7 @@ else
 	ZFS_KERNEL_DEP="${ZFS_KERNEL_DEP%%.*}.$(( ${ZFS_KERNEL_DEP##*.} + 1))"
 
 	if [[ ${PV} != *_rc* ]] ; then
-		KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~sparc"
+		KEYWORDS="~amd64 ~arm64 ~loong ~ppc64 ~riscv ~sparc"
 	fi
 fi
 
@@ -64,13 +65,6 @@ PATCHES=(
 
 pkg_pretend() {
 	use rootfs || return 0
-
-	if has_version virtual/dist-kernel && ! use dist-kernel; then
-		ewarn "You have virtual/dist-kernel installed, but"
-		ewarn "USE=\"dist-kernel\" is not enabled for ${CATEGORY}/${PN}"
-		ewarn "It's recommended to globally enable dist-kernel USE flag"
-		ewarn "to auto-trigger initrd rebuilds with kernel updates"
-	fi
 }
 
 pkg_setup() {
@@ -191,10 +185,6 @@ pkg_postinst() {
 	[[ -f ${newko[0]} ]] && _old_layout_cleanup
 
 	linux-mod-r1_pkg_postinst
-
-	if [[ -z ${ROOT} ]] && use dist-kernel ; then
-		dist-kernel_reinstall_initramfs "${KV_DIR}" "${KV_FULL}"
-	fi
 
 	if use x86 || use arm ; then
 		ewarn "32-bit kernels will likely require increasing vmalloc to"

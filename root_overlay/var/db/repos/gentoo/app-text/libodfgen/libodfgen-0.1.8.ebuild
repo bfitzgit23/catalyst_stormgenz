@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -9,8 +9,8 @@ if [[ ${PV} == *9999* ]]; then
 	EGIT_REPO_URI="https://git.code.sf.net/p/libwpd/libodfgen"
 	inherit autotools git-r3
 else
-	SRC_URI="mirror://sourceforge/libwpd/${P}.tar.xz"
-	KEYWORDS="amd64 ~arm arm64 ~loong ~ppc64 ~riscv x86 ~amd64-linux ~x86-linux"
+	SRC_URI="https://downloads.sourceforge.net/libwpd/${P}.tar.xz"
+	KEYWORDS="amd64 ~arm arm64 ~loong ppc64 ~riscv x86 ~amd64-linux ~x86-linux"
 fi
 
 DESCRIPTION="Library to generate ODF documents from libwpd and libwpg"
@@ -28,8 +28,12 @@ RDEPEND="
 DEPEND="${RDEPEND}"
 BDEPEND="
 	virtual/pkgconfig
-	doc? ( app-doc/doxygen )
+	doc? ( app-text/doxygen )
 "
+
+PATCHES=(
+	"${FILESDIR}"/${PN}-0.1.8-gcc15-cstdint.patch
+)
 
 src_prepare() {
 	default

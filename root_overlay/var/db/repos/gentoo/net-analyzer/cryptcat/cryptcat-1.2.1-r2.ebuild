@@ -1,13 +1,13 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
 inherit toolchain-funcs
 
-DESCRIPTION="netcat clone extended with twofish encryption"
-HOMEPAGE="http://cryptcat.sourceforge.net/"
-SRC_URI="mirror://sourceforge/${PN}/${PN}-unix-${PV}.tar"
+DESCRIPTION="Netcat clone extended with twofish encryption"
+HOMEPAGE="https://cryptcat.sourceforge.io"
+SRC_URI="https://downloads.sourceforge.net/${PN}/${PN}-unix-${PV}.tar"
 S="${WORKDIR}"/unix
 
 LICENSE="GPL-2"

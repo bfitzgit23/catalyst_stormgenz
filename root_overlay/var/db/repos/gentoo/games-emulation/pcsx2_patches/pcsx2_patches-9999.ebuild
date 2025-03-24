@@ -1,9 +1,12 @@
-# Copyright 2023 Gentoo Authors
+# Copyright 2023-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..12} )
+# note: not "required" but should typically be bumped at same
+# time as pcsx2 to match the patches.zip shipped with it
+
+PYTHON_COMPAT=( python3_{10..13} )
 inherit python-any-r1
 
 if [[ ${PV} == 9999 ]]; then
@@ -13,7 +16,8 @@ else
 	HASH_PCSX2_PATCHES=
 	SRC_URI="
 		https://github.com/PCSX2/pcsx2_patches/archive/${HASH_PCSX2_PATCHES}.tar.gz
-			-> ${P}.tar.gz"
+			-> ${P}.tar.gz
+	"
 	S=${WORKDIR}/${PN}-${HASH_PCSX2_PATCHES}
 	KEYWORDS="~amd64"
 fi
@@ -47,7 +51,7 @@ src_compile() {
 }
 
 src_install() {
-	insinto /usr/share/pcsx2/resources
+	insinto /usr/share/PCSX2/resources
 	doins patches.zip
 
 	einstalldocs

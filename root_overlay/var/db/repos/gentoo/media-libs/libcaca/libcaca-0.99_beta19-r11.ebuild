@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -13,7 +13,7 @@ S="${WORKDIR}/${MY_P}"
 
 LICENSE="GPL-2 ISC LGPL-2.1 WTFPL-2"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 sparc x86"
 IUSE="doc imlib ncurses opengl slang static-libs test truetype X"
 RESTRICT="!test? ( test )"
 
@@ -38,7 +38,7 @@ RDEPEND="${DEPEND}"
 BDEPEND="
 	virtual/pkgconfig
 	doc? (
-		app-doc/doxygen
+		app-text/doxygen
 		virtual/latex-base
 		>=dev-texlive/texlive-fontsrecommended-2012
 		>=dev-texlive/texlive-latexextra-2012
@@ -61,6 +61,7 @@ PATCHES=(
 	"${FILESDIR}/100_doxygen.diff"
 	# Fix doxygen docs install, bug 543870
 	"${FILESDIR}/fix-css-path.patch"
+	"${FILESDIR}/configure-lto.patch"
 )
 
 src_prepare() {

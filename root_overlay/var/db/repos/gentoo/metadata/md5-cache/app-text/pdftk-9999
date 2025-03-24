@@ -1,7 +1,7 @@
 BDEPEND=>=dev-vcs/git-1.8.2.1[curl]
 DEFINED_PHASES=compile install preinst prepare setup test unpack
 DEPEND=>=virtual/jdk-1.8:* dev-java/bcprov:0 dev-java/commons-lang:3.6 test? ( app-text/poppler[cairo] dev-java/system-rules:0 ) >=dev-java/java-config-2.2.0-r3 source? ( app-arch/zip ) test? ( dev-java/junit:4 )
-DESCRIPTION=gcj-free version of pdftk written in Java
+DESCRIPTION=A port of pdftk into java
 EAPI=8
 HOMEPAGE=https://gitlab.com/pdftk-java/pdftk
 INHERIT=java-pkg-2 java-pkg-simple git-r3
@@ -11,5 +11,6 @@ PROPERTIES=live
 RDEPEND=>=virtual/jre-1.8:* dev-java/bcprov:0 dev-java/commons-lang:3.6 >=dev-java/java-config-2.2.0-r3 source? ( app-arch/zip )
 RESTRICT=!test? ( test )
 SLOT=0
-_eclasses_=git-r3	2358a7b20091609e24bd3a83b3ac5991	java-pkg-2	1794573de2f5124d88b64ee5dc9aabb4	java-pkg-simple	1c8a695f6cae6a50261276f4b3da9914	java-utils-2	8c72ea36a4935f626b13a30141d0d39c
-_md5_=e1cae21fd2bb82130f3689fde279626d
+SRC_URI=https://gitlab.com/pdftk-java/pdftk/-/commit/3f1918c831c919d0a8fcf18c36cf40118398b995.patch -> pdftk-9999-bc176.patch
+_eclasses_=java-utils-2	c610b1541a10e37cb26ab5b707a744f1	java-pkg-2	38fd81c7880666a00a638ca8deb64d72	java-pkg-simple	c346bc0ba9945618340315a1089a82ef	git-r3	875eb471682d3e1f18da124be97dcc81
+_md5_=61ad5762d8fe19c004f116d2301fce31

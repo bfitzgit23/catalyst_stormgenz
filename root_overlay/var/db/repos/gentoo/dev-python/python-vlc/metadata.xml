@@ -3,11 +3,12 @@
 
 <pkgmetadata>
 	<maintainer type="person">
-		<email>andrewammerlaan@gentoo.org</email>
-		<name>Andrew Ammerlaan</name>
+		<email>nowa@gentoo.org</email>
+		<name>Nowa Ammerlaan</name>
 	</maintainer>
 	<stabilize-allarches/>
 	<upstream>
 		<remote-id type="pypi">python-vlc</remote-id>
+		<remote-id type="github">oaubert/python-vlc</remote-id>
 	</upstream>
 </pkgmetadata>

@@ -1,7 +1,7 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI="7"
+EAPI="8"
 
 inherit flag-o-matic toolchain-funcs
 
@@ -9,7 +9,7 @@ if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="https://sourceware.org/git/newlib-cygwin.git"
 	inherit git-r3
 else
-	SRC_URI="ftp://sourceware.org/pub/newlib/${P}.tar.gz"
+	SRC_URI="https://sourceware.org/pub/newlib/${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~m68k ~mips ~ppc ~ppc64 ~riscv ~sparc ~x86"
 fi
 
@@ -85,6 +85,12 @@ src_configure() {
 
 	export "CFLAGS_FOR_TARGET=${CFLAGS_ORIG} ${CFLAGS_FULL}"
 	export "CCASFLAGS=${CCASFLAGS_ORIG} ${CFLAGS_FULL}"
+
+	[[ ${CTARGET} == nvptx* ]] && {
+		CFLAGS_FOR_TARGET+=" -Wa,--no-verify"
+		CCASFLAGS+=" -Wa,--no-verify"
+	}
+
 	ECONF_SOURCE=${S} \
 	econf \
 		$(use_enable unicode newlib-mb) \
@@ -98,6 +104,12 @@ src_configure() {
 		cd "${NEWLIBNANOBUILD}" || die
 		export "CFLAGS_FOR_TARGET=${CFLAGS_ORIG} ${CFLAGS_NANO}"
 		export "CCASFLAGS=${CCASFLAGS_ORIG} ${CFLAGS_NANO}"
+
+		[[ ${CTARGET} == nvptx* ]] && {
+			CFLAGS_FOR_TARGET+=" -Wa,--no-verify"
+			CCASFLAGS+=" -Wa,--no-verify"
+		}
+
 		ECONF_SOURCE=${S} \
 		econf \
 			$(use_enable unicode newlib-mb) \
@@ -118,11 +130,23 @@ src_configure() {
 src_compile() {
 	export "CFLAGS_FOR_TARGET=${CFLAGS_ORIG} ${CFLAGS_FULL}"
 	export "CCASFLAGS=${CCASFLAGS_ORIG} ${CFLAGS_FULL}"
+
+	[[ ${CTARGET} == nvptx* ]] && {
+		CFLAGS_FOR_TARGET+=" -Wa,--no-verify"
+		CCASFLAGS+=" -Wa,--no-verify"
+	}
+
 	emake -C "${NEWLIBBUILD}"
 
 	if use nano ; then
 		export "CFLAGS_FOR_TARGET=${CFLAGS_ORIG} ${CFLAGS_NANO}"
 		export "CCASFLAGS=${CCASFLAGS_ORIG} ${CFLAGS_NANO}"
+
+		[[ ${CTARGET} == nvptx* ]] && {
+			CFLAGS_FOR_TARGET+=" -Wa,--no-verify"
+			CCASFLAGS+=" -Wa,--no-verify"
+		}
+
 		emake -C "${NEWLIBNANOBUILD}"
 	fi
 }

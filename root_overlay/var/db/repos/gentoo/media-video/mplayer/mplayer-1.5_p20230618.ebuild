@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -148,7 +148,7 @@ RDEPEND="
 DEPEND="
 	${RDEPEND}
 	dga? ( x11-base/xorg-proto )
-	dvb? ( virtual/linuxtv-dvb-headers )
+	dvb? ( sys-kernel/linux-headers )
 	X? ( x11-base/xorg-proto )
 	xinerama? ( x11-base/xorg-proto )
 	xscreensaver? ( x11-base/xorg-proto )
@@ -169,7 +169,7 @@ RDEPEND+="selinux? ( sec-policy/selinux-mplayer )"
 LICENSE="GPL-2"
 SLOT="0"
 if [[ ${PV} != *9999* ]]; then
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc ~ppc64 ~riscv ~sparc ~x86"
+	KEYWORDS="~alpha amd64 arm ~arm64 ~hppa ppc ppc64 ~riscv ~sparc x86"
 fi
 
 # faac codecs are nonfree
@@ -193,6 +193,10 @@ REQUIRED_USE="
 	xscreensaver? ( X )
 	xv? ( X )"
 RESTRICT="faac? ( bindist )"
+
+PATCHES=(
+	"${FILESDIR}"/${P}-gcc13.patch
+)
 
 pkg_setup() {
 	if [[ ${PV} == *9999* ]]; then
@@ -266,6 +270,11 @@ src_prepare() {
 }
 
 src_configure() {
+	# undefined reference to `sse_int32_map_factor' etc
+	# https://bugs.gentoo.org/650458
+	# https://trac.mplayerhq.hu/ticket/2408
+	use libass && use cpu_flags_x86_sse4_1 && filter-lto
+
 	local myconf=()
 	local uses i
 

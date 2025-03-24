@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -31,7 +31,7 @@ DEPEND="${COMMON_DEPEND}
 	app-arch/xz-utils
 	sys-apps/groff
 	doc? (
-		app-doc/doxygen
+		app-text/doxygen
 		media-gfx/graphviz
 	)
 	nls? (
@@ -53,6 +53,8 @@ PATCHES=(
 
 	# https://codeberg.org/shelter/reschroot/pulls/6
 	"${FILESDIR}"/${PN}-1.6.13-resize-reserve.patch
+
+	"${FILESDIR}"/${PN}-1.16.13_p2-boost-1.85.0.patch
 )
 
 src_unpack() {

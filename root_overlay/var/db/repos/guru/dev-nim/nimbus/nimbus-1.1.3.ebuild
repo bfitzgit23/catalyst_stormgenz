@@ -6,7 +6,7 @@ EAPI=8
 DOCS_BUILDER="sphinx"
 DOCS_AUTODOC=0
 DOCS_DIR="docs"
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 inherit python-any-r1 docs nim-utils
 
 DESCRIPTION="A Nim build system"
@@ -14,7 +14,7 @@ HOMEPAGE="
 	https://nimbus.sysrq.in/
 	https://git.sysrq.in/nimbus/about/
 "
-SRC_URI="https://git.sysrq.in/${PN}/snapshot/${P}.tar.xz"
+SRC_URI="https://git.sr.ht/~cyber/${PN}/archive/${PV}.tar.gz -> ${P}.srht.tar.gz"
 
 LICENSE="Apache-2.0 BSD"
 SLOT="0"

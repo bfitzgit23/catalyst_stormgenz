@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit autotools
 
@@ -14,17 +14,15 @@ SRC_URI="mirror://gentoo/${PN}-${MY_PV}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc x86"
-IUSE="debug"
 
 RDEPEND="
 	net-libs/libnet:1.1
 	net-libs/libpcap
 	sys-libs/ncurses:0=
-	debug? ( dev-libs/dmalloc )
 "
 DEPEND="${RDEPEND}"
 BDEPEND="
-	app-doc/doxygen[dot]
+	app-text/doxygen[dot]
 	virtual/pkgconfig
 "
 
@@ -43,5 +41,5 @@ src_prepare() {
 }
 
 src_configure() {
-	econf $(use_enable debug dmalloc)
+	econf --disable-dmalloc
 }

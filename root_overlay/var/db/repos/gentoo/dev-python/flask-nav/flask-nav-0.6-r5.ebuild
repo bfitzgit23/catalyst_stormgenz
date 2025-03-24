@@ -1,22 +1,29 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 DISTUTILS_USE_PEP517=setuptools
-PYTHON_COMPAT=( pypy3 python3_{9..11} )
+PYTHON_COMPAT=( pypy3 pypy3_11 python3_{10..13} )
 
 inherit distutils-r1
 
 DESCRIPTION="Easily create navigation for Flask applications"
-HOMEPAGE="https://pythonhosted.org/flask-nav/"
+HOMEPAGE="
+	https://pythonhosted.org/flask-nav/
+	https://github.com/mbr/flask-nav/
+	https://pypi.org/project/flask-nav/
+"
 # docs are missing from PyPI tarballs
 # https://github.com/mbr/flask-nav/pull/12
-SRC_URI="https://github.com/mbr/${PN}/archive/${PV}.tar.gz -> ${P}.gh.tar.gz"
+SRC_URI="
+	https://github.com/mbr/flask-nav/archive/${PV}.tar.gz
+		-> ${P}.gh.tar.gz
+"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~arm64 ~x86"
 
 RDEPEND="
 	dev-python/dominate[${PYTHON_USEDEP}]

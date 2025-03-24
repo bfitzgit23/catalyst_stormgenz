@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -7,12 +7,11 @@ inherit desktop
 
 DESCRIPTION="A tool for controlling amateur radios"
 HOMEPAGE="http://groundstation.sourceforge.net/grig/"
-SRC_URI="mirror://sourceforge/groundstation/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/groundstation/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE=""
 
 DEPEND="
 	dev-libs/glib:2
@@ -21,21 +20,19 @@ DEPEND="
 RDEPEND="${DEPEND}"
 
 PATCHES=( "${FILESDIR}"/grig-0.8.1-hamlib4.patch
-		  "${FILESDIR}"/grig-0.8.1-hamlib45.patch )
-
-src_configure() {
-	econf --enable-hardware
-}
+		  "${FILESDIR}"/grig-0.8.1-hamlib45.patch
+		  "${FILESDIR}"/grig-0.8.1-hamlib46.patch )
 
 src_prepare() {
 	# prepare for media-radio/hamlib-4.2 change of API
 	if has_version '>=media-libs/hamlib-4.2' ; then
 		eapply -p1 "${FILESDIR}"/${P}-hamlib42.patch
 	fi
+	default
+}
 
-	eapply ${PATCHES[@]}
-
-	eapply_user
+src_configure() {
+	econf --enable-hardware
 }
 
 src_install() {

@@ -1,7 +1,7 @@
-# Copyright 2019-2022 Gentoo Authors
+# Copyright 2019-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 DESCRIPTION="gtk based greeter for greetd"
 HOMEPAGE="https://git.sr.ht/~kennylevinsen/gtkgreet"
@@ -39,7 +39,7 @@ PATCHES=( "${FILESDIR}"/${PN}-0.6-r1-werror.patch )
 src_configure() {
 	local emesonargs=(
 		$(meson_feature man man-pages)
-		$(meson_use layershell)
+		$(meson_feature layershell)
 	)
 	meson_src_configure
 }

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<maintainer type="person">
-		<email>gyakovlev@gentoo.org</email>
-		<name>Georgy Yakovlev</name>
-	</maintainer>
 	<maintainer type="person" proxied="yes">
 		<email>zoltan@sinustrom.info</email>
 		<name>Zoltan Puskas</name>
+	</maintainer>
+	<maintainer type="person" proxied="yes">
+		<email>leohdz172@proton.me</email>
+		<name>Leonardo Hernández Hernández</name>
+	</maintainer>
+	<maintainer type="project" proxied="proxy">
+		<email>proxy-maint@gentoo.org</email>
+		<name>Proxy Maintainers</name>
 	</maintainer>
 	<use>
 		<flag name="alias">Enable plugin for alias control</flag>
@@ -20,6 +24,7 @@
 		<flag name="irc">Enable IRC protocol support</flag>
 		<flag name="logger">Enable support for logging</flag>
 		<flag name="relay">Enable relay plugin (experimental)</flag>
+		<flag name="relay-api">Enable json API support for the relay plugin (experimental)</flag>
 		<flag name="scripts">Build infrastructure for scripting</flag>
 		<flag name="trigger">Enable trigger plugin</flag>
 		<flag name="typing">Enable typing plugin</flag>

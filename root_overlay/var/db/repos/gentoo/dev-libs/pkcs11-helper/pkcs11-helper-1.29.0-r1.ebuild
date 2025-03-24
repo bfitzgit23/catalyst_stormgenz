@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -9,7 +9,7 @@ SRC_URI="https://github.com/OpenSC/${PN}/releases/download/${P}/${P}.tar.bz2"
 
 LICENSE="|| ( BSD GPL-2 )"
 SLOT="0"
-KEYWORDS="~alpha amd64 arm arm64 ~hppa ~ia64 ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 ~sparc x86"
+KEYWORDS="~alpha amd64 arm arm64 ~hppa ~loong ~m68k ~mips ppc ppc64 ~riscv ~s390 ~sparc x86"
 IUSE="doc gnutls nss test"
 # Fails trying to load /usr/lib/pkcs11/provider.so?
 RESTRICT="!test? ( test ) test"
@@ -19,7 +19,7 @@ RDEPEND=">=dev-libs/openssl-0.9.7:=
 	nss? ( dev-libs/nss )"
 DEPEND="${RDEPEND}"
 BDEPEND="virtual/pkgconfig
-	doc? ( >=app-doc/doxygen-1.4.7 )"
+	doc? ( >=app-text/doxygen-1.4.7 )"
 
 PATCHES=(
 	"${FILESDIR}/${P}-incompatible-func-ptr-clang16.patch"

@@ -1,4 +1,4 @@
-BDEPEND=virtual/pkgconfig man? ( app-text/docbook2X ) verify-sig? ( sec-keys/openpgp-keys-linuxcontainers ) >=dev-util/meson-0.62.2 >=dev-util/ninja-1.8.2 dev-util/meson-format-array virtual/pkgconfig verify-sig? ( app-crypt/gnupg >=app-portage/gemato-16 )
+BDEPEND=virtual/pkgconfig man? ( app-text/docbook2X ) verify-sig? ( sec-keys/openpgp-keys-linuxcontainers ) >=dev-build/meson-1.2.3 app-alternatives/ninja dev-build/meson-format-array virtual/pkgconfig verify-sig? ( app-crypt/gnupg >=app-portage/gemato-20 )
 DEFINED_PHASES=compile configure install postinst setup test unpack
 DEPEND=acct-group/lxc acct-user/lxc apparmor? ( sys-libs/libapparmor ) caps? ( sys-libs/libcap[static-libs] ) io-uring? ( >=sys-libs/liburing-2:= ) pam? ( sys-libs/pam ) seccomp? ( sys-libs/libseccomp ) selinux? ( sys-libs/libselinux ) ssl? ( dev-libs/openssl:0= ) systemd? ( sys-apps/systemd:= ) tools? ( sys-libs/libcap[static-libs] ) sys-kernel/linux-headers
 DESCRIPTION=A userspace interface for the Linux kernel containment features
@@ -12,5 +12,5 @@ RDEPEND=acct-group/lxc acct-user/lxc apparmor? ( sys-libs/libapparmor ) caps? ( 
 RESTRICT=!test? ( test )
 SLOT=0/1.502
 SRC_URI=https://linuxcontainers.org/downloads/lxc/lxc-5.0.3.tar.gz verify-sig? ( https://linuxcontainers.org/downloads/lxc/lxc-5.0.3.tar.gz.asc )
-_eclasses_=bash-completion-r1	f5e7a020fd9c741740756aac61bf75ff	linux-info	c4f1201b96a8a2c1f3b86cc8b2c71c91	meson	08b7183c3f4811568ee93eb0f79a89fe	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	optfeature	222cb475c5a4f7ae7cfb0bf510a6fe54	python-utils-r1	59e60e9c5cbd3f214d7f1002e798b387	systemd	5f4bb0758df2e483babf68cd517078ca	toolchain-funcs	862d337d98edb576796827be2c6b11ca	verify-sig	dd7ea2e5b0bdcb42523e4797bbf4dd6e
-_md5_=4f23cf7496f739d2a911aabf043520fe
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	bash-completion-r1	767861f3744f589ee5291c1698b1c082	linux-info	ea4122ba1d8791a12b78e53f9510a2e3	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	multiprocessing	1e32df7deee68372153dca65f4a7c21f	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	python-utils-r1	b7726144f5af59e186d66746d0f513e5	meson	99466844dd8d4fcfb07578a76f5a9922	optfeature	538bce96e5589935b57e178e8635f301	systemd	54bd206bb5c4efac6ae28b6b006713b0	eapi9-pipestatus	d2c134036ac31c3085aebc9147f572bd	verify-sig	7433426b6b28bf2737ba4b82c8aa8c53
+_md5_=5ef9673fc6c34d564f516cd94d42cfd2

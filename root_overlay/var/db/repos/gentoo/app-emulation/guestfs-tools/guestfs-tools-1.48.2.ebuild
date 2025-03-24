@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -17,14 +17,15 @@ SRC_URI="https://download.libguestfs.org/${PN}/${MY_PV_1}-${SD}/${P}.tar.gz"
 
 LICENSE="GPL-2 LGPL-2"
 SLOT="0/${MY_PV_1}"
-KEYWORDS="~amd64"
+if [[ ${SD} == "stable" ]] ; then
+	KEYWORDS="amd64"
+fi
 IUSE="doc +ocaml +perl test"
 RESTRICT="!test? ( test )"
 
 # Failures - doc
 COMMON_DEPEND="
-	!<app-emulation/libguestfs-1.46.0-r1
-	app-arch/cpio
+	app-alternatives/cpio
 	app-arch/lzma
 	app-arch/unzip[natspec]
 	app-arch/xz-utils
@@ -41,7 +42,7 @@ COMMON_DEPEND="
 	sys-libs/ncurses:=
 	sys-libs/libxcrypt:=
 	virtual/libcrypt:=
-	ocaml? ( >=dev-lang/ocaml-4.03:=[ocamlopt] )
+	ocaml? ( <dev-lang/ocaml-5:=[ocamlopt] )
 	perl? (
 		virtual/perl-Data-Dumper
 		virtual/perl-Getopt-Long
@@ -55,8 +56,9 @@ COMMON_DEPEND="
 "
 # Some OCaml is always required
 # bug #729674
-DEPEND="${COMMON_DEPEND}
-	>=dev-lang/ocaml-4.03:=[ocamlopt]
+DEPEND="
+	${COMMON_DEPEND}
+	<dev-lang/ocaml-5:=[ocamlopt]
 	dev-ml/findlib[ocamlopt]
 	doc? ( app-text/po4a )
 	ocaml? (
@@ -67,8 +69,13 @@ DEPEND="${COMMON_DEPEND}
 		)
 	)
 "
-BDEPEND="virtual/pkgconfig"
-RDEPEND="${COMMON_DEPEND}
+BDEPEND="
+	sys-devel/bison
+	sys-devel/flex
+	virtual/pkgconfig
+"
+RDEPEND="
+	${COMMON_DEPEND}
 	app-emulation/libguestfs-appliance
 "
 
@@ -86,6 +93,9 @@ pkg_setup() {
 src_configure() {
 	# bug #794877
 	tc-export AR
+
+	# Needs both bison+flex (bug #915339, see configure too)
+	unset YACC LEX
 
 	if use test ; then
 		# Skip Bash test

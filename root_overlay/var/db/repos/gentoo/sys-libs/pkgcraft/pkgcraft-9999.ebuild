@@ -1,10 +1,13 @@
-# Copyright 2023 Gentoo Authors
+# Copyright 2023-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
 CRATES=" "
-inherit edo cargo toolchain-funcs
+
+RUST_MIN_VER="1.77.1"
+
+inherit edo cargo flag-o-matic multiprocessing toolchain-funcs
 
 DESCRIPTION="C library for pkgcraft"
 HOMEPAGE="https://pkgcraft.github.io/"
@@ -21,7 +24,7 @@ else
 	SRC_URI="https://github.com/pkgcraft/pkgcraft/releases/download/${MY_P}/${MY_P}.tar.xz"
 	S="${WORKDIR}"/${MY_P}
 
-	KEYWORDS="~amd64"
+	KEYWORDS="~amd64 ~arm64"
 fi
 
 LICENSE="MIT"
@@ -34,8 +37,7 @@ RESTRICT="!test? ( test )"
 # clang needed for bindgen
 BDEPEND+="
 	dev-util/cargo-c
-	sys-devel/clang
-	>=virtual/rust-1.65
+	llvm-core/clang
 "
 
 QA_FLAGS_IGNORED="usr/lib.*/libpkgcraft.so.*"
@@ -54,10 +56,14 @@ src_compile() {
 		--library-type=cdylib
 		--prefix=/usr
 		--libdir="/usr/$(get_libdir)"
+		$(usev !debug '--release')
 	)
 
 	# For scallop building bash
 	tc-export AR CC
+
+	# scallop uses modified bash-5.2 which relies on unprotoyped functions
+	append-cflags -std=gnu17
 
 	# Can pass -vv if need more output from e.g. scallop configure
 	edo cargo cbuild "${cargoargs[@]}"
@@ -69,9 +75,11 @@ src_test() {
 		# pkgcraft-c.
 		cd "${WORKDIR}"/${P} || die
 
+		local -x NEXTEST_TEST_THREADS="$(makeopts_jobs)"
+
 		# Need nextest per README (separate processes required)
 		# Invocation from https://github.com/pkgcraft/pkgcraft/blob/main/.github/workflows/ci.yml#L56
-		edo cargo nextest run --color always --all-features
+		edo cargo nextest run $(usev !debug '--release') --color always --all-features --tests
 	else
 		# There are no tests for pkgcraft-c. Test via e.g. dev-python/pkgcraft.
 		:;
@@ -84,6 +92,7 @@ src_install() {
 		--prefix=/usr
 		--libdir="/usr/$(get_libdir)"
 		--destdir="${ED}"
+		$(usev !debug '--release')
 	)
 
 	edo cargo cinstall "${cargoargs[@]}"

@@ -1,12 +1,12 @@
-# Copyright 2017-2023 Gentoo Authors
+# Copyright 2017-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 EGO_PN=github.com/git-lfs/git-lfs
 # Update the ID as it's included in each build.
-COMMIT_ID="d06d6e9efd78ff4f958b072146ce167d87f60285"
+COMMIT_ID=""
 
-inherit go-module
+inherit go-module shell-completion
 
 DESCRIPTION="Command line extension and specification for managing large files with git"
 HOMEPAGE="
@@ -28,11 +28,11 @@ else
 	#	--mtime="1970-01-01" --sort=name --owner=portage --group=portage
 	# xz -k -9eT0 --memlimit-decompress=256M $P-deps.tar
 	SRC_URI+=" https://files.holgersson.xyz/gentoo/distfiles/golang-pkg-deps/${P}-deps.tar.xz"
-	KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86 ~amd64-linux ~x86-linux"
 fi
 
 LICENSE="Apache-2.0 BSD BSD-2 BSD-4 ISC MIT"
 SLOT="0"
+#KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86 ~amd64-linux ~x86-linux"
 IUSE="doc test"
 
 BDEPEND="
@@ -61,18 +61,31 @@ src_compile() {
 		-trimpath
 		-v -work -x
 	)
-	go build "${mygobuildargs[@]}" -o git-lfs git-lfs.go || die
+	ego build "${mygobuildargs[@]}" -o git-lfs git-lfs.go
 
 	if use doc; then
 		for doc in docs/man/*adoc;
 			do asciidoctor -b manpage ${doc} || die "man building failed"
 		done
 	fi
+
+	# Generate auto-completion scripts.
+	# bug 914542
+	./git-lfs completion bash > "${PN}.bash" || die
+	./git-lfs completion fish > "${PN}.fish" || die
+	./git-lfs completion zsh > "${PN}.zsh" || die
 }
 
 src_install() {
 	dobin git-lfs
 	einstalldocs
+
+	# Install auto-completion scripts generated earlier.
+	# bug 914542
+	newbashcomp "${PN}.bash" "${PN}"
+	dofishcomp "${PN}.fish"
+	newzshcomp "${PN}.zsh" "_${PN}"
+
 	use doc && doman docs/man/*.1
 }
 

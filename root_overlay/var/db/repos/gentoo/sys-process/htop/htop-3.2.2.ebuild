@@ -1,13 +1,11 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{9..11} )
-
 # We avoid xdg.eclass here because it'll pull in glib, desktop utils on
 # htop which is often used on headless machines. bug #787470
-inherit linux-info optfeature python-any-r1 xdg-utils
+inherit linux-info optfeature xdg-utils
 
 DESCRIPTION="Interactive process viewer"
 HOMEPAGE="https://htop.dev/ https://github.com/htop-dev/htop"
@@ -16,7 +14,7 @@ if [[ ${PV} == *9999 ]] ; then
 	inherit autotools git-r3
 else
 	SRC_URI="https://github.com/htop-dev/htop/releases/download/${PV}/${P}.tar.xz"
-	KEYWORDS="~alpha amd64 arm arm64 hppa ~ia64 ~loong ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux ~x64-macos"
+	KEYWORDS="~alpha amd64 arm arm64 hppa ~loong ~mips ppc ppc64 ~riscv ~s390 sparc x86 ~amd64-linux ~x86-linux ~x64-macos"
 fi
 
 S="${WORKDIR}/${P/_}"
@@ -30,7 +28,7 @@ RDEPEND="
 	hwloc? ( sys-apps/hwloc:= )
 	unwind? (
 		!llvm-libunwind? ( sys-libs/libunwind:= )
-		llvm-libunwind? ( sys-libs/llvm-libunwind:= )
+		llvm-libunwind? ( llvm-runtimes/libunwind:= )
 	)
 	kernel_linux? (
 		caps? ( sys-libs/libcap )
@@ -39,17 +37,11 @@ RDEPEND="
 	)
 "
 DEPEND="${RDEPEND}"
-BDEPEND="${PYTHON_DEPS}
-	virtual/pkgconfig"
+BDEPEND="virtual/pkgconfig"
 
 DOCS=( ChangeLog README )
 
 CONFIG_CHECK="~TASKSTATS ~TASK_XACCT ~TASK_IO_ACCOUNTING ~CGROUPS"
-
-pkg_setup() {
-	python-any-r1_pkg_setup
-	linux-info_pkg_setup
-}
 
 src_prepare() {
 	default

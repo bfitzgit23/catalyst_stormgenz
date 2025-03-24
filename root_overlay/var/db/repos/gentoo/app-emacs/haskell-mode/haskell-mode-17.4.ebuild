@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -15,7 +15,7 @@ if [[ ${PV} == *9999* ]] ; then
 else
 	SRC_URI="https://github.com/haskell/${PN}/archive/v${PV}.tar.gz
 		-> ${P}.tar.gz"
-	KEYWORDS="~amd64 ~ppc ~sparc ~x86"
+	KEYWORDS="amd64 ppc ~sparc x86"
 fi
 
 LICENSE="GPL-3+ FDL-1.2+"
@@ -27,6 +27,7 @@ ELISP_REMOVE="
 	tests/haskell-cabal-tests.el
 	tests/haskell-customize-tests.el
 	tests/haskell-lexeme-tests.el
+	tests/inferior-haskell-tests.el
 "
 
 DOCS=( NEWS README.md )

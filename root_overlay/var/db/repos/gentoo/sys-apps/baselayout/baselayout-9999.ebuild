@@ -1,7 +1,7 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit multilib prefix
 
@@ -12,7 +12,7 @@ if [[ ${PV} = 9999 ]]; then
 	inherit git-r3
 else
 	SRC_URI="https://gitweb.gentoo.org/proj/${PN}.git/snapshot/${P}.tar.bz2"
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux ~arm64-macos ~ppc-macos ~x64-macos ~x64-solaris"
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~loong ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux ~arm64-macos ~ppc-macos ~x64-macos ~x64-solaris"
 fi
 
 LICENSE="GPL-2"
@@ -67,11 +67,23 @@ multilib_layout() {
 					continue
 				fi
 				if ! use split-usr && [[ ${prefix} = ${EROOT}/ ]]; then
+					# for the special case of riscv multilib, we drop the
+					# second part of two-component libdirs, e.g. lib64/lp64
 					libdir="${libdir%%/*}"
 					dir="${prefix}${libdir}"
-					einfo "symlinking ${dir} to usr/${libdir}"
-					ln -s usr/${libdir} ${dir} ||
-						die "Unable to make ${dir} symlink"
+					if [[ -h "${dir}" ]] ; then
+						if use riscv ; then
+							# with riscv we get now double entries so we
+							# need to ignore already existing symlinks
+							einfo "symlink ${dir} already exists (riscv)"
+						else
+							die "symlink ${dir} already exists"
+						fi
+					else
+						einfo "symlinking ${dir} to usr/${libdir}"
+						ln -s usr/${libdir} ${dir} ||
+							die "Unable to make ${dir} symlink"
+					fi
 				else
 					einfo "creating directory ${dir}"
 					mkdir -p "${dir}" ||
@@ -209,6 +221,8 @@ src_prepare() {
 		hprefixify -w '/PATH=/' etc/env.d/50baselayout
 		hprefixify -w 1 etc/env.d/50baselayout
 		echo PATH=/usr/sbin:/sbin:/usr/bin:/bin >> etc/env.d/99host
+		echo ROOTPATH=/usr/sbin:/sbin:/usr/bin:/bin >> etc/env.d/99host
+		echo MANPATH=/usr/share/man >> etc/env.d/99host
 
 		# change branding
 		sed -i \

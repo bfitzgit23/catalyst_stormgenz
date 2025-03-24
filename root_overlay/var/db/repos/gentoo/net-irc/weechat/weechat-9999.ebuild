@@ -1,12 +1,13 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
+GUILE_COMPAT=( 2-2 3-0 )
 LUA_COMPAT=( lua5-{1..4} )
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{10..13} )
 
-inherit cmake lua-single python-single-r1 xdg
+inherit cmake guile-single lua-single python-single-r1 xdg
 
 if [[ ${PV} == "9999" ]] ; then
 	inherit git-r3
@@ -15,7 +16,7 @@ else
 	inherit verify-sig
 	SRC_URI="https://weechat.org/files/src/${P}.tar.xz
 		verify-sig? ( https://weechat.org/files/src/${P}.tar.xz.asc )"
-	VERIFY_SIG_OPENPGP_KEY_PATH=${BROOT}/usr/share/openpgp-keys/weechat.org.asc
+	VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/weechat.org.asc
 	BDEPEND+="verify-sig? ( sec-keys/openpgp-keys-weechat )"
 	KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~ppc64 ~riscv ~x86 ~x64-macos"
 fi
@@ -23,7 +24,7 @@ fi
 DESCRIPTION="Portable and multi-interface IRC client"
 HOMEPAGE="https://weechat.org/"
 
-LICENSE="GPL-3"
+LICENSE="GPL-3+"
 SLOT="0/${PV}"
 
 NETWORKS="+irc"
@@ -31,25 +32,26 @@ PLUGINS="+alias +buflist +charset +exec +fifo +fset +logger +relay +scripts +spe
 # dev-lang/v8 was dropped from Gentoo so we can't enable javascript support
 # dev-lang/php eclass support is lacking, php plugins don't work. bug #705702
 SCRIPT_LANGS="guile lua +perl +python ruby tcl"
-LANGS=" cs de es fr it ja pl ru"
-IUSE="doc enchant man nls selinux test ${SCRIPT_LANGS} ${PLUGINS} ${INTERFACES} ${NETWORKS}"
+LANGS=" cs de es fr hu it ja pl pt pt_BR ru sr tr"
+IUSE="doc enchant man nls relay-api selinux test +zstd ${SCRIPT_LANGS} ${PLUGINS} ${INTERFACES} ${NETWORKS}"
 
 REQUIRED_USE="
 	enchant? ( spell )
+	guile? ( ${GUILE_REQUIRED_USE} )
 	lua? ( ${LUA_REQUIRED_USE} )
 	python? ( ${PYTHON_REQUIRED_USE} )
 	test? ( nls )
+	relay-api? ( relay )
 "
 
 RDEPEND="
-	app-arch/zstd:=
 	dev-libs/libgcrypt:0=
 	net-libs/gnutls:=
 	sys-libs/ncurses:0=
 	sys-libs/zlib:=
 	net-misc/curl[ssl]
 	charset? ( virtual/libiconv )
-	guile? ( >=dev-scheme/guile-2.0:12= )
+	guile? ( ${GUILE_DEPS} )
 	lua? ( ${LUA_DEPS} )
 	nls? ( virtual/libintl )
 	perl? (
@@ -57,10 +59,12 @@ RDEPEND="
 		virtual/libcrypt:=
 	)
 	python? ( ${PYTHON_DEPS} )
+	relay-api? ( dev-libs/cJSON )
 	ruby? (
 		|| (
+			dev-lang/ruby:3.3
+			dev-lang/ruby:3.2
 			dev-lang/ruby:3.1
-			dev-lang/ruby:3.0
 		)
 	)
 	selinux? ( sec-policy/selinux-irc )
@@ -69,6 +73,7 @@ RDEPEND="
 		!enchant? ( app-text/aspell )
 	)
 	tcl? ( >=dev-lang/tcl-8.4.15:0= )
+	zstd? ( app-arch/zstd:= )
 "
 
 DEPEND="${RDEPEND}
@@ -82,21 +87,20 @@ BDEPEND+="
 	nls? ( >=sys-devel/gettext-0.15 )
 "
 
-PATCHES=(
-	"${FILESDIR}"/${PN}-3.3-cmake_lua_version.patch
-)
-
-DOCS="AUTHORS.adoc ChangeLog.adoc Contributing.adoc ReleaseNotes.adoc README.adoc"
+DOCS="AUTHORS.md CHANGELOG.md CONTRIBUTING.md UPGRADING.md README.md"
 
 RESTRICT="!test? ( test )"
 
 pkg_setup() {
+	use guile && guile-single_pkg_setup
 	use lua && lua-single_pkg_setup
 	use python && python-single-r1_pkg_setup
 }
 
 src_prepare() {
 	cmake_src_prepare
+
+	use guile && guile_bump_sources
 
 	# install only required translations
 	local i
@@ -145,11 +149,14 @@ src_configure() {
 		-DENABLE_ALIAS=$(usex alias)
 		-DENABLE_BUFLIST=$(usex buflist)
 		-DENABLE_CHARSET=$(usex charset)
-		# -DENABLE_DOC requires all plugins (except javascript).
-		# https://github.com/weechat/weechat/blob/v4.0.2/CMakeLists.txt#L144
-		# Impossible since php was dropped in net-irc/weechat-3.5.r1.ebuild. bug #705702
-		-DENABLE_DOC=OFF
-		-DENABLE_DOC_INCOMPLETE=$(usex doc)
+		-DENABLE_DOC=$(usex doc)
+		# To build complete documentation weechat requires all plugins (except
+		# javascript) to be enabled. That's impossible since php was dropped in
+		# net-irc/weechat-3.5.r1.ebuild. bug #705702
+		# If user chooses to build documentation via -DENABLE_DOC we must force
+		# building incomplete documentation, for which support was added in 4.0.0
+		# https://github.com/weechat/weechat/blob/v4.0.0/ReleaseNotes.adoc#documentation
+		-DENABLE_DOC_INCOMPLETE=ON
 		-DENABLE_ENCHANT=$(usex enchant)
 		-DENABLE_EXEC=$(usex exec)
 		-DENABLE_FIFO=$(usex fifo)
@@ -163,6 +170,7 @@ src_configure() {
 		-DENABLE_PERL=$(usex perl)
 		-DENABLE_PYTHON=$(usex python)
 		-DENABLE_RELAY=$(usex relay)
+		-DENABLE_CJSON=$(usex relay-api)
 		-DENABLE_RUBY=$(usex ruby)
 		-DENABLE_SCRIPT=$(usex scripts)
 		-DENABLE_SCRIPTS=$(usex scripts)
@@ -172,6 +180,7 @@ src_configure() {
 		-DENABLE_TRIGGER=$(usex trigger)
 		-DENABLE_TYPING=$(usex typing)
 		-DENABLE_XFER=$(usex xfer)
+		-DENABLE_ZSTD=$(usex zstd)
 	)
 	cmake_src_configure
 }
@@ -183,4 +192,10 @@ src_test() {
 		eerror "en_US.UTF-8 locale is required to run ${PN}'s ${FUNCNAME}"
 		die "required locale missing"
 	fi
+}
+
+src_install() {
+	cmake_src_install
+
+	use guile && guile_unstrip_ccache
 }

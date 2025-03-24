@@ -10,7 +10,7 @@ HOMEPAGE="https://www.gnu.org/software/screen/"
 
 if [[ ${PV} != 9999 ]] ; then
 	SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
-	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x64-solaris"
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~m68k ~mips ~ppc ~ppc64 ~riscv ~s390 ~sparc ~x86 ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x64-solaris"
 else
 	inherit git-r3
 	EGIT_REPO_URI="https://git.savannah.gnu.org/git/screen.git"
@@ -20,7 +20,7 @@ fi
 
 LICENSE="GPL-3+"
 SLOT="0"
-IUSE="debug nethack pam selinux multiuser"
+IUSE="debug pam selinux multiuser"
 
 DEPEND=">=sys-libs/ncurses-5.2:=
 	virtual/libcrypt:=
@@ -65,6 +65,7 @@ src_prepare() {
 }
 
 src_configure() {
+	append-lfs-flags
 	append-cppflags "-DMAXWIN=${MAX_SCREEN_WINDOWS:-100}"
 
 	if [[ ${CHOST} == *-solaris* ]]; then
@@ -73,7 +74,6 @@ src_configure() {
 		append-cppflags -D_XOPEN_SOURCE=600
 	fi
 
-	use nethack || append-cppflags "-DNONETHACK"
 	use debug && append-cppflags "-DDEBUG"
 
 	local myeconfargs=(

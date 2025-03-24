@@ -1,11 +1,10 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
 
-LUA_COMPAT=( lua5-{1..2} )
-# TODO: check cmake/modules/UseAsn2Wrs.cmake for 3.12
-PYTHON_COMPAT=( python3_{10..12} )
+LUA_COMPAT=( lua5-{3..4} )
+PYTHON_COMPAT=( python3_{10..13} )
 
 inherit fcaps flag-o-matic lua-single python-any-r1 qmake-utils xdg cmake
 
@@ -16,22 +15,25 @@ if [[ ${PV} == *9999* ]] ; then
 	EGIT_REPO_URI="https://gitlab.com/wireshark/wireshark"
 	inherit git-r3
 else
+	VERIFY_SIG_OPENPGP_KEY_PATH=/usr/share/openpgp-keys/wireshark.asc
+	inherit verify-sig
+
 	SRC_URI="https://www.wireshark.org/download/src/all-versions/${P/_/}.tar.xz"
+	SRC_URI+=" verify-sig? ( https://www.wireshark.org/download/SIGNATURES-${PV}.txt -> ${P}-signatures.txt )"
 	S="${WORKDIR}/${P/_/}"
 
-	# 4.1.x is an experimental release until 4.2
-	#if [[ ${PV} != *_rc* ]] ; then
-	#	KEYWORDS="~amd64 ~arm ~arm64 ~hppa ~ia64 ~ppc64 ~riscv ~x86"
-	#fi
+	if [[ ${PV} != *_rc* ]] ; then
+		KEYWORDS="~amd64 ~arm ~arm64 ~loong ~ppc64 ~riscv ~x86"
+	fi
 fi
 
 LICENSE="GPL-2"
 SLOT="0/${PV}"
 IUSE="androiddump bcg729 brotli +capinfos +captype ciscodump +dftest doc dpauxmon"
-IUSE+=" +dumpcap +editcap +gui http2 ilbc kerberos libxml2 lto lua lz4 maxminddb"
-IUSE+=" +mergecap +minizip +netlink opus +plugins +pcap qt6 +randpkt"
+IUSE+=" +dumpcap +editcap +gui http2 http3 ilbc kerberos libxml2 lua lz4 maxminddb"
+IUSE+=" +mergecap +minizip +netlink opus +plugins +pcap +randpkt"
 IUSE+=" +randpktdump +reordercap sbc selinux +sharkd smi snappy spandsp sshdump ssl"
-IUSE+=" sdjournal test +text2pcap tfshark +tshark +udpdump wifi zlib +zstd"
+IUSE+=" sdjournal test +text2pcap +tshark +udpdump wifi zlib +zstd"
 
 REQUIRED_USE="
 	lua? ( ${LUA_REQUIRED_USE} )
@@ -52,31 +54,23 @@ RDEPEND="
 	ciscodump? ( >=net-libs/libssh-0.6:= )
 	filecaps? ( sys-libs/libcap )
 	http2? ( >=net-libs/nghttp2-1.11.0:= )
+	http3? ( net-libs/nghttp3 )
 	ilbc? ( media-libs/libilbc:= )
 	kerberos? ( virtual/krb5 )
 	libxml2? ( dev-libs/libxml2 )
 	lua? ( ${LUA_DEPS} )
 	lz4? ( app-arch/lz4:= )
 	maxminddb? ( dev-libs/libmaxminddb:= )
-	minizip? ( sys-libs/zlib[minizip] )
+	minizip? ( sys-libs/minizip-ng )
 	netlink? ( dev-libs/libnl:3 )
 	opus? ( media-libs/opus )
 	pcap? ( net-libs/libpcap )
 	gui? (
+		dev-qt/qtbase:6[concurrent,dbus,gui,widgets]
+		dev-qt/qt5compat:6
+		dev-qt/qtdeclarative:6
+		dev-qt/qtmultimedia:6
 		x11-misc/xdg-utils
-		qt6? (
-			dev-qt/qtbase:6[concurrent,dbus,gui,widgets]
-			dev-qt/qt5compat:6
-			dev-qt/qtmultimedia:6
-		)
-		!qt6? (
-			dev-qt/qtcore:5
-			dev-qt/qtconcurrent:5
-			dev-qt/qtgui:5
-			dev-qt/qtmultimedia:5
-			dev-qt/qtprintsupport:5
-			dev-qt/qtwidgets:5
-		)
 	)
 	sbc? ( media-libs/sbc )
 	sdjournal? ( sys-apps/systemd:= )
@@ -86,36 +80,25 @@ RDEPEND="
 	sshdump? ( >=net-libs/libssh-0.6:= )
 	ssl? ( >=net-libs/gnutls-3.5.8:= )
 	wifi? ( >=net-libs/libssh-0.6:= )
-	zlib? ( sys-libs/zlib )
+	zlib? ( sys-libs/zlib-ng )
 	zstd? ( app-arch/zstd:= )
 "
 DEPEND="
 	${RDEPEND}
-	gui? (
-		!qt6? (
-			dev-qt/qtdeclarative:5
-		)
-	)
 "
-# TODO: 4.0.0_rc1 release notes say:
-# "Perl is no longer required to build Wireshark, but may be required to build some source code files and run code analysis checks."
 BDEPEND="
 	${PYTHON_DEPS}
 	dev-lang/perl
-	sys-devel/flex
+	app-alternatives/lex
 	sys-devel/gettext
 	virtual/pkgconfig
 	doc? (
-		app-doc/doxygen
+		app-text/doxygen
 		dev-ruby/asciidoctor
+		dev-libs/libxslt
 	)
 	gui? (
-		qt6? (
-			dev-qt/qttools:6[linguist]
-		)
-		!qt6? (
-			dev-qt/linguist-tools:5
-		)
+		dev-qt/qttools:6[linguist]
 	)
 	test? (
 		$(python_gen_any_dep '
@@ -130,9 +113,9 @@ RDEPEND="
 	selinux? ( sec-policy/selinux-wireshark )
 "
 
-PATCHES=(
-	"${FILESDIR}"/${PN}-2.6.0-redhat.patch
-)
+if [[ ${PV} != *9999* ]] ; then
+	BDEPEND+=" verify-sig? ( sec-keys/openpgp-keys-wireshark )"
+fi
 
 python_check_deps() {
 	use test || return 0
@@ -147,39 +130,52 @@ pkg_setup() {
 	python-any-r1_pkg_setup
 }
 
+src_unpack() {
+	if [[ ${PV} == *9999* ]] ; then
+		git-r3_src_unpack
+	else
+		if use verify-sig ; then
+			cd "${DISTDIR}" || die
+			verify-sig_verify_signed_checksums \
+				${P}-signatures.txt \
+				openssl-dgst \
+				${P}.tar.xz
+			cd "${WORKDIR}" || die
+		fi
+
+		default
+	fi
+}
+
 src_configure() {
 	local mycmakeargs
 
 	python_setup
 
-	# Workaround bug #213705. If krb5-config --libs has -lcrypto then pass
-	# --with-ssl to ./configure. (Mimics code from acinclude.m4).
-	if use kerberos ; then
-		case $(krb5-config --libs) in
-			*-lcrypto*)
-				ewarn "Kerberos was built with ssl support: linkage with openssl is enabled."
-				ewarn "Note there are annoying license incompatibilities between the OpenSSL"
-				ewarn "license and the GPL, so do your check before distributing such package."
-				mycmakeargs+=( -DENABLE_GNUTLS=$(usex ssl) )
-				;;
-		esac
-	fi
-
 	if use gui ; then
 		append-cxxflags -fPIC -DPIC
 	fi
 
-	! use lto && filter-lto
+	# crashes at runtime
+	# https://bugs.gentoo.org/754021
+	filter-lto
 
 	mycmakeargs+=(
 		-DPython3_EXECUTABLE="${PYTHON}"
 		-DCMAKE_DISABLE_FIND_PACKAGE_{Asciidoctor,DOXYGEN}=$(usex !doc)
 
+		# Force bundled lemon (bug 933119)
+		-DLEMON_EXECUTABLE=
+
+		-DRPMBUILD_EXECUTABLE=
+		-DGIT_EXECUTABLE=
+		-DENABLE_CCACHE=OFF
+
 		$(use androiddump && use pcap && echo -DEXTCAP_ANDROIDDUMP_LIBPCAP=yes)
-		$(usex gui LRELEASE=$(qt5_get_bindir)/lrelease '')
-		$(usex gui MOC=$(qt5_get_bindir)/moc '')
-		$(usex gui RCC=$(qt5_get_bindir)/rcc '')
-		$(usex gui UIC=$(qt5_get_bindir)/uic '')
+		$(usex gui LRELEASE=$(qt6_get_bindir)/lrelease '')
+		$(usex gui MOC=$(qt6_get_bindir)/moc '')
+		$(usex gui RCC=$(qt6_get_bindir)/rcc '')
+		$(usex gui UIC=$(qt6_get_bindir)/uic '')
 
 		-DBUILD_androiddump=$(usex androiddump)
 		-DBUILD_capinfos=$(usex capinfos)
@@ -198,12 +194,12 @@ src_configure() {
 		-DBUILD_sharkd=$(usex sharkd)
 		-DBUILD_sshdump=$(usex sshdump)
 		-DBUILD_text2pcap=$(usex text2pcap)
-		-DBUILD_tfshark=$(usex tfshark)
+		-DBUILD_tfshark=OFF
 		-DBUILD_tshark=$(usex tshark)
 		-DBUILD_udpdump=$(usex udpdump)
 
 		-DBUILD_wireshark=$(usex gui)
-		-DUSE_qt6=$(usex qt6)
+		-DUSE_qt6=$(usex gui)
 
 		-DENABLE_WERROR=OFF
 		-DENABLE_BCG729=$(usex bcg729)
@@ -213,13 +209,15 @@ src_configure() {
 		-DENABLE_ILBC=$(usex ilbc)
 		-DENABLE_KERBEROS=$(usex kerberos)
 		-DENABLE_LIBXML2=$(usex libxml2)
-		-DENABLE_LTO=$(usex lto)
+		# only appends -flto
+		-DENABLE_LTO=OFF
 		-DENABLE_LUA=$(usex lua)
 		-DLUA_FIND_VERSIONS="${ELUA#lua}"
 		-DENABLE_LZ4=$(usex lz4)
 		-DENABLE_MINIZIP=$(usex minizip)
 		-DENABLE_NETLINK=$(usex netlink)
 		-DENABLE_NGHTTP2=$(usex http2)
+		-DENABLE_NGHTTP3=$(usex http3)
 		-DENABLE_OPUS=$(usex opus)
 		-DENABLE_PCAP=$(usex pcap)
 		-DENABLE_PLUGINS=$(usex plugins)
@@ -229,7 +227,8 @@ src_configure() {
 		-DENABLE_SNAPPY=$(usex snappy)
 		-DENABLE_SPANDSP=$(usex spandsp)
 		-DBUILD_wifidump=$(usex wifi)
-		-DENABLE_ZLIB=$(usex zlib)
+		-DENABLE_ZLIB=OFF
+		-DENABLE_ZLIBNG=$(usex zlib)
 		-DENABLE_ZSTD=$(usex zstd)
 	)
 
@@ -239,11 +238,6 @@ src_configure() {
 src_test() {
 	cmake_build test-programs
 
-	EPYTEST_DESELECT=(
-		# TODO: investigate
-		suite_follow_multistream.py::case_follow_multistream::test_follow_http2_multistream
-	)
-
 	# https://www.wireshark.org/docs/wsdg_html_chunked/ChTestsRunPytest.html
 	epytest \
 		--disable-capture \
@@ -252,10 +246,29 @@ src_test() {
 }
 
 src_install() {
-	cmake_src_install
+	# bug #928577
+	# https://gitlab.com/wireshark/wireshark/-/commit/fe7bfdf6caac9204ab5f34eeba7b0f4a0314d3cd
+	cmake_src_install install-headers
+
+	if ! use doc; then
+		# prepare Relase Notes redirector (bug #939195)
+		local relnotes="doc/release-notes.html"
+
+		# by default create a link for our specific version
+		local relversion="wireshark-${PV}.html"
+
+		# for 9999 we link to the release notes index page
+		if [[ ${PV} == *9999* ]] ; then
+			relversion=""
+		fi
+
+		# patch version into redirector & install it
+		sed -e "s/#VERSION#/${relversion}/g" < "${FILESDIR}/release-notes.html" > ${relnotes} || die
+		dodoc ${relnotes}
+	fi
 
 	# FAQ is not required as is installed from help/faq.txt
-	dodoc AUTHORS ChangeLog NEWS README* doc/randpkt.txt doc/README*
+	dodoc AUTHORS ChangeLog README* doc/randpkt.txt doc/README*
 
 	# install headers
 	insinto /usr/include/wireshark

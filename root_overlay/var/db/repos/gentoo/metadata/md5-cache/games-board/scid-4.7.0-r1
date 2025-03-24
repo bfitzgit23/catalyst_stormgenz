@@ -1,17 +1,17 @@
-BDEPEND=app-arch/unzip scripts? ( python_single_target_python3_10? ( dev-lang/python:3.10 ) python_single_target_python3_11? ( dev-lang/python:3.11 ) ) >=dev-util/ninja-1.8.2 >=dev-util/cmake-3.20.5
+BDEPEND=app-arch/unzip scripts? ( python_single_target_python3_10? ( dev-lang/python:3.10 ) python_single_target_python3_11? ( dev-lang/python:3.11 ) python_single_target_python3_12? ( dev-lang/python:3.12 ) ) app-alternatives/ninja >=dev-build/cmake-3.20.5
 DEFINED_PHASES=compile configure install postinst prepare setup test
 DEPEND=dev-lang/tcl:= dev-lang/tk test? ( dev-cpp/gtest )
 DESCRIPTION=Shane's Chess Information Database
 EAPI=8
 HOMEPAGE=https://scid.sourceforge.net/
 INHERIT=cmake desktop optfeature python-single-r1
-IUSE=photos scripts test python_single_target_python3_10 python_single_target_python3_11
+IUSE=photos scripts test python_single_target_python3_10 python_single_target_python3_11 python_single_target_python3_12
 KEYWORDS=~amd64 ~arm64 ~x86
 LICENSE=GPL-2
-RDEPEND=dev-lang/tcl:= dev-lang/tk dev-tcltk/tkimg scripts? ( python_single_target_python3_10? ( dev-lang/python:3.10 ) python_single_target_python3_11? ( dev-lang/python:3.11 ) )
-REQUIRED_USE=scripts? ( ^^ ( python_single_target_python3_10 python_single_target_python3_11 ) )
+RDEPEND=dev-lang/tcl:= dev-lang/tk dev-tcltk/tkimg scripts? ( python_single_target_python3_10? ( dev-lang/python:3.10 ) python_single_target_python3_11? ( dev-lang/python:3.11 ) python_single_target_python3_12? ( dev-lang/python:3.12 ) )
+REQUIRED_USE=scripts? ( ^^ ( python_single_target_python3_10 python_single_target_python3_11 python_single_target_python3_12 ) )
 RESTRICT=!test? ( test )
 SLOT=0
-SRC_URI=mirror://sourceforge/scid/scid-code-4.7.0.zip mirror://sourceforge/scid/scid-4.7.0_x64_linux.tar.gz
-_eclasses_=cmake	ea305d3be967deed8faa5c9e94f9aee4	desktop	021728fdc1b03b36357dbc89489e0f0d	flag-o-matic	be27a904c614cb93ae037762dc69bcc2	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	optfeature	222cb475c5a4f7ae7cfb0bf510a6fe54	python-single-r1	75118e916668a74c660a13b0ecb22562	python-utils-r1	59e60e9c5cbd3f214d7f1002e798b387	toolchain-funcs	862d337d98edb576796827be2c6b11ca	xdg-utils	baea6080dd821f5562d715887954c9d3
-_md5_=a2bf780471a92ea99914d326257f82f0
+SRC_URI=https://downloads.sourceforge.net/scid/scid-code-4.7.0.zip https://downloads.sourceforge.net/scid/scid-4.7.0_x64_linux.tar.gz
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	multiprocessing	1e32df7deee68372153dca65f4a7c21f	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	xdg-utils	42869b3c8d86a70ef3cf75165a395e09	cmake	10a50dfaf728b802fcfd37f8d0da9056	desktop	3a72ffe0d8e1dd73af3a1c8c15a59fed	optfeature	538bce96e5589935b57e178e8635f301	python-utils-r1	b7726144f5af59e186d66746d0f513e5	python-single-r1	47d8ac9be330c9366112b78fd4f8ce57
+_md5_=c45d1b1d07f68bfb462152e8fa725bad

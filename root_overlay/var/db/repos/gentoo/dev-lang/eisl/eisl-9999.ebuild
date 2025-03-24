@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2025 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -8,12 +8,14 @@ inherit toolchain-funcs
 DESCRIPTION="Interpreter and compiler compatible with the ISLisp standard"
 HOMEPAGE="https://github.com/sasagawa888/eisl/"
 
-if [[ ${PV} == *9999* ]] ; then
+if [[ "${PV}" == *9999* ]] ; then
 	inherit git-r3
+
 	EGIT_REPO_URI="https://github.com/sasagawa888/${PN}.git"
 else
 	SRC_URI="https://github.com/sasagawa888/${PN}/archive/v${PV}.tar.gz
 		-> ${P}.tar.gz"
+
 	KEYWORDS="~amd64 ~x86"
 fi
 
@@ -26,10 +28,13 @@ DOCS=( README{,-ja}.md documents )
 RDEPEND="sys-libs/ncurses:="
 DEPEND="${RDEPEND}"
 
-PATCHES=( "${FILESDIR}"/${PN}-2.85-Makefile.patch )
+PATCHES=( "${FILESDIR}/${PN}-3.60-Makefile.patch" )
 
 src_compile() {
-	emake CC="$(tc-getCC)" clean edlis eisl
+	# bug https://bugs.gentoo.org/939771
+	# don't clean and compile in one invocation with --shuffle possible
+	emake CC="$(tc-getCC)" clean
+	emake CC="$(tc-getCC)" edlis eisl
 }
 
 src_install() {
@@ -38,7 +43,7 @@ src_install() {
 
 	# Compilation of ISLisp files on installation fails.
 	# Do not compile them and mimic "make install".
-	insinto /usr/share/${PN}
+	insinto "/usr/share/${PN}"
 	doins -r library
 	doins fast.h ffi.h
 

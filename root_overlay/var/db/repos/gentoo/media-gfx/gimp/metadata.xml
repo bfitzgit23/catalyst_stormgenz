@@ -10,7 +10,7 @@
 		<name>Proxy Maintainers</name>
 	</maintainer>
 	<use>
-		<flag name="jpegxl">Enable support for JPEG XL image format</flag>
+		<flag name="fits">Enable support for loading/exporting FITS images</flag>
 		<flag name="vector-icons">Enable support for vector icons (experimental)</flag>
 	</use>
 	<upstream>

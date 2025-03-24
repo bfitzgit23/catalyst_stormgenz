@@ -1,5 +1,5 @@
 DEFINED_PHASES=compile install prepare
-DEPEND=|| ( sys-devel/clang =sys-devel/gcc-apple-4.2.1* )
+DEPEND=|| ( llvm-core/clang =sys-devel/gcc-apple-4.2.1* )
 DESCRIPTION=Darwin Csu (crt1.o) - Mac OS X 10.10 version
 EAPI=7
 HOMEPAGE=http://www.opensource.apple.com/
@@ -8,5 +8,5 @@ KEYWORDS=~ppc-macos ~x64-macos
 LICENSE=APSL-2
 SLOT=0
 SRC_URI=http://www.opensource.apple.com/tarballs/Csu/Csu-85.tar.gz
-_eclasses_=flag-o-matic	be27a904c614cb93ae037762dc69bcc2	multilib	c19072c3cd7ac5cb21de013f7e9832e0	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=f762568c98b5aea74c54d037579b3159
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9
+_md5_=3867220df7420d024742b6f80c105093

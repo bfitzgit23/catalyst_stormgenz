@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -61,10 +61,10 @@ BDEPEND="
 	doc? ( sys-apps/texinfo )
 	test? (
 		dev-util/dejagnu
-		sys-devel/bc
+		app-alternatives/bc
 	)
 	nls? ( sys-devel/gettext )
-	sys-devel/flex
+	app-alternatives/lex
 	app-alternatives/yacc
 "
 
@@ -122,17 +122,6 @@ src_prepare() {
 		-e 's:@bfdlibdir@:@libdir@:g' \
 		-e 's:@bfdincludedir@:@includedir@:g' \
 		{bfd,opcodes}/Makefile.in || die
-
-	# Fix locale issues if possible, bug #122216
-	if [[ -e ${FILESDIR}/binutils-configure-LANG.patch ]] ; then
-		einfo "Fixing misc issues in configure files"
-		for f in $(find "${S}" -name configure -exec grep -l 'autoconf version 2.13' {} +) ; do
-			ebegin "  Updating ${f/${S}\/}"
-			patch "${f}" "${FILESDIR}"/binutils-configure-LANG.patch >& "${T}"/configure-patch.log \
-				|| eerror "Please file a bug about this"
-			eend $?
-		done
-	fi
 
 	# Apply things from PATCHES and user dirs
 	default

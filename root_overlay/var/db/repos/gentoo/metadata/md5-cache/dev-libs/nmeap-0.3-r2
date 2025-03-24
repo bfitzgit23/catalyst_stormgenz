@@ -1,4 +1,4 @@
-BDEPEND=doc? ( app-doc/doxygen )
+BDEPEND=doc? ( app-text/doxygen )
 DEFINED_PHASES=compile install prepare
 DESCRIPTION=Extensible NMEA-0183 (GPS) data parser in standard C
 EAPI=8
@@ -8,6 +8,6 @@ IUSE=doc
 KEYWORDS=amd64 ppc x86
 LICENSE=BSD
 SLOT=0
-SRC_URI=mirror://sourceforge/nmeap/nmeap-0.3.tar.gz
-_eclasses_=multilib	c19072c3cd7ac5cb21de013f7e9832e0	toolchain-funcs	862d337d98edb576796827be2c6b11ca
-_md5_=d6c227779798adb4c0805adff5008cd4
+SRC_URI=https://downloads.sourceforge.net/nmeap/nmeap-0.3.tar.gz
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96
+_md5_=c2d68f1b76dcd83bf3927539fb7485cd

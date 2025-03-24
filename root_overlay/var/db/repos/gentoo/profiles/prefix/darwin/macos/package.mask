@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 # Benda Xu <heroxbd@gentoo.org> (2023-08-20)
@@ -7,7 +7,6 @@
 #  "_main", referenced from:
 #     implicit entry/start for main executable
 dev-python/pydevd
-dev-python/debugpy
 
 # Benda Xu <heroxbd@gentoo.org> (2023-08-18)
 # strlcpy and other BSD functions are available in the libc of macOS.
@@ -28,8 +27,3 @@ media-sound/lilypond
 # For example, 'lgetxattr' is not available on macOS or gnulib.
 # https://www.gnu.org/software/gnulib/manual/html_node/lgetxattr.html
 sys-apps/attr
-
-# Fabian Groffen <grobian@gentoo.org> (2023-06-05)
-# Fails to compile using GCC, misdetecting sincosf
-# https://github.com/harfbuzz/harfbuzz/issues/4266
-=media-libs/harfbuzz-7.3.0

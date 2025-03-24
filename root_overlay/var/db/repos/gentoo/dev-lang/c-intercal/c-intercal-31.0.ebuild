@@ -1,4 +1,4 @@
-# Copyright 1999-2022 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -34,7 +34,7 @@ IUSE="emacs examples"
 
 RDEPEND="emacs? ( >=app-editors/emacs-23.1:* )"
 BDEPEND="${RDEPEND}
-	sys-devel/flex
+	app-alternatives/lex
 	app-alternatives/yacc"
 
 S="${WORKDIR}/${MY_P}"
@@ -48,6 +48,11 @@ src_prepare() {
 }
 
 src_configure() {
+	# -Werror=lto-type-mismatch
+	# https://bugs.gentoo.org/855590
+	# https://gitlab.com/esr/intercal/-/issues/7
+	filter-lto
+
 	append-cflags $(test-flags-CC -fno-toplevel-reorder)	#722862
 	econf
 }

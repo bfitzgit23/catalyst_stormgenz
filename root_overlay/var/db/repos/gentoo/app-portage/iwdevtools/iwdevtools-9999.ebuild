@@ -11,7 +11,6 @@ EGIT_REPO_URI="https://github.com/ionenwks/iwdevtools.git"
 
 LICENSE="BSD-2"
 SLOT="0"
-KEYWORDS=""
 IUSE="test"
 RESTRICT="!test? ( test )"
 
@@ -24,11 +23,13 @@ RDEPEND="
 	sys-apps/diffutils
 	sys-apps/file
 	sys-apps/portage
-	|| ( sys-apps/util-linux app-misc/getopt )"
+	|| ( sys-apps/util-linux app-misc/getopt )
+"
 BDEPEND="
 	sys-apps/help2man
 	|| ( sys-apps/util-linux app-misc/getopt )
-	test? ( ${RDEPEND} )"
+	test? ( ${RDEPEND} )
+"
 
 src_configure() {
 	local emesonargs=(

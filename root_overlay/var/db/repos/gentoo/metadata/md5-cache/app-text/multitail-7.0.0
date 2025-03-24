@@ -1,4 +1,4 @@
-BDEPEND=virtual/pkgconfig >=dev-util/ninja-1.8.2 >=dev-util/cmake-3.20.5
+BDEPEND=virtual/pkgconfig app-alternatives/ninja >=dev-build/cmake-3.20.5
 DEFINED_PHASES=compile configure install postinst prepare test
 DEPEND=sys-libs/ncurses:=[unicode(+)?]
 DESCRIPTION=Tail with multiple windows
@@ -6,10 +6,10 @@ EAPI=8
 HOMEPAGE=http://www.vanheusden.com/multitail/ https://github.com/folkertvanheusden/multitail/
 INHERIT=cmake optfeature
 IUSE=debug examples unicode
-KEYWORDS=amd64 ~hppa ~ia64 ppc ~ppc64 sparc x86 ~amd64-linux ~x86-linux
-LICENSE=GPL-2
+KEYWORDS=amd64 ~hppa ppc ~ppc64 sparc x86 ~amd64-linux ~x86-linux
+LICENSE=Apache-2.0
 RDEPEND=sys-libs/ncurses:=[unicode(+)?]
 SLOT=0
 SRC_URI=https://github.com/folkertvanheusden/multitail/archive/7.0.0.tar.gz -> multitail-7.0.0.tar.gz
-_eclasses_=cmake	ea305d3be967deed8faa5c9e94f9aee4	flag-o-matic	be27a904c614cb93ae037762dc69bcc2	multilib	c19072c3cd7ac5cb21de013f7e9832e0	multiprocessing	b4e253ab22cef7b1085e9b67c7a3b730	ninja-utils	f3010c780f65d1bb5aea15a9af1adc9c	optfeature	222cb475c5a4f7ae7cfb0bf510a6fe54	toolchain-funcs	862d337d98edb576796827be2c6b11ca	xdg-utils	baea6080dd821f5562d715887954c9d3
-_md5_=005dcc62fbddd807e7920ba695cccfa9
+_eclasses_=toolchain-funcs	6afdb6107430c1832ca7e16aacbf8fa1	multilib	b2a329026f2e404e9e371097dda47f96	flag-o-matic	357f1a896fbedcd06e5ce55419c49eb9	multiprocessing	1e32df7deee68372153dca65f4a7c21f	ninja-utils	2df4e452cea39a9ec8fb543ce059f8d6	xdg-utils	42869b3c8d86a70ef3cf75165a395e09	cmake	10a50dfaf728b802fcfd37f8d0da9056	optfeature	538bce96e5589935b57e178e8635f301
+_md5_=43637b7417645828e027750e4beb997e

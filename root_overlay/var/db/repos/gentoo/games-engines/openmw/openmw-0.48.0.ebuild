@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -14,7 +14,7 @@ if [[ ${PV} == *9999* ]]; then
 	EGIT_REPO_URI="https://github.com/OpenMW/openmw.git"
 else
 	SRC_URI="https://github.com/OpenMW/openmw/archive/${P}.tar.gz"
-	KEYWORDS="~amd64 ~arm64 ~x86"
+	KEYWORDS="~amd64 ~arm64 ~ppc64 ~x86"
 	S="${WORKDIR}/${PN}-${P}"
 fi
 
@@ -35,6 +35,7 @@ RESTRICT="!test? ( test )"
 RDEPEND="${LUA_DEPS}
 	app-arch/lz4:=
 	>=dev-games/mygui-3.4.1
+	<dev-games/mygui-3.4.3
 	dev-cpp/yaml-cpp:=
 	dev-db/sqlite:3
 	dev-games/recastnavigation:=
@@ -65,13 +66,18 @@ DEPEND="${RDEPEND}
 BDEPEND="
 	virtual/pkgconfig
 	doc? (
-		app-doc/doxygen[dot]
+		app-text/doxygen[dot]
 		dev-python/sphinx
 	)
 	test? (
 		dev-cpp/gtest
 	)
 "
+
+PATCHES=(
+	"${FILESDIR}/openmw-0.48.0-gcc14.patch"
+	"${FILESDIR}/openmw-0.48.0-Xt.patch"
+)
 
 src_prepare() {
 	cmake_src_prepare
@@ -97,6 +103,7 @@ src_configure() {
 		-DGLOBAL_DATA_PATH="${EPREFIX}/usr/share"
 		-DICONDIR="${EPREFIX}/usr/share/icons/hicolor/256x256/apps"
 		-DUSE_SYSTEM_TINYXML=ON
+		-DOPENMW_USE_SYSTEM_GOOGLETEST=ON
 		-DOPENMW_USE_SYSTEM_RECASTNAVIGATION=ON
 	)
 

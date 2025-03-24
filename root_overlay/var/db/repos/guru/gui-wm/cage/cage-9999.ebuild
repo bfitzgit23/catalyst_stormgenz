@@ -5,17 +5,17 @@ EAPI=8
 
 inherit meson
 
-if [[ "${PV}" == 9999 ]]
-then
+DESCRIPTION="A Wayland kiosk"
+HOMEPAGE="https://www.hjdskes.nl/projects/cage/ https://github.com/cage-kiosk/cage"
+
+if [[ "${PV}" == 9999 ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/Hjdskes/cage"
+	EGIT_REPO_URI="https://github.com/cage-kiosk/cage"
 else
-	SRC_URI="https://github.com/Hjdskes/cage/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	SRC_URI="https://github.com/cage-kiosk/cage/archive/v${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~x86"
 fi
 
-DESCRIPTION="A Wayland kiosk"
-HOMEPAGE="https://www.hjdskes.nl/projects/cage/ https://github.com/Hjdskes/cage"
 LICENSE="MIT"
 SLOT="0"
 
@@ -23,11 +23,8 @@ IUSE="X"
 
 RDEPEND="
 	dev-libs/wayland
-	>=gui-libs/wlroots-0.17.0:0[X?]
 	x11-libs/libxkbcommon[X?]
+	X? ( gui-libs/wlroots:0.18[X,x11-backend] )
+	!X? ( gui-libs/wlroots:0.18 )
 "
 DEPEND="${RDEPEND}"
-
-src_configure() {
-	meson_src_configure
-}

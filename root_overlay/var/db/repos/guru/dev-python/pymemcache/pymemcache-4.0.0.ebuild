@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{11..12} )
 DISTUTILS_USE_PEP517=setuptools
 inherit databases distutils-r1 pypi
 
@@ -20,7 +20,7 @@ KEYWORDS="~amd64"
 BDEPEND="
 	test? (
 		${DATABASES_DEPEND[memcached]}
-		dev-python/Faker[${PYTHON_USEDEP}]
+		dev-python/faker[${PYTHON_USEDEP}]
 		dev-python/zstd[${PYTHON_USEDEP}]
 	)
 "

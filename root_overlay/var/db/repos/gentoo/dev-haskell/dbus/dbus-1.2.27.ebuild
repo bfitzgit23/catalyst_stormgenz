@@ -14,7 +14,7 @@ SRC_URI="https://hackage.haskell.org/package/${P}/${P}.tar.gz"
 
 LICENSE="Apache-2.0"
 SLOT="0/${PV}"
-KEYWORDS="amd64 ~arm64 ~ppc64 ~riscv ~x86"
+KEYWORDS="~amd64 ~arm64 ~ppc64 ~riscv ~x86"
 
 PATCHES=(
 	"${FILESDIR}/${PN}-1.2.22-disable-integration-tests.patch"
@@ -43,9 +43,7 @@ DEPEND="${RDEPEND}
 		<dev-haskell/tasty-quickcheck-0.11 )
 "
 
-src_prepare() {
-	default
-	cabal_chdeps \
-		"base >=4.16 && <5" "base >=4 && <5" \
-		"template-haskell >= 2.18 && < 2.20" "template-haskell"
-}
+CABAL_CHDEPS=(
+	"base >=4.16 && <5" "base >=4 && <5"
+	"template-haskell >= 2.18 && < 2.20" "template-haskell"
+)

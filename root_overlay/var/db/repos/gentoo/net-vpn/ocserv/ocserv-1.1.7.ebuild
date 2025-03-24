@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Gentoo Authors
+# Copyright 2019-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -10,11 +10,11 @@ if [[ ${PV} == 9999 ]]; then
 	EGIT_REPO_URI="https://gitlab.com/openconnect/ocserv.git"
 else
 	inherit verify-sig
-	VERIFY_SIG_OPENPGP_KEY_PATH="${BROOT}/usr/share/openpgp-keys/ocserv.asc"
+	VERIFY_SIG_OPENPGP_KEY_PATH="/usr/share/openpgp-keys/ocserv.asc"
 	BDEPEND="verify-sig? ( sec-keys/openpgp-keys-ocserv )"
 	SRC_URI="https://www.infradead.org/ocserv/download/${P}.tar.xz
 		verify-sig? ( https://www.infradead.org/ocserv/download/${P}.tar.xz.sig )"
-	KEYWORDS="~amd64 ~arm ~arm64 ~ppc64 ~riscv ~x86"
+	KEYWORDS="amd64 arm arm64 ppc64 ~riscv x86"
 fi
 
 DESCRIPTION="Openconnect SSL VPN server"
@@ -23,7 +23,7 @@ HOMEPAGE="https://ocserv.gitlab.io/www/index.html"
 LICENSE="GPL-2"
 SLOT="0"
 IUSE="geoip kerberos +lz4 otp pam radius +seccomp systemd tcpd test"
-RESTRICT="!test? ( test )"
+RESTRICT="test"
 
 BDEPEND+="
 	virtual/pkgconfig

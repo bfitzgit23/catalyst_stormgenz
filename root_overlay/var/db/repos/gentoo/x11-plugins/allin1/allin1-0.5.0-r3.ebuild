@@ -1,4 +1,4 @@
-# Copyright 1999-2023 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=8
@@ -7,7 +7,7 @@ inherit toolchain-funcs
 
 DESCRIPTION="All in one monitoring dockapp: RAM, CPU, Net, Power, df, seti"
 HOMEPAGE="http://ilpettegolo.altervista.org/linux_allin1.en.shtml"
-SRC_URI="mirror://sourceforge/allinone/${P}.tar.gz"
+SRC_URI="https://downloads.sourceforge.net/allinone/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -19,7 +19,7 @@ RDEPEND="
 	x11-libs/libXpm"
 DEPEND="${RDEPEND}
 	x11-base/xorg-proto"
-BDEPEND="sys-devel/flex"
+BDEPEND="app-alternatives/lex"
 
 PATCHES=( "${FILESDIR}"/${P}-makefile.patch )
 
