@@ -1,13 +1,13 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=Install XinnixOS
+Name=Install StormG
 GenericName=System Installer
 Keywords=calamares;system;installer;
 TryExec=calamares
 Exec=sh -c "pkexec calamares"
 Comment=Calamares — System Installer
-Icon=Gblend
+Icon=/usr/share/pixmaps/gentoo/misc/10389-gentoo-g-transparent.png
 Terminal=false
 StartupNotify=true
 Categories=Qt;System;
@@ -241,3 +241,4 @@ Name[zh_TW]=安裝系統
 Icon[zh_TW]=calamares
 GenericName[zh_TW]=系統安裝程式
 Comment[zh_TW]=Calamares ── 系統安裝程式
+Path=

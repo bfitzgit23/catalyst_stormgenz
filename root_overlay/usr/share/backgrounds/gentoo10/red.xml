@@ -1,0 +1,25 @@
+<background>
+  <starttime>
+    <year>2011</year>
+    <month>02</month>
+    <day>01</day>
+    <hour>00</hour>
+    <minute>00</minute>
+    <second>00</second>
+  </starttime>
+
+  <static>
+    <duration>10000000000.0</duration>
+    <file>
+
+      <!-- Netbook -->
+      <size width="1024" height="1024x600">/usr/share/backgrounds/gentoo10/netbook/1024x600/red.jpg</size>
+
+      <!-- Wide 16:10 -->
+      <size width="1280" height="1280x800">/usr/share/backgrounds/gentoo10/wide/1280x800/red.jpg</size>
+      <size width="1440" height="1440x900">/usr/share/backgrounds/gentoo10/wide/1440x900/red.jpg</size>
+      <size width="1920" height="1920x1200">/usr/share/backgrounds/gentoo10/wide/1920x1200/red.jpg</size>
+    </file>
+  </static>
+
+</background>

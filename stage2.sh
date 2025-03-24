@@ -75,6 +75,12 @@ cp -af /usr/share/applications/calamares.desktop /home/gentoo/Desktop/calamares.
 chown -R gentoo:users /home/gentoo/Desktop/calamares.desktop
 chmod +x /home/gentoo/Desktop/calamares.desktop
 
+cp -af /usr/share/applications/gentoo-pkg-manager.desktop /home/gentoo/Desktop/gentoo-pkg-manager.desktop
+chown -R gentoo:users /home/gentoo/Desktop/gentoo-pkg-manager.desktop
+chmod +x /home/gentoo/Desktop/gentoo-pkg-manager.desktop
+
+
+
 chage -E -1 lightdm
 
 LC_ALL=C xdg-user-dirs-update --force

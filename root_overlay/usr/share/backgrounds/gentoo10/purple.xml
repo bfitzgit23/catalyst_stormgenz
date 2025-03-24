@@ -1,0 +1,37 @@
+<background>
+  <starttime>
+    <year>2011</year>
+    <month>02</month>
+    <day>01</day>
+    <hour>00</hour>
+    <minute>00</minute>
+    <second>00</second>
+  </starttime>
+
+  <static>
+    <duration>10000000000.0</duration>
+    <file>
+
+      <!-- Netbook -->
+      <size width="1024" height="1024x600">/usr/share/backgrounds/gentoo10/netbook/1024x600/purple.jpg</size>
+
+      <!-- Standard 4:3 -->
+      <size width="1024" height="1024x768">/usr/share/backgrounds/gentoo10/standard/1024x768/purple.jpg</size>
+      <size width="1152" height="1152x864">/usr/share/backgrounds/gentoo10/standard/1152x864/purple.jpg</size>
+      <size width="1280" height="1280x960">/usr/share/backgrounds/gentoo10/standard/1280x960/purple.jpg</size>
+      <size width="1600" height="1600x1200">/usr/share/backgrounds/gentoo10/standard/1600x1200/purple.jpg</size>
+      <size width="800" height="800x600">/usr/share/backgrounds/gentoo10/standard/800x600/purple.jpg</size>
+
+      <!-- Wide 16:10 -->
+      <size width="1280" height="1280x800">/usr/share/backgrounds/gentoo10/wide/1280x800/purple.jpg</size>
+      <size width="1440" height="1440x900">/usr/share/backgrounds/gentoo10/wide/1440x900/purple.jpg</size>
+      <size width="1920" height="1920x1200">/usr/share/backgrounds/gentoo10/wide/1920x1200/purple.jpg</size>
+
+      <!-- Wider 16:9 -->
+      <size width="1280" height="1280x720">/usr/share/backgrounds/gentoo10/wider/1280x720/purple.jpg</size>
+      <size width="1600" height="1600x900">/usr/share/backgrounds/gentoo10/wider/1600x900/purple.jpg</size>
+      <size width="1920" height="1920x1080">/usr/share/backgrounds/gentoo10/wider/1920x1080/purple.jpg</size>
+    </file>
+  </static>
+
+</background>

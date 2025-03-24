@@ -7,7 +7,7 @@ snapshot_treeish: b5449a876ab62c0424d1476d3716e8f8dc32876e
 source_subpath: default/stage3-amd64-openrc-latest.tar.xz
 compression_mode: pixz
 portage_confdir: /home/ben/Desktop/catalyst_stormg/config/stages
-repos: /home/ben/Desktop/catalyst_stormg/root_overlay/var/db/repos/guru
+repos: /home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/guru
 /home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/tezeta
 /home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/tatsh-overlay
 /home/ben/Desktop/catalyst_stormg/overlay/var/db/repos/edgets
@@ -247,3 +247,5 @@ livecd/packages:
 	x11-themes/gentoo10-backgrounds
 	x11-themes/gentoo-xcursors
 	x11-themes/gentoo-artwork
+	gnome-extra/yad
+	gnome-extra/zenity
