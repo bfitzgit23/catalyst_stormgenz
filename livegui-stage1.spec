@@ -249,3 +249,4 @@ livecd/packages:
 	x11-themes/gentoo-artwork
 	gnome-extra/yad
 	gnome-extra/zenity
+	x11-misc/plank

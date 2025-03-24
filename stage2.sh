@@ -24,9 +24,10 @@ groupadd vboxusers
 groupadd vmware
 groupadd vboxguest
 groupadd ntp
+useradd -M -g messagebus messagebus
+groupadd avahi
+useradd -M -g avahi avahi
 
-useradd -m -p "" -G "adm,audio,wheel,cdrom,usb,video,power,games,users,vboxusers,vboxguest,vmware,kvm,storage,rfkill,ntp" -s /bin/bash gentoo
-chown -R gentoo:gentoo /home/gentoo
 pushd /home/gentoo
 mkdir -pv .config Desktop .local .oh-my-bash .cache/oh-my-bash
 
