@@ -46,10 +46,10 @@ cp -rv /xfce-configs/.xprofile /root
 cp -rv /xfce-configs/.bash_profile /root
 
 chsh -s /bin/bash root
-chsh -s /bin/bash /home/gentoo
+chsh -s /bin/bash gentoo
 
 mkdir -p /home/gentoo/.config/autostart
-cp -v /xfce-configs.config/autostart/dock.desktop /home/gentoo/.config/autostart/
+cp -v /xfce-configs/.config/autostart/dock.desktop /home/gentoo/.config/autostart/
 cp -v /usr/share/applications/calamares.desktop /home/gentoo/.config/autostart/
 
 chown -R gentoo:gentoo /home/gentoo/.config
@@ -57,7 +57,7 @@ chown -R gentoo:gentoo /home/gentoo/.config
 chown -R gentoo:gentoo /home/gentoo/*
 
 # User face image
-cp /root_overlay/xfce-configs/.face /home/gentoo/.face
+cp /xfce-configs/.face /home/gentoo/.face
 
 # Desktop icon setups
 DESKTOP_APPS=( firefox chromium calamares )
@@ -94,12 +94,8 @@ ln -sf /usr/share/zoneinfo/UTC /etc/localtime
 sed -i 's/#\(en_US\.UTF-8\)/\1/' /etc/locale.gen
 locale-gen
 
-chmod 750 /etc/sudoers.d
-chmod 440 /etc/sudoers.d/g_wheel
-chown 0 /etc/sudoers.d
-chown 0 /etc/sudoers.d/g_wheel
-chown root:root /etc/sudoers.d
-chown root:root /etc/sudoers.d/g_wheel
+chown 0 /etc/sudoers
+chown root:root /etc/sudoers
 
 rm -rf /usr/share/backgrounds/xfce
 
