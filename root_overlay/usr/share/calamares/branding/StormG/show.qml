@@ -22,54 +22,33 @@ Presentation
 
     Timer {
         id: advanceTimer
-        interval: 1000
-        running: presentation.activatedInCalamares
-        repeat: true
+        interval: 15000
+        running: false
+        repeat: false
         onTriggered: nextSlide()
     }
 
     Slide {
-
+        anchors.fill: parent
+        anchors.verticalCenterOffset: 0
         Image {
-            id: background
-            source: "squid.png"
-            width: 200; height: 200
-            fillMode: Image.PreserveAspectFit
-            anchors.centerIn: parent
+            id: background1
+            source: "logo.png"
+            width: 900; height: 506
+            verticalAlignment: Image.AlignTop
+            fillMode: Image.Stretch
+            anchors.fill: parent
         }
-        Text {
-            anchors.horizontalCenter: background.horizontalCenter
-            anchors.top: background.bottom
-            text: "XinnixOS is a Gentoo Linux based distribution designed for new and experienced Linux users".<br/>"+
-                  "XinnixOS ships with a fully customized and easy to use XFCE desktop <br/>"+
-                  "bash aliases defined in the users home directory, and several applications ready to use after installation.<br/>"+
-            wrapMode: Text.WordWrap
-            width: presentation.width
-            horizontalAlignment: Text.Center
-        }
+
     }
 
-    Slide {
-        centeredText: qsTr("This is a second Slide element.")
-    }
-
-    Slide {
-        centeredText: qsTr("This is a third Slide element.")
-    }
-
-    // When this slideshow is loaded as a V1 slideshow, only
-    // activatedInCalamares is set, which starts the timer (see above).
-    //
-    // In V2, also the onActivate() and onLeave() methods are called.
-    // These example functions log a message (and re-start the slides
-    // from the first).
     function onActivate() {
-        console.log("QML Component (default slideshow) activated");
-        presentation.currentSlide = 0;
+          console.log("QML Component (default slideshow) activated");
+          presentation.currentSlide = 0;
     }
 
     function onLeave() {
-        console.log("QML Component (default slideshow) deactivated");
+          console.log("QML Component (default slideshow) deactivated");
     }
 
 }
