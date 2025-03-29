@@ -4,6 +4,13 @@
 configs:
 - level: 0
   monitors:
+  - id: "aef821649bb7b07299abd54e1c60486d40c449b8"
+    display_name: "Chimei Innolux Corporation 0x175C (eDP)"
+    geometry:
+      x: 0
+      y: 0
+      width: 1920
+      height: 1080
   - id: "bd4586e4497d69c4858f7e8bf6d6f8c31b59d3a3"
     display_name: "Najing CEC Panda FPD Technology CO. ltd 0x004D (eDP-1)"
     geometry:
@@ -18,18 +25,24 @@ configs:
     "trash:///":
       row: 9
       col: 17
-    "/home/ben/Desktop/catalyst_stormg":
-      row: 1
+    "/home/gentoo/Desktop/gentoo-handbook.desktop":
+      row: 2
       col: 0
     "4E21-0000":
       row: 5
       col: 0
       last_seen: 1742612103883243
+    "/home/ben/Desktop/catalyst_stormg":
+      row: 1
+      col: 0
+    "/home/gentoo/Desktop/calamares.desktop":
+      row: 3
+      col: 0
     "8ED45B72D45B5B91":
       row: 3
       col: 0
       last_seen: 1742607670750499
-    "/home/ben/Desktop/mac":
+    "/home/ben/Desktop/gentoo-pkg-manager.desktop":
       row: 4
       col: 0
     "/home/ben/Desktop/stormscratch-grub-theme":
@@ -38,8 +51,8 @@ configs:
     "/":
       row: 1
       col: 0
-    "/home/ben/Desktop/gentoo-pkg-manager.desktop":
-      row: 5
+    "/home/ben/Desktop/mac":
+      row: 4
       col: 0
     "/home/ben/Desktop/Gentoo-LXDM.tar.gz":
       row: 2
@@ -48,13 +61,25 @@ configs:
       row: 1
       col: 0
     "/home/ben/Desktop/StormG_latest_xfce_22-03-2025.iso":
-      row: 5
+      row: 6
+      col: 0
+    "/home/gentoo/Desktop/gentoo-pkg-manager.desktop":
+      row: 1
+      col: 0
+    "/home/gentoo":
+      row: 0
       col: 0
     "/home/ben/Desktop/SWG-Hunted-Launcher":
       row: 3
       col: 0
+    "/home/ben/Desktop/2025-03-24_05-17.png":
+      row: 5
+      col: 0
     "/home/ben/Desktop/usr":
       row: 1
+      col: 0
+    "/home/ben/Desktop/StormG_latest_xfce_22-03-2025 (copy 1).iso":
+      row: 7
       col: 0
     "/home/ben/Desktop/catalyst_stormgenz":
       row: 3
