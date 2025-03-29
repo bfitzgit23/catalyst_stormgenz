@@ -121,13 +121,13 @@ navigation: widget
 # are visible as buttons there if the corresponding *show* keys
 # are set to "true" (they can also be overridden).
 strings:
-    productName:         "@{NAME}"
-    shortProductName:    XinnixOS
+    productName:         StormG
+    shortProductName:    StormG
     version:             Rolling
     shortVersion:        Rolling
-    versionedName:       XinnixOS
-    shortVersionedName:  XinnixOS Rolling
-    bootloaderEntryName: XinnixOS
+    versionedName:       StormG
+    shortVersionedName:  StormG Rolling
+    bootloaderEntryName: StormG
 
 # These images are loaded from the branding module directory.
 #
